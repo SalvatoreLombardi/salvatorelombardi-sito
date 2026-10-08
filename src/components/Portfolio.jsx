@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
 import { CATEGORIE, LAVORI } from './portfolio/lavori'
-import { CaroselloDettagli } from './portfolio/CaroselloDettagli'
+import { ModaleLavoro } from './portfolio/ModaleLavoro'
 
 /* ============================================================================
    PORTFOLIO
@@ -67,8 +67,6 @@ export function Portfolio() {
         {visibili.length === 0 && (
           <p className="mt-16 text-center text-white/40">Nessun lavoro in questa categoria.</p>
         )}
-
-        <CaroselloDettagli />
       </div>
     </section>
   )
@@ -76,14 +74,16 @@ export function Portfolio() {
 
 /** Una singola card. Diventa un link solo se il progetto ha un indirizzo. */
 function CardLavoro({ lavoro, indice }) {
-  const Tag = lavoro.link ? motion.a : motion.div
+  const [aperta, setAperta] = useState(false)
+  // Il link è solo sull'immagine, così il bottone "Leggi di più" non finisce dentro un <a>
+  const Immagine = lavoro.link ? 'a' : 'div'
+  const propsImmagine = lavoro.link
+    ? { href: lavoro.link, target: '_blank', rel: 'noreferrer' }
+    : {}
 
   return (
-    <Tag
+    <motion.div
       layout
-      href={lavoro.link ?? undefined}
-      target={lavoro.link ? '_blank' : undefined}
-      rel={lavoro.link ? 'noreferrer' : undefined}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
@@ -92,11 +92,16 @@ function CardLavoro({ lavoro, indice }) {
       className="group block"
     >
       {/* --- Immagine --- */}
-      <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white/[0.04] ring-1 ring-white/10">
+      <Immagine
+        {...propsImmagine}
+        className="relative block aspect-[4/3] overflow-hidden rounded-xl bg-white/[0.04] ring-1 ring-white/10"
+      >
         {lavoro.logo ? (
           // Solo il logo del cliente, centrato su un colore di sfondo
           <div
-            className="flex size-full items-center justify-center p-10"
+            className={`relative flex size-full items-center ${
+              lavoro.mascotte ? 'justify-start p-8 pr-[44%]' : 'justify-center p-10'
+            }`}
             style={{ backgroundColor: lavoro.sfondo }}
           >
             <img
@@ -106,6 +111,18 @@ function CardLavoro({ lavoro, indice }) {
               className="max-h-full max-w-full object-contain transition-transform duration-700
                          ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
             />
+            {/* Mascotte del progetto, in piedi sul bordo basso della card */}
+            {lavoro.mascotte && (
+              <img
+                src={lavoro.mascotte}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                className="pointer-events-none absolute bottom-0 right-4 h-[86%] w-auto
+                           transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]
+                           group-hover:-translate-y-1.5"
+              />
+            )}
           </div>
         ) : lavoro.immagine ? (
           <img
@@ -140,7 +157,7 @@ function CardLavoro({ lavoro, indice }) {
             </svg>
           </span>
         )}
-      </div>
+      </Immagine>
 
       {/* --- Testo --- */}
       <div className="mt-5">
@@ -156,8 +173,35 @@ function CardLavoro({ lavoro, indice }) {
         <p className="mt-2 text-[0.9375rem] leading-relaxed text-white/55 text-pretty">
           {lavoro.descrizione}
         </p>
+
+        {lavoro.completa && (
+          <button
+            type="button"
+            onClick={() => setAperta(true)}
+            className="mt-3 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-accent-400
+                       transition-colors duration-300 hover:text-white"
+          >
+            Leggi di più
+            <svg
+              viewBox="0 0 20 20"
+              className="size-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 10h12m0 0-5.5-5.5M16 10l-5.5 5.5" />
+            </svg>
+          </button>
+        )}
       </div>
-    </Tag>
+
+      {lavoro.completa && (
+        <ModaleLavoro lavoro={lavoro} aperta={aperta} onChiudi={() => setAperta(false)} />
+      )}
+    </motion.div>
   )
 }
 

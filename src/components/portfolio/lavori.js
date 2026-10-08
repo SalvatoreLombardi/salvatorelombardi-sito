@@ -12,6 +12,8 @@
    `logo` + `sfondo`: se presenti, la card mostra solo il logo del cliente
    (file in `public/lavori/loghi/`) centrato su quel colore di sfondo, al
    posto dello screenshot.
+   `completa`: descrizione estesa ({ intro, punti: [[titolo, testo], ...] }).
+   Se presente, la card mostra "Leggi di più" e apre una finestra con il testo.
    `piattaforma`: solo per i lavori social ('instagram' o 'facebook'): al posto
    del segnaposto mostra il logo del canale.
    ========================================================================== */
@@ -31,9 +33,22 @@ export const LAVORI = [
     categoria: 'web',
     anno: '2025',
     descrizione:
-      'Sito editoriale su borghi, paesaggi e tradizioni italiane, sincronizzato in automatico con i contenuti Instagram.',
+      'Branding, logo e sito editoriale completo su borghi, tradizioni e cucina italiana, con un assistente AI che crea itinerari su misura.',
     logo: '/lavori/loghi/identitario.png',
+    mascotte: '/lavori/identitario/mascotte.png',
     sfondo: '#0b0b0f',
+    completa: {
+      intro:
+        'Un progetto completo: dall’identità visiva al sito online, per raccontare l’Italia autentica fatta di borghi, tradizioni e cucina.',
+      punti: [
+        ['Branding e logo', 'Identità visiva completa, con logo e mascotte, usata sul sito e sui social.'],
+        ['Sito editoriale', 'Borghi, tradizioni, cucina e paesaggi, con articoli e contenuti sincronizzati in automatico con Instagram.'],
+        ['Meteo', 'Le previsioni del luogo che stai scoprendo.'],
+        ['Cartolina digitale', 'Scegli una foto e scrivi il messaggio: il sito aggiunge il francobollo di Identitario e crea un link da condividere, valido 24 ore.'],
+        ['Identit-AI, Percorsi di Senso', 'Scegli un elemento (Fuoco, Acqua, Devozione o Silenzio) e l’intelligenza artificiale crea un itinerario che unisce borghi, tradizioni e luoghi sacri.'],
+        ['Colonne sonore', 'Le playlist Spotify che accompagnano i video.'],
+      ],
+    },
     immagine: '/lavori/identitario.jpg',
     link: 'https://identitario.eu',
   },
@@ -83,17 +98,4 @@ export const LAVORI = [
     piattaforma: 'instagram',
     link: 'https://www.instagram.com/identitario_official',
   },
-]
-
-/* Dettagli del sito Identitario: scorrono in loop sotto la griglia.
-   Per aggiungerne uno: metti l'immagine in `public/lavori/identitario/`
-   e aggiungi una riga qui. */
-export const DETTAGLI_IDENTITARIO = [
-  { src: '/lavori/identitario/dettaglio-01.jpg', alt: 'Identitario: home page' },
-  { src: '/lavori/identitario/dettaglio-02.jpg', alt: 'Identitario: sezione ricette' },
-  { src: '/lavori/identitario/dettaglio-03.jpg', alt: 'Identitario: percorsi Identit-AI' },
-  { src: '/lavori/identitario/dettaglio-04.jpg', alt: 'Identitario: colonne sonore' },
-  { src: '/lavori/identitario/dettaglio-05.jpg', alt: 'Identitario: chi siamo' },
-  { src: '/lavori/identitario/dettaglio-06.jpg', alt: 'Identitario: articoli' },
-  { src: '/lavori/identitario/dettaglio-07.jpg', alt: 'Identitario: cartolina digitale' },
 ]

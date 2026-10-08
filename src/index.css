@@ -209,23 +209,39 @@
   }
 }
 
-/* Carosello dei dettagli nel portfolio: scorre in loop, si ferma all'hover */
-@keyframes carosello-scorri {
+/* Bordo luminoso che gira intorno a un riquadro (finestra dei lavori).
+   Un gradiente conico ruota grazie alla proprietà registrata --angolo;
+   il ::before ripete lo stesso gradiente sfocato per creare l'alone. */
+@property --angolo {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.bordo-luminoso {
+  --angolo: 0deg;
+  padding: 1.5px;
+  border-radius: 1.25rem;
+  background: conic-gradient(
+    from var(--angolo),
+    transparent 0 55%,
+    var(--color-accent-500) 80%,
+    var(--color-accent-400) 90%,
+    transparent 100%
+  );
+  animation: bordo-gira 5s linear infinite;
+}
+.bordo-luminoso::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(18px);
+  opacity: 0.55;
+}
+@keyframes bordo-gira {
   to {
-    transform: translateX(-50%);
-  }
-}
-.carosello-pista {
-  animation: carosello-scorri 60s linear infinite;
-}
-.carosello:hover .carosello-pista {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .carosello {
-    overflow-x: auto;
-  }
-  .carosello-pista {
-    animation: none;
+    --angolo: 360deg;
   }
 }
