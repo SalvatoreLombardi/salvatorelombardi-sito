@@ -49,7 +49,7 @@ const SERVIZI = [
   {
     titolo: 'Video making',
     testo:
-      'Riprese e montaggio. Dal video promozionale ai contenuti verticali per i social, anche con riprese dall’alto con il drone.',
+      'Riprese e montaggio. Dal video promozionale ai contenuti verticali per i social, anche con riprese aeree con il drone.',
     voci: ['Riprese video', 'Riprese con drone', 'Montaggio e color', 'Video promozionali', 'Contenuti per social'],
     // Icona: cinepresa
     icona: (
