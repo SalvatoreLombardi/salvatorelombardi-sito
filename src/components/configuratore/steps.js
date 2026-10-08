@@ -32,7 +32,7 @@ export const STEP = [
   {
     id: 'stile',
     etichetta: 'Stile',
-    titolo: 'Che aria deve avere?',
+    titolo: 'Che stile deve avere?',
     sottotitolo: 'Serve a capire la direzione, non è una scelta definitiva.',
     campi: [
       {
@@ -128,20 +128,6 @@ export const STEP = [
     campi: [
       { nome: 'nome', titolo: 'Nome e cognome', tipo: 'testo', obbligatorio: true, placeholder: 'Mario Rossi' },
       { nome: 'email', titolo: 'Email', tipo: 'email', obbligatorio: true, placeholder: 'mario@esempio.it' },
-      {
-        nome: 'budget',
-        titolo: 'Budget indicativo',
-        tipo: 'scelta',
-        obbligatorio: true,
-        opzioni: [
-          { valore: 'fino-1000', label: 'Fino a 1.000 €' },
-          { valore: '1000-3000', label: '1.000 – 3.000 €' },
-          { valore: '3000-6000', label: '3.000 – 6.000 €' },
-          { valore: 'oltre-6000', label: 'Oltre 6.000 €' },
-          { valore: 'da-definire', label: 'Da definire' },
-        ],
-      },
-      { nome: 'scadenza', titolo: 'Quando ti serve pronto?', tipo: 'data', obbligatorio: false },
     ],
   },
 ]

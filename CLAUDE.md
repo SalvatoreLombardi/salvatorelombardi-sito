@@ -10,3 +10,8 @@
 - **Admin**: https://salvatorelombardi.com/#/admin (in locale `http://localhost:5173/#/admin`). Il `#` serve perché il sito usa HashRouter (GitHub Pages). Nessun link dalla home.
 - **Pausa (piano Free)**: il progetto va in pausa dopo un periodo di inattività (successo l'8 ott 2026). In pausa le richieste NON si salvano e l'Admin non funziona. Si riattiva da dashboard con "Resume project" (pochi minuti). I dati già salvati restano al sicuro.
 - **Anti-pausa**: `.github/workflows/ping-supabase.yml` fa una query al DB ogni 3 giorni (usa gli stessi secrets del deploy). Se il workflow diventa rosso su GitHub, controlla subito se il progetto è in pausa. GitHub disattiva i workflow schedulati dopo 60 giorni senza commit nel repo.
+
+## Da fare
+- Cubo 3D animato (stile Rubik nero con facce che ruotano, come la home di resend.com) nella home. Dopo la mail di avviso preventivo.
+- Mail personalizzata sul dominio (registrato su Cloudflare): Resend con dominio verificato per spedire, Cloudflare Email Routing per ricevere su salvatore-lombardi@blu.it.
+- Configuratore: il percorso "Video" ha le stesse domande del sito, sistemarle. Aggiungere il percorso "Social" con domande giuste.

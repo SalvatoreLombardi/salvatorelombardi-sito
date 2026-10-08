@@ -34,8 +34,6 @@ export function CardRichiesta({ richiesta, onCambiaStato, onElimina }) {
     ['Foto', leggibile(richiesta.foto)],
     ['Testi', leggibile(richiesta.testi)],
     ['Logo', leggibile(richiesta.logo)],
-    ['Budget', leggibile(richiesta.budget)],
-    ['Scadenza', dataIta(richiesta.scadenza)],
   ]
 
   return (

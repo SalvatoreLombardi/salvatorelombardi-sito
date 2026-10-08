@@ -80,9 +80,6 @@ export function Configuratore() {
       logo: dati.logo,
       nome: dati.nome,
       email: dati.email,
-      budget: dati.budget,
-      // Un campo data vuoto va salvato come null, non come stringa vuota
-      scadenza: dati.scadenza || null,
     })
 
     setInvioInCorso(false)
@@ -227,6 +224,7 @@ export function Configuratore() {
                       <Button
                         type="submit"
                         size="md"
+                        variant={!stepCompleto || invioInCorso ? 'vetro' : 'accent'}
                         disabled={!stepCompleto || invioInCorso}
                         className={!stepCompleto || invioInCorso ? 'pointer-events-none opacity-40' : ''}
                       >
@@ -236,6 +234,7 @@ export function Configuratore() {
                       <Button
                         type="button"
                         size="md"
+                        variant={stepCompleto ? 'accent' : 'vetro'}
                         onClick={vaiAvanti}
                         disabled={!stepCompleto}
                         className={!stepCompleto ? 'pointer-events-none opacity-40' : ''}
