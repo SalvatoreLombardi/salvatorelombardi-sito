@@ -47,6 +47,7 @@ export const LAVORI = [
         ['Cartolina digitale', 'Scegli una foto e scrivi il messaggio: il sito aggiunge il francobollo di Identitario e crea un link da condividere, valido 24 ore.'],
         ['Identit-AI, Percorsi di Senso', 'Scegli un elemento (Fuoco, Acqua, Devozione o Silenzio) e l’intelligenza artificiale crea un itinerario che unisce borghi, tradizioni e luoghi sacri.'],
         ['Colonne sonore', 'Le playlist Spotify che accompagnano i video.'],
+        ['Responsive', 'Tutto il sito è perfettamente responsive, anche su mobile.'],
       ],
     },
     immagine: '/lavori/identitario.jpg',
@@ -58,9 +59,21 @@ export const LAVORI = [
     categoria: 'web',
     anno: '2025',
     descrizione:
-      'Sito per un B&B in dimora storica a Gravina in Puglia: camere, tariffe e richiesta di disponibilità online.',
+      'Logo, fotografie, video con drone e sito web per un B&B in una dimora storica a Gravina in Puglia.',
     logo: '/lavori/loghi/le-terrazze-sul-mondo.jpg',
     sfondo: '#fdfdf1',
+    completa: {
+      intro:
+        'Un progetto completo per un bed & breakfast in una dimora storica del 1742 a Gravina in Puglia: ho creato il logo, realizzato fotografie e video con il drone e sviluppato il sito.',
+      punti: [
+        ['Logo', 'Un disegno al tratto in oro su fondo avorio, con le terrazze e il ponte acquedotto, che richiama il carattere elegante del luogo.'],
+        ['Fotografie', 'Ho realizzato le foto degli spazi interni ed esterni usate nel sito e nella galleria.'],
+        ['Video con drone', 'Un video girato con il drone nella home, che si muove con lo scorrimento della pagina.'],
+        ['Il sito', 'La storia della dimora, le due camere (Nadir e Zenit), Gravina e dintorni, la galleria fotografica, la mappa e i contatti.'],
+        ['Richiesta di disponibilità', 'Un modulo per indicare nome, email, date, numero di ospiti e camera preferita.'],
+        ['Responsive', 'Il sito è perfettamente responsive: si adatta a computer, tablet e smartphone.'],
+      ],
+    },
     immagine: '/lavori/le-terrazze-sul-mondo.jpg',
     link: 'https://leterrazzesulmondo.github.io/',
   },
@@ -70,9 +83,19 @@ export const LAVORI = [
     categoria: 'web',
     anno: '2025',
     descrizione:
-      'Pagina link per il lancio di Baggo: da un solo indirizzo il pubblico arriva ai canali social del brand.',
+      'Mascotte, pagine social, post e pagina di presentazione per il lancio di Baggo.',
     logo: '/lavori/loghi/baggo.png',
     sfondo: '#0b0b0f',
+    completa: {
+      intro:
+        'Il lancio di Baggo, dalla mascotte ai canali social: ho creato l’immagine del brand e gli strumenti per farlo conoscere.',
+      punti: [
+        ['Mascotte', 'Ho creato la mascotte del brand: il polpo.'],
+        ['Pagine social', 'Ho curato le pagine social del brand.'],
+        ['Post', 'Ho creato i post per i canali social.'],
+        ['Pagina di presentazione', 'Una pagina link che serve a raggiungere i social: da un solo indirizzo il pubblico arriva ai canali del brand.'],
+      ],
+    },
     immagine: '/lavori/baggo.jpg',
     link: 'https://salvatore-lombardi-cyber.github.io/Baggo/',
   },

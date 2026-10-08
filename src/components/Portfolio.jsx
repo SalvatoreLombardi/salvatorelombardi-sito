@@ -89,7 +89,7 @@ function CardLavoro({ lavoro, indice }) {
       exit={{ opacity: 0, scale: 0.96 }}
       viewport={{ once: true, margin: '-10% 0px' }}
       transition={{ duration: 0.7, delay: 0.06 * indice, ease: EASE }}
-      className="group block"
+      className="group flex h-full flex-col"
     >
       {/* --- Immagine --- */}
       <Immagine
@@ -160,7 +160,7 @@ function CardLavoro({ lavoro, indice }) {
       </Immagine>
 
       {/* --- Testo --- */}
-      <div className="mt-5">
+      <div className="mt-5 flex flex-1 flex-col">
         <div className="flex items-baseline justify-between gap-4">
           <h3 className="font-display text-[1.1875rem] font-semibold tracking-[-0.02em] text-white">
             {lavoro.titolo}
@@ -175,10 +175,11 @@ function CardLavoro({ lavoro, indice }) {
         </p>
 
         {lavoro.completa && (
+          // mt-auto: il bottone scende sempre in fondo alla card, alla stessa altezza delle altre
           <button
             type="button"
             onClick={() => setAperta(true)}
-            className="mt-3 inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-accent-400
+            className="mt-auto inline-flex self-start pt-4 items-center gap-1.5 text-[0.9375rem] font-medium text-accent-400
                        transition-colors duration-300 hover:text-white"
           >
             Leggi di più
