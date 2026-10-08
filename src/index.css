@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   DESIGN SYSTEM — Salvatore Lombardi
+   Tailwind v4 usa una config "CSS-first": tutto ciò che sta dentro @theme
+   diventa automaticamente una utility (es. --color-ink-500 -> text-ink-500).
+   Questi token valgono per TUTTE le sezioni del sito, non solo per la hero.
+   ========================================================================= */
+@theme {
+  /* --- Palette povera: bianco, nero, grigi ------------------------------ */
+  --color-ink-950: #08080a; /* nero pieno: headline, superfici scure */
+  --color-ink-900: #121215;
+  --color-ink-800: #1d1d21;
+  --color-ink-700: #35353b;
+  --color-ink-600: #55555d;
+  --color-ink-500: #7a7a83; /* testo secondario / sottotitoli */
+  --color-ink-400: #a1a1a9;
+  --color-ink-300: #c9c9d0;
+  --color-ink-200: #e3e3e8;
+  --color-ink-100: #eeeef1;
+  --color-ink-50: #f6f6f8; /* sfondo sezioni alternate */
+
+  /* --- Unico colore accento: teal sobrio -------------------------------- */
+  --color-accent-50: #effcfa;
+  --color-accent-100: #cbf6ef;
+  --color-accent-200: #99ece1;
+  --color-accent-400: #2dd4bf;
+  --color-accent-500: #14b8a6; /* accento principale */
+  --color-accent-600: #0f9488; /* hover / testo accento su bianco */
+  --color-accent-700: #0c7268;
+
+  /* --- Tipografia ------------------------------------------------------- */
+  /* Inter ovunque: stessa resa su Mac, Windows e Android. */
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Scala fluida con clamp(): nessun salto tra mobile e desktop. */
+  --text-display: clamp(2.75rem, 1.6rem + 5.1vw, 5.5rem);
+  --text-display--line-height: 1.03;
+  --text-display--letter-spacing: -0.032em;
+  --text-display--font-weight: 600;
+
+  --text-title: clamp(2rem, 1.3rem + 3vw, 3.5rem);
+  --text-title--line-height: 1.08;
+  --text-title--letter-spacing: -0.027em;
+
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.4vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+  --text-lead--letter-spacing: -0.011em;
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.14em;
+  --text-eyebrow--font-weight: 600;
+
+  /* --- Angoli: arrotondati ma mai estremi -------------------------------- */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* --- Ombre morbide, quasi impercettibili ------------------------------ */
+  --shadow-soft: 0 1px 2px rgb(8 8 10 / 0.04), 0 8px 24px rgb(8 8 10 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(8 8 10 / 0.05), 0 24px 60px rgb(8 8 10 / 0.1);
+
+  /* --- Curva di easing "Apple": parte veloce, si posa dolcemente -------- */
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Le ancore (es. #configuratore) non finiscono sotto un'eventuale navbar */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    /* Il sito è scuro dall'hero al footer: lo sfondo fisso (NetworkCanvas,
+       montato in App.jsx) copre tutto, questo è solo il colore di riserva
+       (rimbalzo dello scroll su mobile, primissimo istante prima del canvas). */
+    background-color: var(--color-ink-950);
+    color: var(--color-white);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Il parallax muove elementi in orizzontale di pochi px: evita scrollbar */
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-100);
+    color: var(--color-ink-950);
+  }
+
+  /* Focus visibile e coerente su tutto il sito (accessibilità) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-500);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Chi ha attivato "riduci movimento" vede il sito statico */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ============================================================================
+   UTILITY DI SISTEMA — riusabili in ogni sezione
+   ========================================================================= */
+@layer components {
+  /* Contenitore standard: larghezza massima + respiro laterale */
+  .container-site {
+    width: 100%;
+    max-width: 80rem; /* 1280px */
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .container-site {
+      padding-inline: 2.5rem;
+    }
+  }
+
+
+  /* --- Bottone "vetro liquido" ------------------------------------------
+     Ricrea in CSS l'effetto del bottone in vetro: base scura traslucida che
+     sfoca ciò che ha dietro, bordo iridescente sottile e riflesso lucido in
+     alto. Base scura e non chiara perché il sito ha fondo bianco: solo così
+     il testo bianco resta leggibile. */
+  .vetro {
+    position: relative;
+    isolation: isolate;
+    color: #fff;
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.16) 0%, rgb(255 255 255 / 0.03) 48%, rgb(255 255 255 / 0) 56%),
+      linear-gradient(180deg, rgb(44 46 53 / 0.86), rgb(14 15 18 / 0.92));
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.4),
+      inset 0 -1px 0 rgb(255 255 255 / 0.08),
+      0 1px 2px rgb(8 8 10 / 0.18),
+      0 14px 36px -12px rgb(8 8 10 / 0.5);
+    transition: box-shadow 0.4s var(--ease-apple), filter 0.4s var(--ease-apple);
+  }
+
+  /* Bordo iridescente: un anello di 1px ritagliato con una maschera */
+  .vetro::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      rgb(255 255 255 / 0.6),
+      rgb(170 200 225 / 0.18) 42%,
+      rgb(255 255 255 / 0.42)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Riflesso lucido sulla metà superiore */
+  .vetro::after {
+    content: "";
+    position: absolute;
+    inset: 1px 1px 48% 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.28), rgb(255 255 255 / 0));
+    pointer-events: none;
+  }
+
+  .vetro:hover {
+    filter: brightness(1.12);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.5),
+      inset 0 -1px 0 rgb(255 255 255 / 0.1),
+      0 1px 2px rgb(8 8 10 / 0.2),
+      0 18px 44px -12px rgb(8 8 10 / 0.55);
+  }
+
+  /* Spaziatura verticale generosa, coerente fra le sezioni */
+  .section-y {
+    padding-block: clamp(4.5rem, 3rem + 7vw, 9rem);
+  }
+}
