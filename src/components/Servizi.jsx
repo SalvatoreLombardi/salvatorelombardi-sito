@@ -37,8 +37,14 @@ const SERVIZI = [
   {
     titolo: 'Social media management',
     testo:
-      'Piano editoriale, contenuti e pubblicazione. I tuoi canali curati con continuità, non a episodi.',
-    voci: ['Piano editoriale', 'Creazione contenuti', 'Pubblicazione e community', 'Report mensili'],
+      'Strategia, contenuti e pubblicazione. I tuoi canali curati con continuità, per crescere nel tempo.',
+    voci: [
+      'Strategia e obiettivi',
+      'Piano editoriale',
+      'Creazione contenuti',
+      'Pubblicazione e community',
+      'Analisi e crescita',
+    ],
     // Icona: bolla di conversazione
     icona: (
       <>
