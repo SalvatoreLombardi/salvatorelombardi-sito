@@ -49,8 +49,8 @@ const SERVIZI = [
   {
     titolo: 'Video making',
     testo:
-      'Riprese e montaggio. Dal video promozionale ai contenuti verticali per i social, girati e montati da me.',
-    voci: ['Riprese video', 'Montaggio e color', 'Video promozionali', 'Contenuti per social'],
+      'Riprese e montaggio. Dal video promozionale ai contenuti verticali per i social, anche con riprese dall’alto con il drone.',
+    voci: ['Riprese video', 'Riprese con drone', 'Montaggio e color', 'Video promozionali', 'Contenuti per social'],
     // Icona: cinepresa
     icona: (
       <>
