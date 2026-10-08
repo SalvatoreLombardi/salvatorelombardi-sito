@@ -12,6 +12,7 @@
    `logo` + `sfondo`: se presenti, la card mostra solo il logo del cliente
    (file in `public/lavori/loghi/`) centrato su quel colore di sfondo, al
    posto dello screenshot.
+   `effetto`: 'bolle' fa galleggiare il logo e salire delle bolle (vedi LogoConBolle).
    `completa`: descrizione estesa ({ intro, punti: [[titolo, testo], ...] }).
    Se presente, la card mostra "Leggi di più" e apre una finestra con il testo.
    `piattaforma`: solo per i lavori social ('instagram' o 'facebook'): al posto
@@ -85,7 +86,8 @@ export const LAVORI = [
     descrizione:
       'Mascotte, pagine social, post e pagina di presentazione per il lancio di Baggo.',
     logo: '/lavori/loghi/baggo.png',
-    sfondo: '#0b0b0f',
+    sfondo: '#F2C000',
+    effetto: 'bolle',
     completa: {
       intro:
         'Il lancio di Baggo, dalla mascotte ai canali social: ho creato l’immagine del brand e gli strumenti per farlo conoscere.',
@@ -100,23 +102,14 @@ export const LAVORI = [
     link: 'https://salvatore-lombardi-cyber.github.io/Baggo/',
   },
   {
-    id: 'progetto-4',
-    titolo: 'Nome del progetto',
-    categoria: 'video',
-    anno: '2025',
-    descrizione: 'Una riga che spiega cosa hai fatto e che problema hai risolto.',
-    immagine: null,
-    link: null,
-  },
-  {
     id: 'identitario-instagram',
     titolo: 'Identitario · Instagram',
     categoria: 'social',
     anno: '2025',
     descrizione:
       'Gestione del canale: piano editoriale, reel e fotografie dei borghi, pubblicazione continuativa.',
-    logo: '/lavori/loghi/identitario-tondo.png',
-    sfondo: '#ffffff',
+    logo: '/lavori/loghi/identitario-instagram.png',
+    sfondo: '#0b0b0f',
     immagine: '/lavori/identitario-instagram.jpg',
     piattaforma: 'instagram',
     link: 'https://www.instagram.com/identitario_official',

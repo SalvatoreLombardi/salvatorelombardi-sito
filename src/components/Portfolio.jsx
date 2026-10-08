@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
 import { CATEGORIE, LAVORI } from './portfolio/lavori'
 import { ModaleLavoro } from './portfolio/ModaleLavoro'
+import { LogoConBolle } from './portfolio/LogoConBolle'
 
 /* ============================================================================
    PORTFOLIO
@@ -96,7 +97,9 @@ function CardLavoro({ lavoro, indice }) {
         {...propsImmagine}
         className="relative block aspect-[4/3] overflow-hidden rounded-xl bg-white/[0.04] ring-1 ring-white/10"
       >
-        {lavoro.logo ? (
+        {lavoro.effetto === 'bolle' ? (
+          <LogoConBolle lavoro={lavoro} />
+        ) : lavoro.logo ? (
           // Solo il logo del cliente, centrato su un colore di sfondo
           <div
             className={`relative flex size-full items-center ${
