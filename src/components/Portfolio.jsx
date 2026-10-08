@@ -32,7 +32,7 @@ export function Portfolio() {
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
             <span className="text-white">Lavori recenti,</span>{' '}
-            <span className="text-white/40">non solo belli da vedere.</span>
+            <span className="text-white/40">ognuno con uno scopo.</span>
           </Reveal>
         </div>
 
