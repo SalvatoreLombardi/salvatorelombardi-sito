@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
 import { CATEGORIE, LAVORI } from './portfolio/lavori'
+import { CaroselloDettagli } from './portfolio/CaroselloDettagli'
 
 /* ============================================================================
    PORTFOLIO
@@ -66,6 +67,8 @@ export function Portfolio() {
         {visibili.length === 0 && (
           <p className="mt-16 text-center text-white/40">Nessun lavoro in questa categoria.</p>
         )}
+
+        <CaroselloDettagli />
       </div>
     </section>
   )
@@ -90,7 +93,21 @@ function CardLavoro({ lavoro, indice }) {
     >
       {/* --- Immagine --- */}
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-white/[0.04] ring-1 ring-white/10">
-        {lavoro.immagine ? (
+        {lavoro.logo ? (
+          // Solo il logo del cliente, centrato su un colore di sfondo
+          <div
+            className="flex size-full items-center justify-center p-10"
+            style={{ backgroundColor: lavoro.sfondo }}
+          >
+            <img
+              src={lavoro.logo}
+              alt={lavoro.titolo}
+              loading="lazy"
+              className="max-h-full max-w-full object-contain transition-transform duration-700
+                         ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+            />
+          </div>
+        ) : lavoro.immagine ? (
           <img
             src={lavoro.immagine}
             alt={lavoro.titolo}

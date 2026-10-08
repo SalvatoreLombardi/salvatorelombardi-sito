@@ -208,3 +208,24 @@
     padding-block: clamp(4.5rem, 3rem + 7vw, 9rem);
   }
 }
+
+/* Carosello dei dettagli nel portfolio: scorre in loop, si ferma all'hover */
+@keyframes carosello-scorri {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.carosello-pista {
+  animation: carosello-scorri 60s linear infinite;
+}
+.carosello:hover .carosello-pista {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .carosello {
+    overflow-x: auto;
+  }
+  .carosello-pista {
+    animation: none;
+  }
+}
