@@ -1,0 +1,24 @@
+name: Ping Supabase
+
+# Evita che il progetto Supabase (piano Free) vada in pausa per inattività.
+# Fa una piccola query al database ogni 3 giorni. Con la chiave anon e la RLS
+# la query torna vuota, ma conta come attività.
+
+on:
+  schedule:
+    - cron: '0 8 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query al database
+        env:
+          URL: ${{ secrets.VITE_SUPABASE_URL }}
+          KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          curl --fail --silent --show-error \
+            "$URL/rest/v1/richieste?select=id&limit=1" \
+            -H "apikey: $KEY" \
+            -H "Authorization: Bearer $KEY"
