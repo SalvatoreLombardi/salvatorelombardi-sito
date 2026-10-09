@@ -8,6 +8,7 @@ import { Configuratore } from './components/Configuratore'
 import { Contatti } from './components/Contatti'
 import { AvvisoRichieste } from './ui/AvvisoRichieste'
 import { TornaSu } from './ui/TornaSu'
+import { Loader } from './ui/Loader'
 import { Navbar } from './ui/Navbar'
 import { Footer } from './ui/Footer'
 import { NetworkCanvas } from './components/hero/NetworkCanvas'
@@ -23,6 +24,8 @@ export default function App() {
 
   return (
     <>
+      <Loader />
+
       {/* Sfondo cinematografico fisso: dietro a tutta la pagina, dall'hero
           al footer. Non scrolla: è il resto del sito che scorre sopra di lui. */}
       <div className="fixed inset-0 -z-10 bg-ink-950">
