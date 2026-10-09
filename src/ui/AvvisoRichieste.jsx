@@ -69,7 +69,7 @@ export function AvvisoRichieste() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.9 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 right-24 z-50 flex items-center gap-3 rounded-full
+          className="fixed bottom-6 right-28 z-50 sm:right-36 flex items-center gap-3 rounded-full
                      bg-ink-950 py-3 pl-4 pr-5 text-white shadow-lift
                      transition-transform duration-300 hover:scale-105"
           aria-label={`${nuove} richieste nuove da leggere`}

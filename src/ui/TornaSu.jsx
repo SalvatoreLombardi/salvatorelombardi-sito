@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 /* ============================================================================
    TORNA SU
-   Bottone fisso in basso a destra che riporta in cima alla pagina. Compare
-   solo dopo aver scrollato un po'. L'immagine è public/torna-su.png.
+   Widget fisso in basso a destra che riporta in cima alla pagina. È lo stesso
+   cubo di vetro dei servizi (CuboServizi, variante "freccia"): freccia in su su
+   ogni faccia, stessa rotazione e stesso effetto fluttuante.
+
+   Compare solo dopo aver scrollato un po'. Il cubo 3D si scarica solo in quel
+   momento (lazy). Un clic o un tocco (non un trascinamento) riporta in cima.
    ========================================================================== */
+const CuboServizi = lazy(() => import('./CuboServizi'))
 
 const SOGLIA = 600 // px di scroll dopo i quali compare
 
@@ -28,21 +33,26 @@ export function TornaSu() {
   return (
     <AnimatePresence>
       {visibile && (
-        <motion.button
-          type="button"
-          onClick={vaiSu}
-          aria-label="Torna su"
-          className="fixed bottom-4 right-4 z-40 size-10 sm:bottom-6 sm:right-6 sm:size-14 drop-shadow-[0_10px_24px_rgb(20_184_166/0.55)]"
+        <motion.div
+          className="fixed bottom-2 right-2 z-40 size-24 sm:bottom-4 sm:right-4 sm:size-28"
           initial={{ opacity: 0, y: 16, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.9 }}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
         >
-          {/* Bolla di vetro con la freccia: PNG con sfondo trasparente */}
-          <img src="/torna-su.png" alt="" draggable="false" className="size-full select-none object-contain" />
-        </motion.button>
+          <Suspense fallback={null}>
+            <CuboServizi variante="freccia" onClick={vaiSu} />
+          </Suspense>
+          {/* Per chi naviga da tastiera: pulsante invisibile che compare quando prende il focus */}
+          <button
+            type="button"
+            onClick={vaiSu}
+            className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:flex focus:items-center
+                       focus:justify-center focus:rounded-full focus:bg-ink-950/80 focus:text-sm focus:text-white"
+          >
+            Torna su
+          </button>
+        </motion.div>
       )}
     </AnimatePresence>
   )

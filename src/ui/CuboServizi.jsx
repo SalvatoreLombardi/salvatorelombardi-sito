@@ -101,8 +101,33 @@ function texturaFaccia(faccia) {
   return tex
 }
 
-export default function CuboServizi() {
+/** Freccia in su, bianca su trasparente (poi tinta dal materiale): per il widget "Torna su". */
+function texturaFreccia() {
+  const lato = 1024
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = lato
+  const c = canvas.getContext('2d')
+  c.strokeStyle = '#fff'
+  c.lineWidth = 96
+  c.lineCap = 'round'
+  c.lineJoin = 'round'
+  c.beginPath()
+  c.moveTo(lato / 2, 810) // asta
+  c.lineTo(lato / 2, 250)
+  c.moveTo(lato / 2 - 230, 480) // punta
+  c.lineTo(lato / 2, 250)
+  c.lineTo(lato / 2 + 230, 480)
+  c.stroke()
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.anisotropy = 8
+  return tex
+}
+
+export default function CuboServizi({ variante = 'servizi', onClick }) {
   const contenitoreRef = useRef(null)
+  const clicRef = useRef(onClick)
+  clicRef.current = onClick
 
   useEffect(() => {
     const contenitore = contenitoreRef.current
@@ -188,7 +213,8 @@ export default function CuboServizi() {
 
     // --- Scritte sulle quattro facce, sospese dentro il vetro ---
     const materialiTesto = []
-    const texture = FACCE.map(texturaFaccia)
+    const soloFrecce = variante === 'freccia'
+    const texture = soloFrecce ? FACCE.map(texturaFreccia) : FACCE.map(texturaFaccia)
     // +z davanti, +x destra, -z dietro, -x sinistra
     const posizioni = [
       { p: [0, 0, 0.9], r: [0, 0, 0] },
@@ -212,27 +238,36 @@ export default function CuboServizi() {
       gruppo.add(piano)
     })
 
-    // --- Pittogramma (uccello) sopra e sotto ---
+    // --- Sopra e sotto: l'uccello (servizi) oppure la freccia (torna su) ---
     let texUccello
-    new THREE.TextureLoader().load('/logo-uccello-piatto.png', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace
-      tex.anisotropy = 8
-      texUccello = tex
+    const piani = (tex) => {
       for (const segno of [1, -1]) {
         const mat = new THREE.MeshBasicMaterial({
           map: tex,
+          color: soloFrecce ? new THREE.Color(TURCHESE) : undefined,
           alphaTest: 0.35,
           alphaToCoverage: true,
           side: THREE.DoubleSide,
           toneMapped: false,
         })
         materialiTesto.push(mat)
-        const piano = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.1), mat)
+        const piano = new THREE.Mesh(new THREE.PlaneGeometry(soloFrecce ? 1.46 : 1.1, soloFrecce ? 1.46 : 1.1), mat)
         piano.position.set(0, 0.9 * segno, 0)
-        piano.rotation.set(-Math.PI / 2 * segno, 0, 0)
+        piano.rotation.set((-Math.PI / 2) * segno, 0, 0)
         gruppo.add(piano)
       }
-    })
+    }
+    if (soloFrecce) {
+      texUccello = texturaFreccia()
+      piani(texUccello)
+    } else {
+      new THREE.TextureLoader().load('/logo-uccello-piatto.png', (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace
+        tex.anisotropy = 8
+        texUccello = tex
+        piani(tex)
+      })
+    }
 
     // --- Interazione ---
     let rotY = -0.62
@@ -240,6 +275,7 @@ export default function CuboServizi() {
     let velY = ridotto ? 0 : 0.18 // rad/s di rotazione automatica
     const VEL_AUTO = velY
     let trascinando = false
+    let spostato = 0
     let ultimoX = 0
     let ultimoY = 0
     let inerziaY = 0
@@ -249,6 +285,7 @@ export default function CuboServizi() {
 
     const suDown = (e) => {
       trascinando = true
+      spostato = 0
       ultimoX = e.clientX
       ultimoY = e.clientY
       inerziaX = inerziaY = 0
@@ -259,6 +296,7 @@ export default function CuboServizi() {
       if (trascinando) {
         const dx = e.clientX - ultimoX
         const dy = e.clientY - ultimoY
+        spostato += Math.abs(dx) + Math.abs(dy)
         ultimoX = e.clientX
         ultimoY = e.clientY
         inerziaY = dx * 0.012
@@ -268,6 +306,7 @@ export default function CuboServizi() {
       }
     }
     const suUp = (e) => {
+      if (trascinando && spostato < 6) clicRef.current?.() // un tocco, non un trascinamento
       trascinando = false
       renderer.domElement.style.cursor = 'grab'
       renderer.domElement.releasePointerCapture?.(e.pointerId)
@@ -370,7 +409,11 @@ export default function CuboServizi() {
         ref={contenitoreRef}
         className="relative size-full"
         role="img"
-        aria-label="Cubo tridimensionale con i quattro servizi: Web, Grafica, Video e Social"
+        aria-label={
+          variante === 'freccia'
+            ? 'Cubo tridimensionale con una freccia in su'
+            : 'Cubo tridimensionale con i quattro servizi: Web, Grafica, Video e Social'
+        }
       />
     </div>
   )
