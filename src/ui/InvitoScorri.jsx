@@ -18,7 +18,7 @@ export function InvitoScorri({ verso = 'servizi' }) {
       href={`#${verso}`}
       onClick={(e) => vaiAllaSezione(e, verso)}
       aria-label="Scorri verso i servizi"
-      className="group absolute inset-x-0 top-[calc(100svh-6.5rem)] sm:top-[calc(100svh-8.75rem)] mx-auto flex w-fit flex-col items-center gap-3"
+      className="group absolute inset-x-0 top-[calc(100svh-8.75rem)] mx-auto hidden w-fit flex-col items-center gap-3 sm:flex"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
