@@ -7,12 +7,15 @@
    Se lo lasci a `null` compare un segnaposto grafico al suo posto, così la
    griglia resta ordinata anche senza foto.
 
-   `categoria`: deve combaciare con una delle CATEGORIE qui sotto.
+   `categoria`: deve combaciare con una delle CATEGORIE qui sotto. Può essere
+   una sola ('web') oppure più d'una (['web', 'grafica']): il lavoro compare in
+   tutti i filtri indicati.
    `link`: indirizzo del sito online, oppure `null` se non c'è.
    `logo` + `sfondo`: se presenti, la card mostra solo il logo del cliente
    (file in `public/lavori/loghi/`) centrato su quel colore di sfondo, al
    posto dello screenshot.
    `effetto`: 'bolle' fa galleggiare il logo e salire delle bolle (vedi LogoConBolle).
+   `testoLink`: scritta del bottone nella finestra (se manca: "Visita il sito").
    `completa`: descrizione estesa ({ intro, punti: [[titolo, testo], ...] }).
    Se presente, la card mostra "Leggi di più" e apre una finestra con il testo.
    `piattaforma`: solo per i lavori social ('instagram' o 'facebook'): al posto
@@ -31,7 +34,7 @@ export const LAVORI = [
   {
     id: 'identitario',
     titolo: 'Identitario',
-    categoria: 'web',
+    categoria: ['web', 'grafica'],
     anno: '2025',
     descrizione:
       'Branding, logo e sito editoriale completo su borghi, tradizioni e cucina italiana, con un assistente AI che crea itinerari su misura.',
@@ -57,7 +60,7 @@ export const LAVORI = [
   {
     id: 'le-terrazze-sul-mondo',
     titolo: 'Le Terrazze sul Mondo',
-    categoria: 'web',
+    categoria: ['web', 'grafica'],
     anno: '2025',
     descrizione:
       'Logo, fotografie, video con drone e sito web per un B&B in una dimora storica a Gravina in Puglia.',
@@ -81,7 +84,7 @@ export const LAVORI = [
   {
     id: 'baggo',
     titolo: 'Baggo',
-    categoria: 'web',
+    categoria: ['web', 'grafica'],
     anno: '2025',
     descrizione:
       'Mascotte, pagine social, post e pagina di presentazione per il lancio di Baggo.',
@@ -103,15 +106,26 @@ export const LAVORI = [
   },
   {
     id: 'identitario-instagram',
-    titolo: 'Identitario · Instagram',
+    titolo: 'Identitario · Social',
     categoria: 'social',
     anno: '2025',
     descrizione:
-      'Gestione del canale: piano editoriale, reel e fotografie dei borghi, pubblicazione continuativa.',
+      'Logo, pittogramma, pagine social e video per raccontare con emozione borghi, tradizioni e ricette.',
     logo: '/lavori/loghi/identitario-instagram.png',
     sfondo: '#0b0b0f',
+    completa: {
+      intro:
+        'La comunicazione di Identitario, dall’identità visiva ai canali social, per raccontare l’Italia autentica con emozione.',
+      punti: [
+        ['Logo e pittogramma', 'Ho creato il logo e il pittogramma del brand.'],
+        ['Pagine social', 'Ho creato le pagine su Instagram, Facebook, TikTok e YouTube.'],
+        ['Strategia', 'I canali vengono seguiti con strategie mirate.'],
+        ['Video', 'Video realizzati con attrezzatura specifica e con il drone, per raccontare con emozione storie di borghi, tradizioni e ricette.'],
+      ],
+    },
     immagine: '/lavori/identitario-instagram.jpg',
     piattaforma: 'instagram',
     link: 'https://www.instagram.com/identitario_official',
+    testoLink: 'Vai su Instagram',
   },
 ]

@@ -81,8 +81,8 @@ export function Servizi() {
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Quattro modi per lavorare insieme,</span>{' '}
-            <span className="text-white/40">o tutti insieme.</span>
+            <span className="text-white">Quello che ti serve,</span>{' '}
+            <span className="text-white/40">dal sito ai social.</span>
           </Reveal>
 
           <Reveal delay={0.2}>

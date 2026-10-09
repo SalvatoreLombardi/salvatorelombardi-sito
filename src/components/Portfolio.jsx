@@ -18,7 +18,7 @@ export function Portfolio() {
   const [filtro, setFiltro] = useState('tutti')
 
   const visibili =
-    filtro === 'tutti' ? LAVORI : LAVORI.filter((lavoro) => lavoro.categoria === filtro)
+    filtro === 'tutti' ? LAVORI : LAVORI.filter((lavoro) => [lavoro.categoria].flat().includes(filtro))
 
   return (
     <section id="portfolio" className="relative">

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Hero } from './components/Hero'
 import { Servizi } from './components/Servizi'
 import { Portfolio } from './components/Portfolio'
+import { Video } from './components/Video'
 import { ChiSono } from './components/ChiSono'
 import { Configuratore } from './components/Configuratore'
 import { Contatti } from './components/Contatti'
@@ -33,6 +34,7 @@ export default function App() {
         <Hero />
         <Servizi />
         <Portfolio />
+        <Video />
         <ChiSono />
         <Configuratore />
         <Contatti />

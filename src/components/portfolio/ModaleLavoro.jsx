@@ -88,7 +88,7 @@ export function ModaleLavoro({ lavoro, aperta, onChiudi }) {
                   className="mt-9 inline-flex h-11 items-center gap-2 rounded-full bg-accent-500 px-6
                              text-[0.9375rem] font-medium text-white transition-colors hover:bg-accent-600"
                 >
-                  Visita il sito
+                  {lavoro.testoLink ?? 'Visita il sito'}
                 </a>
               )}
             </div>
