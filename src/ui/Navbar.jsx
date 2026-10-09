@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { Button } from './Button'
 import { vaiAllaSezione } from '../lib/scroll'
 
 /* ============================================================================
@@ -85,12 +84,10 @@ export function Navbar() {
             className="flex items-center gap-2.5"
             aria-label="Salvatore Lombardi — torna all'inizio"
           >
-            {/* Il logo è nero su trasparente: sul fondo scuro del sito va
-                sempre invertito, altrimenti sparirebbe nello sfondo. */}
-            <img src="/logo.png" alt="" className="h-8 w-auto invert sm:h-9" />
-            <span className="font-display text-[1.0625rem] font-semibold tracking-[-0.022em] text-white">
-              Salvatore Lombardi
-            </span>
+            {/* Uccello turchese piatto, PNG con sfondo trasparente (public/logo-uccello-piatto.png). La versione di vetro è public/logo-uccello.png */}
+            <img src="/logo-uccello-piatto.png" alt="" className="h-9 w-auto sm:h-10" />
+            {/* Nome su una riga, con il carattere del logo (public/logo-nome-una-riga.png) */}
+            <img src="/logo-nome-una-riga.png" alt="Salvatore Lombardi" className="h-6 w-auto sm:h-7" />
           </a>
 
           {/* --- Link (solo desktop) --- */}
@@ -115,17 +112,6 @@ export function Navbar() {
                 )}
               </a>
             ))}
-          </div>
-
-          {/* --- Azione principale (solo desktop) --- */}
-          <div className="hidden md:block">
-            <Button
-              href="#configuratore"
-              size="md"
-              onClick={(e) => apriSezione(e, 'configuratore')}
-            >
-              Richiedi preventivo
-            </Button>
           </div>
 
           {/* --- Bottone del menu (solo mobile) --- */}
@@ -178,21 +164,6 @@ export function Navbar() {
                   {voce.label}
                 </motion.a>
               ))}
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.06 * VOCI.length, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="mt-8"
-              >
-                <Button
-                  href="#configuratore"
-                  onClick={(e) => apriSezione(e, 'configuratore')}
-                  className="w-full"
-                >
-                  Richiedi preventivo
-                </Button>
-              </motion.div>
             </div>
           </motion.div>
         )}

@@ -12,13 +12,6 @@ import { useParallax } from '../hooks/useParallax'
    mantenendo un taglio verticale 4:5.
    ========================================================================== */
 
-// Riga di dati secchi sotto il testo. Modificali pure: sono solo testo.
-const FATTI = [
-  { valore: 'Gravina in Puglia', etichetta: 'Base' },
-  { valore: 'Da remoto', etichetta: 'Copertura' },
-  { valore: '24 ore', etichetta: 'Tempo di risposta' },
-]
-
 export function ChiSono() {
   const sezioneRef = useRef(null)
 
@@ -70,22 +63,6 @@ export function ChiSono() {
                   fine.
                 </p>
               </div>
-            </Reveal>
-
-            {/* Dati secchi */}
-            <Reveal delay={0.3}>
-              <dl className="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
-                {FATTI.map((fatto) => (
-                  <div key={fatto.etichetta}>
-                    <dt className="text-[0.6875rem] uppercase tracking-[0.08em] text-white/40">
-                      {fatto.etichetta}
-                    </dt>
-                    <dd className="mt-1.5 font-display text-[0.9375rem] font-semibold tracking-[-0.015em] text-white">
-                      {fatto.valore}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
             </Reveal>
           </div>
         </div>

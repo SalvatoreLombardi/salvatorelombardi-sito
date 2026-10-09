@@ -61,16 +61,48 @@ export function ModaleLavoro({ lavoro, aperta, onChiudi }) {
                 </svg>
               </button>
 
-              <p className="text-[0.8125rem] tabular-nums text-white/40">{lavoro.anno}</p>
-              <h3 className="mt-1 font-display text-[1.75rem] font-semibold tracking-[-0.022em] text-white">
+              {lavoro.anno && (
+                <p className="text-[0.8125rem] tabular-nums text-white/40">{lavoro.anno}</p>
+              )}
+              <h3 className="mt-1 pr-10 font-display text-[1.75rem] font-semibold tracking-[-0.022em] text-white">
                 {lavoro.titolo}
               </h3>
-              <p className="mt-4 text-[1rem] leading-relaxed text-white/65 text-pretty">
-                {lavoro.completa.intro}
-              </p>
+              {lavoro.completa.intro && (
+                <p className="mt-4 text-[1rem] leading-relaxed text-white/65 text-pretty">
+                  {lavoro.completa.intro}
+                </p>
+              )}
+
+              {/* Testo libero a paragrafi (es. la descrizione di un video) */}
+              {lavoro.completa.paragrafi?.map((paragrafo) => (
+                <p key={paragrafo} className="mt-4 text-[1rem] leading-relaxed text-white/65 text-pretty">
+                  {paragrafo}
+                </p>
+              ))}
+
+              {/* Nota in evidenza: riquadro sottile verde con bordi tondi */}
+              {lavoro.completa.nota && (
+                <p className="mt-6 flex items-center gap-3 rounded-xl border border-accent-400 bg-accent-400/[0.07] px-4 py-3 text-[0.9375rem] leading-snug text-white/85">
+                  <svg
+                    viewBox="0 0 20 20"
+                    className="size-[1.125rem] shrink-0 text-accent-400"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M7.5 15.5V4.5l9-1.8v10.8" />
+                    <circle cx="5.5" cy="15.5" r="2" />
+                    <circle cx="14.5" cy="13.5" r="2" />
+                  </svg>
+                  {lavoro.completa.nota}
+                </p>
+              )}
 
               <ul className="mt-7 space-y-5">
-                {lavoro.completa.punti.map(([titolo, testo]) => (
+                {lavoro.completa.punti?.map(([titolo, testo]) => (
                   <li key={titolo} className="flex gap-3">
                     <span className="mt-2 size-1.5 shrink-0 rounded-full bg-accent-400" />
                     <p className="text-[0.9375rem] leading-relaxed text-white/55 text-pretty">

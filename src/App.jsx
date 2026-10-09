@@ -7,6 +7,7 @@ import { ChiSono } from './components/ChiSono'
 import { Configuratore } from './components/Configuratore'
 import { Contatti } from './components/Contatti'
 import { AvvisoRichieste } from './ui/AvvisoRichieste'
+import { TornaSu } from './ui/TornaSu'
 import { Navbar } from './ui/Navbar'
 import { Footer } from './ui/Footer'
 import { NetworkCanvas } from './components/hero/NetworkCanvas'
@@ -44,6 +45,7 @@ export default function App() {
 
       {/* Pillola con le richieste da leggere: compare solo se hai fatto il login */}
       <AvvisoRichieste />
+      <TornaSu />
     </>
   )
 }

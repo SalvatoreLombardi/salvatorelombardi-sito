@@ -320,7 +320,6 @@
 /* Bottone di vetro turchese (player dei video): base traslucida nel verde del
    sito, bordo chiaro sottile, riflesso lucido in alto e alone verde. */
 .vetro-verde {
-  position: relative;
   isolation: isolate;
   color: #fff;
   background:

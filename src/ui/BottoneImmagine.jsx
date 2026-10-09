@@ -30,7 +30,7 @@ export function BottoneImmagine({
         alt={etichetta}
         // Larghezza fissa, altezza libera: ogni immagine (anche future, con
         // proporzioni diverse) occupa sempre lo stesso ingombro sulla pagina.
-        className="h-auto w-56 sm:w-64 lg:w-72"
+        className="h-auto w-72 sm:w-80 lg:w-[22rem]"
       />
     </motion.a>
   )

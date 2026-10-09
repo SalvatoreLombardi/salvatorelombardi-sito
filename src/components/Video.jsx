@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
-import { motion } from 'motion/react'
+import { useEffect, useRef, useState } from 'react'
+import { animate, motion, useInView, useReducedMotion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
-import { VIDEO } from './portfolio/video'
+import { NOTA_MUSICA, VIDEO } from './portfolio/video'
+import { ModaleLavoro } from './portfolio/ModaleLavoro'
 
 /* ============================================================================
    SEZIONE VIDEO
@@ -25,34 +26,13 @@ export function Video() {
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
             <span className="text-white">Video recenti,</span>{' '}
-            <span className="text-white/40">da guardare senza uscire dal sito.</span>
+            <span className="text-white/40">riprese aeree, dettagli e montaggio.</span>
           </Reveal>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3">
           {VIDEO.map((video, i) => (
-            <motion.article
-              key={video.id}
-              className="w-full max-w-[20rem]"
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-10% 0px' }}
-              transition={{ duration: 0.7, delay: 0.06 * i, ease: EASE }}
-            >
-              {video.file ? <PlayerVideo video={video} /> : <PlayerInstagram video={video} />}
-
-              <div className="mt-5">
-                <h3 className="font-display text-[1.1875rem] font-semibold tracking-[-0.02em] text-white">
-                  {video.titolo}
-                </h3>
-                <p className="mt-2 text-[0.9375rem] leading-relaxed text-white/55 text-pretty">
-                  {video.descrizione}
-                </p>
-                {video.luogo && (
-                  <p className="mt-2 text-[0.9375rem] leading-relaxed text-white/75">{video.luogo}</p>
-                )}
-              </div>
-            </motion.article>
+            <CardVideo key={video.id} video={video} indice={i} />
           ))}
         </div>
       </div>
@@ -130,5 +110,138 @@ function PlayerVideo({ video }) {
         {inRiproduzione ? 'Pausa' : 'Guarda il video'}
       </button>
     </div>
+  )
+}
+
+/** Numero di visualizzazioni: sale da 0 al valore quando entra nello schermo.
+ *  Sopra le mille si scrive "mila" (352 mila), sopra il milione "milioni". */
+function Visualizzazioni({ valore }) {
+  const ref = useRef(null)
+  const visibile = useInView(ref, { once: true, margin: '-10% 0px' })
+  const prefersReducedMotion = useReducedMotion()
+
+  // Il numero che si vede e la parola che lo segue: 352000 -> 352 + "mila"
+  const [divisore, unita] =
+    valore >= 1_000_000 ? [1_000_000, 'milioni'] : valore >= 1000 ? [1000, 'mila'] : [1, '']
+  const arrivo = valore / divisore
+  const decimali = Number.isInteger(arrivo) ? 0 : 1
+
+  const [mostrato, setMostrato] = useState(prefersReducedMotion ? arrivo : 0)
+
+  useEffect(() => {
+    if (!visibile || prefersReducedMotion) return
+    const controllo = animate(0, arrivo, {
+      duration: 2.2,
+      ease: EASE,
+      onUpdate: (v) => setMostrato(v),
+    })
+    return () => controllo.stop()
+  }, [visibile, arrivo, prefersReducedMotion])
+
+  const numero = mostrato.toLocaleString('it-IT', {
+    minimumFractionDigits: decimali,
+    maximumFractionDigits: decimali,
+  })
+
+  return (
+    <p ref={ref} className="mt-3 flex items-baseline gap-2">
+      <span className="font-display text-[1.75rem] font-semibold tabular-nums tracking-[-0.02em] text-accent-400">
+        {numero}
+        {unita && ` ${unita}`}
+      </span>
+      <span className="text-[0.875rem] text-white/55">visualizzazioni</span>
+    </p>
+  )
+}
+
+/** Pin della posizione, disegnato per il sito: linea sottile nel turchese. */
+function PinLuogo() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="mt-[0.2rem] size-[1.125rem] shrink-0 text-accent-400"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 21.5s-7-6.1-7-11.6a7 7 0 0 1 14 0c0 5.5-7 11.6-7 11.6Z" />
+      <circle cx="12" cy="9.8" r="2.6" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+/** Una card: video, titolo, descrizione, luogo, "Leggi di più" e visualizzazioni. */
+function CardVideo({ video, indice }) {
+  const [aperta, setAperta] = useState(false)
+
+  return (
+    <motion.article
+      className="mx-auto flex h-full w-full max-w-[20rem] flex-col sm:mx-0"
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-10% 0px' }}
+      transition={{ duration: 0.7, delay: 0.06 * indice, ease: EASE }}
+    >
+      {video.file ? <PlayerVideo video={video} /> : <PlayerInstagram video={video} />}
+
+      <div className="mt-5 flex flex-1 flex-col">
+        <h3 className="font-display text-[1.1875rem] font-semibold tracking-[-0.02em] text-white">
+          {video.titolo}
+        </h3>
+        <p className="mt-2 text-[0.9375rem] leading-relaxed text-white/55 text-pretty">
+          {video.descrizione}
+        </p>
+        {video.luogo && (
+          <p className="mt-2 flex items-start gap-2 text-[0.9375rem] leading-relaxed text-white/75">
+            <PinLuogo />
+            <span>{video.luogo}</span>
+          </p>
+        )}
+
+        {/* Parte bassa: sempre in fondo alla card, così "Leggi di più" e il numero
+            stanno alla stessa altezza in tutte le card della riga */}
+        <div className="mt-auto flex flex-col pt-4">
+        {video.testo && (
+          <>
+            <button
+              type="button"
+              onClick={() => setAperta(true)}
+              className="inline-flex items-center gap-1.5 self-start text-[0.9375rem] font-medium text-accent-400
+                         transition-colors duration-300 hover:text-white"
+            >
+              Leggi di più
+              <svg
+                viewBox="0 0 20 20"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 10h12m0 0-5.5-5.5M16 10l-5.5 5.5" />
+              </svg>
+            </button>
+            <ModaleLavoro
+              lavoro={{
+                titolo: video.titolo,
+                completa: { paragrafi: video.testo, nota: NOTA_MUSICA },
+                link: `https://www.instagram.com/p/${video.instagram}/`,
+                testoLink: 'Vai su Instagram',
+              }}
+              aperta={aperta}
+              onChiudi={() => setAperta(false)}
+            />
+          </>
+        )}
+
+          {video.visualizzazioni && <Visualizzazioni valore={video.visualizzazioni} />}
+        </div>
+      </div>
+    </motion.article>
   )
 }
