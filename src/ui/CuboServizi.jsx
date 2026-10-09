@@ -288,6 +288,8 @@ export default function CuboServizi() {
       if (!w || !h) return
       renderer.setSize(w, h, false)
       camera.aspect = w / h
+      // Riquadro piccolo (telefono): camera più vicina, il cubo riempie meglio lo spazio
+      camera.position.z = Math.min(w, h) < 300 ? 7.6 : 9.2
       camera.updateProjectionMatrix()
     }
     const osservatore = new ResizeObserver(adatta)

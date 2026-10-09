@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { Reveal } from '../ui/Reveal'
-import { BottoneImmagine } from '../ui/BottoneImmagine'
+import { BottoneCta } from '../ui/BottoneCta'
 import { InvitoScorri } from '../ui/InvitoScorri'
 import { vaiAllaSezione } from '../lib/scroll'
 
@@ -16,21 +16,24 @@ import { vaiAllaSezione } from '../lib/scroll'
 // Il cubo 3D si scarica solo quando serve (non pesa sulla prima apertura)
 const CuboServizi = lazy(() => import('../ui/CuboServizi'))
 
-/** true da 1024 px in su: sotto non c'è spazio accanto al testo, quindi niente cubo. */
-function useSchermoLargo() {
-  const [largo, setLargo] = useState(false)
+/** true quando la finestra rispetta la media query (si aggiorna se ruoti o ridimensioni). */
+function useMediaQuery(query) {
+  const [vero, setVero] = useState(false)
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px)')
-    const aggiorna = () => setLargo(mq.matches)
+    const mq = window.matchMedia(query)
+    const aggiorna = () => setVero(mq.matches)
     aggiorna()
     mq.addEventListener('change', aggiorna)
     return () => mq.removeEventListener('change', aggiorna)
-  }, [])
-  return largo
+  }, [query])
+  return vero
 }
 
 export function Hero() {
-  const schermoLargo = useSchermoLargo()
+  // Il cubo sta in tre posti diversi: a destra del testo (schermi larghi), accanto al titolo (tablet)
+  // o nello spazio libero sotto il testo (telefono). Se ne monta sempre uno solo.
+  const schermoLargo = useMediaQuery('(min-width: 1024px)')
+  const telefono = useMediaQuery('(max-width: 639px)')
 
   return (
     <section id="home" className="relative flex min-h-[100svh] items-center overflow-hidden">
@@ -48,8 +51,8 @@ export function Hero() {
         </div>
       )}
 
-      <div className="container-site relative pb-16 pt-24 sm:pt-28 lg:pt-24">
-        <div className="max-w-xl">
+      <div className="container-site relative pb-5 pt-20 sm:pb-16 sm:pt-28 lg:pt-24">
+        <div className="max-w-xl max-sm:flex max-sm:min-h-[calc(100svh-6.25rem)] max-sm:flex-col">
           <Reveal delay={0.05} y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
@@ -58,14 +61,14 @@ export function Hero() {
           </Reveal>
 
           <div className="relative">
-            <Reveal delay={0.15} as="h1" className="mt-5 text-display font-display text-balance max-sm:text-[2.15rem] sm:mt-7">
-              <span className="text-white">Il tuo progetto digitale,</span>{' '}
+            <Reveal delay={0.15} as="h1" className="mt-5 text-display font-display text-balance max-sm:text-[clamp(1.2rem,6.9vw,2rem)] max-sm:leading-tight sm:mt-7">
+              <span className="text-white max-sm:block">Il tuo progetto digitale,</span>{' '}
               <span className="text-white/40">dal preventivo al sito online</span>
             </Reveal>
 
-            {/* Cubo piccolo, sempre a destra, accanto alle righe corte del titolo (telefono e tablet) */}
-            {!schermoLargo && (
-              <div className="absolute -bottom-6 -right-6 size-[11rem] sm:-right-4 sm:bottom-0 sm:size-[12rem]">
+            {/* Tablet: cubo a destra, accanto alle righe corte del titolo */}
+            {!schermoLargo && !telefono && (
+              <div className="absolute -bottom-8 -right-8 size-[13rem] sm:-right-4 sm:bottom-0 sm:size-[14rem]">
                 <Suspense fallback={null}>
                   <CuboServizi />
                 </Suspense>
@@ -74,19 +77,31 @@ export function Hero() {
           </div>
 
           <Reveal delay={0.3}>
-            <p className="mt-5 max-w-lg text-lead text-white/60 text-pretty sm:mt-7">
+            <p className="mt-5 max-w-lg text-lead text-white/60 text-pretty max-sm:max-w-none max-sm:text-[clamp(0.75rem,3.6vw,0.9rem)] max-sm:leading-snug max-sm:text-balance sm:mt-7">
               Siti, ecommerce e app su misura. Compila il configuratore e ricevi un
               preventivo in poche ore.
             </p>
           </Reveal>
 
           <Reveal delay={0.4}>
-            <p className="mt-3 text-sm text-white/45">Risposta entro 24 ore · Nessun impegno</p>
+            <p className="mt-3 text-sm text-accent-400">Risposta entro 24 ore · Nessun impegno</p>
           </Reveal>
 
-          <Reveal delay={0.5}>
-            <div className="mt-6 flex justify-center sm:mt-8 sm:block">
-              <BottoneImmagine href="#configuratore" onClick={(e) => vaiAllaSezione(e, 'configuratore')} />
+          {/* Telefono: lo spazio libero fra il testo e il bottone ospita il cubo, a destra */}
+          {telefono && (
+            <div className="relative min-h-[10rem] flex-1">
+              <div className="absolute left-1/2 top-[58%] size-[19rem] -translate-x-1/2 -translate-y-1/2">
+                <Suspense fallback={null}>
+                  <CuboServizi />
+                </Suspense>
+              </div>
+            </div>
+          )}
+
+          {/* Su telefono il bottone scende in fondo alla prima schermata (mt-auto) */}
+          <Reveal delay={0.5} className="max-sm:mt-auto max-sm:pt-8">
+            <div className="flex justify-center sm:mt-8 sm:block">
+              <BottoneCta href="#configuratore" onClick={(e) => vaiAllaSezione(e, 'configuratore')} className="max-sm:w-full max-sm:max-w-[21rem]" />
             </div>
           </Reveal>
         </div>

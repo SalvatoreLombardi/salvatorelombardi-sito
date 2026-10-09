@@ -86,8 +86,10 @@ export function Navbar() {
           >
             {/* Uccello turchese piatto, PNG con sfondo trasparente (public/logo-uccello-piatto.png). La versione di vetro è public/logo-uccello.png */}
             <img src="/logo-uccello-piatto.png" alt="" className="h-9 w-auto sm:h-10" />
-            {/* Nome su una riga, con il carattere del logo (public/logo-nome-una-riga.png) */}
-            <img src="/logo-nome-una-riga.png" alt="Salvatore Lombardi" className="h-6 w-auto sm:h-7" />
+            {/* Nome scritto con lo stesso carattere del titolo (Inter, bianco) */}
+            <span className="font-display text-[1.125rem] font-semibold tracking-[-0.022em] text-white sm:text-[1.1875rem]">
+              Salvatore Lombardi
+            </span>
           </a>
 
           {/* --- Link (solo desktop) --- */}
