@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 /* ============================================================================
    LOADER D'INGRESSO (finto)
-   1. contatore turchese da 0 a 100% in circa 2 secondi
+   1. contatore turchese da 0 a 100% in circa 1,3 secondi
    2. un filo di luce taglia lo schermo in orizzontale
    3. due pannelli neri scorrono (uno su, uno giù) e scoprono il sito
 
@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from 'react'
    nel sistema non compare. Per rivederlo mentre lavori: aggiungi ?loader
    all'indirizzo (es. http://localhost:5173/?loader#/).
    ========================================================================== */
-const DURATA_CONTEGGIO = 2000
+const DURATA_CONTEGGIO = 1300
 const DURATA_LINEA = 600
 const DURATA_APERTURA = 900
 const CHIAVE = 'loader-visto'
