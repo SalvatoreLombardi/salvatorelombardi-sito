@@ -51,8 +51,8 @@ export function Hero() {
         </div>
       )}
 
-      <div className="container-site relative pb-5 pt-20 sm:pb-16 sm:pt-28 lg:pt-24">
-        <div className="max-w-xl max-sm:flex max-sm:min-h-[calc(100svh-6.25rem)] max-sm:flex-col">
+      <div className="container-site relative pb-[3.25rem] pt-20 sm:pb-16 sm:pt-28 lg:pt-24">
+        <div className="max-w-xl max-sm:flex max-sm:min-h-[calc(100svh-8.25rem)] max-sm:flex-col">
           <Reveal delay={0.05} y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
@@ -90,7 +90,7 @@ export function Hero() {
           {/* Telefono: lo spazio libero fra il testo e il bottone ospita il cubo, a destra */}
           {telefono && (
             <div className="relative min-h-[10rem] flex-1">
-              <div className="absolute left-1/2 top-[58%] size-[19rem] -translate-x-1/2 -translate-y-1/2">
+              <div className="absolute left-1/2 top-[48%] size-[27.2rem] max-[420px]:size-[19rem] -translate-x-1/2 -translate-y-1/2">
                 <Suspense fallback={null}>
                   <CuboServizi />
                 </Suspense>
@@ -99,7 +99,7 @@ export function Hero() {
           )}
 
           {/* Su telefono il bottone scende in fondo alla prima schermata (mt-auto) */}
-          <Reveal delay={0.5} className="max-sm:mt-auto max-sm:pt-8">
+          <Reveal delay={0.5} className="relative z-10 max-sm:mt-auto max-sm:pt-8">
             <div className="flex justify-center sm:mt-8 sm:block">
               <BottoneCta href="#configuratore" onClick={(e) => vaiAllaSezione(e, 'configuratore')} className="max-sm:w-full max-sm:max-w-[21rem]" />
             </div>
