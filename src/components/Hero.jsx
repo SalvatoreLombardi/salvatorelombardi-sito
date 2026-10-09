@@ -41,9 +41,11 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(8,8,10,0.78)_0%,rgba(8,8,10,0.42)_46%,rgba(8,8,10,0.15)_75%)]" />
 
       {/* Cubo 3D a destra del testo (solo schermi larghi) */}
+      {/* Più largo di prima (+30%) e spostato in alto: il suo centro cade al centro del titolo */}
       {schermoLargo && (
-        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-[52%] items-center justify-center pl-8 pr-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] pt-16">
-          <div className="pointer-events-auto aspect-square w-full max-w-[40rem]">
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 flex w-[64%] items-center justify-center pb-[9.5rem] pl-8 pr-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
+          {/* Spostato di ~2 cm in basso e ~3 cm a destra (1 cm ≈ 37,8 px) */}
+          <div className="pointer-events-auto aspect-square w-full max-w-[52rem] translate-x-[7.1rem] translate-y-[4.75rem]">
             <Suspense fallback={null}>
               <CuboServizi />
             </Suspense>
