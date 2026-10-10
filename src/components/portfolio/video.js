@@ -37,6 +37,7 @@ export const VIDEO = [
     ],
     luogo: 'Vasche di Sant’Alessio, Nova Siri (MT)',
     visualizzazioni: 352000,
+    anteprima: '/video/identitario-1.jpg',
     instagram: 'DdgjnEPM1d9',
   },
   {
@@ -51,6 +52,7 @@ export const VIDEO = [
     ],
     luogo: 'Grotta di San Michele, Minervino Murge (BAT)',
     visualizzazioni: 159000,
+    anteprima: '/video/identitario-2.jpg',
     instagram: 'DdyjLDcMC6t',
   },
   {
@@ -66,6 +68,7 @@ export const VIDEO = [
     ],
     luogo: 'Il Paniere dei ricci, Contrada Pietrapica, Chiaromonte (PZ)',
     visualizzazioni: 127000,
+    anteprima: '/video/identitario-3.jpg',
     instagram: 'Db28jtMsZJG',
   },
   {
@@ -80,6 +83,8 @@ export const VIDEO = [
     ],
     luogo: 'Masseria Jesce, Altamura (BA)',
     visualizzazioni: 13200,
+    // Copertina mostrata prima del clic su "Carica il video" (immagine nostra, nessun contatto con Instagram)
+    anteprima: '/video/identitario-4.jpg',
     instagram: 'DeHJjtpMram',
   },
   {
@@ -93,6 +98,7 @@ export const VIDEO = [
     ],
     luogo: 'Santuario Madonna delle Armi, Cerchiara (CS)',
     visualizzazioni: 11700,
+    anteprima: '/video/identitario-5.jpg',
     instagram: 'Dc_DwVFsF7Q',
   },
   {
@@ -107,6 +113,7 @@ export const VIDEO = [
     ],
     luogo: 'Info Pollino, Viggianello (PZ)',
     visualizzazioni: 11200,
+    anteprima: '/video/identitario-6.jpg',
     instagram: 'DctA6IDsXqc',
   },
 ]

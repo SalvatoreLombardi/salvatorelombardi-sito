@@ -64,8 +64,8 @@ function PlayerInstagram({ video }) {
           style={{ width: '142.2cqw', left: '-21.1cqw', top: '-54px', height: 'calc(177.8cqw + 135px)' }}
         />
       ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
-          {/* Copertina del video (immagine nostra in public/video/, campo `anteprima`), scurita per far leggere il testo */}
+        <div className="absolute inset-0 flex flex-col items-center justify-end gap-4 px-6 pb-8 text-center">
+          {/* Copertina del video (immagine nostra in public/video/, campo `anteprima`), sfumata verso il basso: il testo sta in fondo e si legge, il volto resta visibile */}
           {video.anteprima && (
             <>
               <img
@@ -74,7 +74,7 @@ function PlayerInstagram({ video }) {
                 loading="lazy"
                 className="absolute inset-0 size-full object-cover"
               />
-              <div className="absolute inset-0 bg-ink-950/65" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/60 to-ink-950/10" />
             </>
           )}
           <p className="relative text-[0.9375rem] font-medium text-white/90">{video.titolo}</p>

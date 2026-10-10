@@ -24,9 +24,11 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* --- Marchio --- */}
           <div>
-            <p className="font-display text-[1.0625rem] font-semibold tracking-[-0.022em] text-white">
-              Salvatore Lombardi
-            </p>
+            {/* Stesso logo della navbar: l'uccello fa da "S" del nome */}
+            <div className="flex items-end" role="img" aria-label="Salvatore Lombardi">
+              <img src="/logo-uccello-piatto.png" alt="" className="mb-px h-9 w-auto" />
+              <img src="/logo-nome-senza-s.png" alt="" className="-ml-1 h-10 w-auto" />
+            </div>
             <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-ink-500 text-pretty">
               Siti, ecommerce e app su misura. Grafica, video e social, con un solo
               interlocutore.
