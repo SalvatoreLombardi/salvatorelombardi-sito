@@ -11,3 +11,6 @@ dist
 documenti
 .backup
 .vscode
+
+# file temporanei dello strumento Supabase (non fanno parte del sito)
+supabase/.temp/
