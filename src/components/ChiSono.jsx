@@ -49,18 +49,24 @@ export function ChiSono() {
               <span className="text-white/40">un solo interlocutore per tutto.</span>
             </Reveal>
 
-            {/* BOZZA: riscrivi con le tue parole, il resto della sezione non cambia */}
             <Reveal delay={0.2}>
               <div className="mt-7 space-y-5 text-lead text-white/60 text-pretty">
                 <p>
-                  Sviluppo siti, ecommerce e app per i clienti della tua attività. Curo la grafica, giro e
-                  monto i video, gestisco i canali social: tutto il percorso, dalla prima idea
-                  al sito online.
+                  Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti,
+                  e-commerce, app, grafica e video per le attività del territorio.
                 </p>
                 <p>
-                  Il vantaggio è semplice: non devi coordinare tre fornitori diversi e sperare
-                  che si parlino. Parli con me, e quello che esce è coerente dall’inizio alla
-                  fine.
+                  Non realizzo mai due lavori identici: ogni attività ha una storia propria, e
+                  il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo
+                  ogni dettaglio finché l’insieme risulta armonioso. Per te significa un
+                  risultato rifinito, mai approssimativo.
+                </p>
+                <p>
+                  Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso
+                  quando previene gli errori o aiuta a rimediarvi. Parli sempre direttamente con
+                  me: ti ascolto con pazienza, mi metto nei tuoi panni e lavoro nel rispetto
+                  delle persone e dei loro tempi. Studio con costanza le novità del settore, per
+                  proporti soluzioni sempre attuali.
                 </p>
               </div>
             </Reveal>
