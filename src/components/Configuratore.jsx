@@ -29,6 +29,8 @@ export function Configuratore() {
   const [errore, setErrore] = useState(null)
   // Presa visione dell'informativa privacy: serve per inviare la richiesta
   const [lettoPrivacy, setLettoPrivacy] = useState(false)
+  // Campo-trappola contro i bot: le persone non lo vedono e non lo riempiono
+  const [trappola, setTrappola] = useState('')
 
   const stepCorrente = STEP[passo]
   const ultimoPasso = passo === STEP.length - 1
@@ -61,6 +63,12 @@ export function Configuratore() {
     evento.preventDefault()
     if (!stepCompleto || invioInCorso || !lettoPrivacy) return
     setErrore(null)
+
+    // Un bot ha riempito il campo nascosto: facciamo finta di niente e non salviamo
+    if (trappola) {
+      setInviato(true)
+      return
+    }
 
     // Se le credenziali non sono ancora configurate lo diciamo chiaramente,
     // invece di far finta che la richiesta sia partita.
@@ -186,6 +194,23 @@ export function Configuratore() {
                       </motion.div>
                     </AnimatePresence>
                   </div>
+
+                  {/* Campo-trappola: nascosto a persone e screen reader, i bot lo compilano */}
+                  {ultimoPasso && (
+                    <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                      <label>
+                        Non compilare questo campo
+                        <input
+                          type="text"
+                          name="sito_web"
+                          tabIndex={-1}
+                          autoComplete="off"
+                          value={trappola}
+                          onChange={(e) => setTrappola(e.target.value)}
+                        />
+                      </label>
+                    </div>
+                  )}
 
                   {/* ---- Informativa privacy (solo nell'ultimo step, dove si lasciano i dati) ---- */}
                   {ultimoPasso && (

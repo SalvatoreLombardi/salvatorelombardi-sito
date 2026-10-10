@@ -31,6 +31,23 @@ create table if not exists public.richieste (
 create index if not exists richieste_creato_il_idx
   on public.richieste (creato_il desc);
 
+-- Limiti di lunghezza: bloccano testi enormi inviati a mano all'API.
+-- "not valid" = si applicano alle nuove righe, senza ricontrollare le vecchie.
+alter table public.richieste drop constraint if exists richieste_lunghezze;
+alter table public.richieste add constraint richieste_lunghezze check (
+  length(nome) between 1 and 100
+  and length(email) between 3 and 254
+  and length(coalesce(tipo_progetto, '')) <= 50
+  and length(coalesce(stile, '')) <= 50
+  and length(coalesce(palette, '')) <= 50
+  and length(coalesce(angoli, '')) <= 50
+  and length(coalesce(foto, '')) <= 50
+  and length(coalesce(testi, '')) <= 50
+  and length(coalesce(logo, '')) <= 50
+  and length(coalesce(budget, '')) <= 100
+  and length(coalesce(note, '')) <= 2000
+) not valid;
+
 -- ============================================================================
 -- SICUREZZA (Row Level Security)
 -- Regola: chiunque può INSERIRE una richiesta dal sito,
@@ -40,12 +57,13 @@ create index if not exists richieste_creato_il_idx
 
 alter table public.richieste enable row level security;
 
--- Il form pubblico può solo scrivere
+-- Il form pubblico può solo scrivere, e solo richieste "nuove" e senza note
+-- interne (stato e note le gestisce solo l'admin)
 drop policy if exists "chiunque puo inviare una richiesta" on public.richieste;
 create policy "chiunque puo inviare una richiesta"
   on public.richieste for insert
   to anon, authenticated
-  with check (true);
+  with check (stato = 'nuova' and note is null);
 
 -- Solo l'admin autenticato può leggere
 drop policy if exists "solo autenticati leggono" on public.richieste;
