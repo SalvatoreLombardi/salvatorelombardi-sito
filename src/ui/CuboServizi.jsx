@@ -244,7 +244,7 @@ export default function CuboServizi({ variante = 'servizi', onClick }) {
       for (const segno of [1, -1]) {
         const mat = new THREE.MeshBasicMaterial({
           map: tex,
-          color: soloFrecce ? new THREE.Color(TURCHESE) : undefined,
+          ...(soloFrecce && { color: new THREE.Color(TURCHESE) }),
           alphaTest: 0.35,
           alphaToCoverage: true,
           side: THREE.DoubleSide,
