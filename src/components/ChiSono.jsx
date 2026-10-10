@@ -53,7 +53,7 @@ export function ChiSono() {
             <Reveal delay={0.2}>
               <div className="mt-7 space-y-5 text-lead text-white/60 text-pretty">
                 <p>
-                  Sviluppo siti, ecommerce e applicazioni su misura. Curo la grafica, giro e
+                  Sviluppo siti, ecommerce e app per i clienti della tua attività. Curo la grafica, giro e
                   monto i video, gestisco i canali social: tutto il percorso, dalla prima idea
                   al sito online.
                 </p>

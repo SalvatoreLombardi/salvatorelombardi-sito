@@ -11,8 +11,8 @@ const SERVIZI = [
   {
     titolo: 'Sviluppo web',
     testo:
-      'Siti, ecommerce e applicazioni su misura. Veloci, sicuri e gestibili da te senza chiamarmi ogni volta.',
-    voci: ['Siti vetrina e one page', 'Ecommerce', 'Web app su misura', 'Manutenzione e assistenza'],
+      'Siti, ecommerce e app per i tuoi clienti. Veloci, sicuri e facili da gestire in autonomia.',
+    voci: ['Siti vetrina e one page', 'Ecommerce', 'App mobile e PWA per i tuoi clienti', 'Manutenzione e assistenza'],
     // Icona: parentesi angolari, il segno più immediato per "codice"
     icona: (
       <>

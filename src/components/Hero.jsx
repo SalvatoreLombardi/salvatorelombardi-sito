@@ -80,7 +80,7 @@ export function Hero() {
 
           <Reveal delay={0.3}>
             <p className="mt-5 max-w-lg text-lead text-white/60 text-pretty max-sm:max-w-none max-sm:text-[clamp(0.75rem,3.6vw,0.9rem)] max-sm:leading-snug max-sm:text-balance sm:mt-7">
-              Siti, ecommerce e app su misura. Compila il configuratore e ricevi un
+              Siti, ecommerce e app per la tua attività. Compila il configuratore e ricevi un
               preventivo in poche ore.
             </p>
           </Reveal>

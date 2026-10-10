@@ -30,7 +30,7 @@ export function Footer() {
               <img src="/logo-nome-senza-s.png" alt="" className="-ml-1 h-10 w-auto" />
             </div>
             <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-ink-500 text-pretty">
-              Siti, ecommerce e app su misura. Grafica, video e social, con un solo
+              Siti, ecommerce e app per la tua attività. Grafica, video e social, con un solo
               interlocutore.
             </p>
 

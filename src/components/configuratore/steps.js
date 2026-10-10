@@ -23,7 +23,7 @@ export const STEP = [
         opzioni: [
           { valore: 'vetrina', label: 'Sito vetrina', nota: 'Presenti la tua attività online' },
           { valore: 'ecommerce', label: 'Ecommerce', nota: 'Vendi prodotti direttamente dal sito' },
-          { valore: 'app', label: 'App', nota: 'Uno strumento su misura per il tuo lavoro' },
+          { valore: 'app', label: 'App', nota: 'App mobile o PWA per i tuoi clienti: prenotazioni, vetrina, fidelizzazione' },
           { valore: 'video', label: 'Video', nota: 'Riprese, anche con drone, e montaggio per promo o social' },
         ],
       },
