@@ -27,6 +27,8 @@ export function Configuratore() {
   const [inviato, setInviato] = useState(false)
   const [invioInCorso, setInvioInCorso] = useState(false)
   const [errore, setErrore] = useState(null)
+  // Presa visione dell'informativa privacy: serve per inviare la richiesta
+  const [lettoPrivacy, setLettoPrivacy] = useState(false)
 
   const stepCorrente = STEP[passo]
   const ultimoPasso = passo === STEP.length - 1
@@ -57,7 +59,7 @@ export function Configuratore() {
 
   const inviaRichiesta = async (evento) => {
     evento.preventDefault()
-    if (!stepCompleto || invioInCorso) return
+    if (!stepCompleto || invioInCorso || !lettoPrivacy) return
     setErrore(null)
 
     // Se le credenziali non sono ancora configurate lo diciamo chiaramente,
@@ -185,6 +187,30 @@ export function Configuratore() {
                     </AnimatePresence>
                   </div>
 
+                  {/* ---- Informativa privacy (solo nell'ultimo step, dove si lasciano i dati) ---- */}
+                  {ultimoPasso && (
+                    <label className="mx-6 mb-6 flex cursor-pointer items-start gap-3 text-[0.8125rem] leading-relaxed text-white/60 sm:mx-10">
+                      <input
+                        type="checkbox"
+                        checked={lettoPrivacy}
+                        onChange={(e) => setLettoPrivacy(e.target.checked)}
+                        className="mt-0.5 size-4 shrink-0 accent-[#14b8a6]"
+                      />
+                      <span>
+                        Ho letto l'
+                        <a
+                          href="#/privacy"
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-white/85 underline underline-offset-2 hover:text-white"
+                        >
+                          informativa sulla privacy
+                        </a>{' '}
+                        e so che userete i miei dati per rispondere a questa richiesta di preventivo.
+                      </span>
+                    </label>
+                  )}
+
                   {/* ---- Eventuale errore di invio ---- */}
                   {errore && (
                     <p
@@ -224,9 +250,9 @@ export function Configuratore() {
                       <Button
                         type="submit"
                         size="md"
-                        variant={!stepCompleto || invioInCorso ? 'vetro' : 'accent'}
-                        disabled={!stepCompleto || invioInCorso}
-                        className={!stepCompleto || invioInCorso ? 'pointer-events-none opacity-40' : ''}
+                        variant={!stepCompleto || invioInCorso || !lettoPrivacy ? 'vetro' : 'accent'}
+                        disabled={!stepCompleto || invioInCorso || !lettoPrivacy}
+                        className={!stepCompleto || invioInCorso || !lettoPrivacy ? 'pointer-events-none opacity-40' : ''}
                       >
                         {invioInCorso ? 'Invio in corso…' : 'Invia richiesta'}
                       </Button>

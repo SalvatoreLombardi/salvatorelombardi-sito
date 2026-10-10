@@ -30,9 +30,9 @@
   --color-accent-700: #0c7268;
 
   /* --- Tipografia ------------------------------------------------------- */
-  /* Inter ovunque: stessa resa su Mac, Windows e Android. */
-  --font-display: "Inter", system-ui, sans-serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  /* Inter ovunque, servita dal nostro sito (pacchetto @fontsource-variable/inter, licenza OFL): nessuna chiamata a Google, quindi nessun IP trasmesso. */
+  --font-display: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
 
   /* Scala fluida con clamp(): nessun salto tra mobile e desktop. */
   --text-display: clamp(2.75rem, 1.6rem + 5.1vw, 5.5rem);

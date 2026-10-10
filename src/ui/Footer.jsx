@@ -110,7 +110,12 @@ export function Footer() {
             © {anno} Salvatore Lombardi. Tutti i diritti riservati.
           </p>
           {/* TODO: quando apri la partita IVA, aggiungila qui accanto */}
-          <p className="text-[0.8125rem] text-ink-600">Gravina in Puglia, Italia</p>
+          <p className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[0.8125rem] text-ink-600">
+            <a href="#/privacy" className="transition-colors duration-300 hover:text-white">
+              Privacy e cookie
+            </a>
+            <span>Gravina in Puglia, Italia</span>
+          </p>
         </div>
       </div>
     </footer>

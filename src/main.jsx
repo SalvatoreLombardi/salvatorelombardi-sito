@@ -2,6 +2,7 @@ import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { HashRouter, Route, Routes } from 'react-router-dom'
 import App from './App.jsx'
+import '@fontsource-variable/inter'
 import './index.css'
 
 /* ============================================================================
@@ -14,6 +15,7 @@ import './index.css'
    il codice del pannello.
    ========================================================================== */
 const Admin = lazy(() => import('./pages/Admin.jsx'))
+const Privacy = lazy(() => import('./pages/Privacy.jsx'))
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -22,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/privacy" element={<Privacy />} />
           {/* Qualsiasi altro indirizzo riporta al sito */}
           <Route path="*" element={<App />} />
         </Routes>

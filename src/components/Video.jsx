@@ -40,25 +40,60 @@ export function Video() {
   )
 }
 
-/** Player di Instagram ritagliato: sparisce l'intestazione e la barra in basso. */
+/** Player di Instagram ritagliato: sparisce l'intestazione e la barra in basso.
+    Instagram è un servizio di terzi: finché la persona non clicca "Carica il
+    video" non carichiamo nulla (niente cookie, niente IP trasmesso). */
 function PlayerInstagram({ video }) {
+  const [caricato, setCaricato] = useState(false)
+
   return (
     <div
       className="relative aspect-[9/16] overflow-hidden rounded-xl bg-ink-950 ring-1 ring-white/10"
       style={{ containerType: 'inline-size' }}
     >
-      <iframe
-        src={`https://www.instagram.com/p/${video.instagram}/embed/`}
-        title={video.titolo}
-        loading="lazy"
-        allowFullScreen
-        scrolling="no"
-        className="absolute border-0"
-        // Il riquadro è 9:16 come il video. L'embed ha il video (9:16) dentro un'area 4:5:
-        // lo si allarga a 142% (1 / 0,703) e lo si centra, così il video riempie tutta la card.
-        // Intestazione (54px) e barra (81px) restano fuori dal riquadro.
-        style={{ width: '142.2cqw', left: '-21.1cqw', top: '-54px', height: 'calc(177.8cqw + 135px)' }}
-      />
+      {caricato ? (
+        <iframe
+          src={`https://www.instagram.com/p/${video.instagram}/embed/`}
+          title={video.titolo}
+          allowFullScreen
+          scrolling="no"
+          className="absolute border-0"
+          // Il riquadro è 9:16 come il video. L'embed ha il video (9:16) dentro un'area 4:5:
+          // lo si allarga a 142% (1 / 0,703) e lo si centra, così il video riempie tutta la card.
+          // Intestazione (54px) e barra (81px) restano fuori dal riquadro.
+          style={{ width: '142.2cqw', left: '-21.1cqw', top: '-54px', height: 'calc(177.8cqw + 135px)' }}
+        />
+      ) : (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+          {/* Copertina del video (immagine nostra in public/video/, campo `anteprima`), scurita per far leggere il testo */}
+          {video.anteprima && (
+            <>
+              <img
+                src={video.anteprima}
+                alt=""
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover"
+              />
+              <div className="absolute inset-0 bg-ink-950/65" />
+            </>
+          )}
+          <p className="relative text-[0.9375rem] font-medium text-white/90">{video.titolo}</p>
+          <p className="relative text-[0.8125rem] leading-relaxed text-white/60 text-pretty">
+            Il video è ospitato da Instagram. Caricandolo, Instagram può ricevere il tuo indirizzo IP
+            e usare cookie.{' '}
+            <a href="#/privacy" className="underline underline-offset-2 hover:text-white">
+              Dettagli
+            </a>
+          </p>
+          <button
+            type="button"
+            onClick={() => setCaricato(true)}
+            className="vetro-verde relative inline-flex h-11 items-center rounded-full px-6 text-[0.9375rem] font-medium"
+          >
+            Carica il video
+          </button>
+        </div>
+      )}
     </div>
   )
 }
