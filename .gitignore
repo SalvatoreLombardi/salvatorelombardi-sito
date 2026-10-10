@@ -14,3 +14,8 @@ documenti
 
 # file temporanei dello strumento Supabase (non fanno parte del sito)
 supabase/.temp/
+
+# strumenti locali: non pubblicare
+.claude/
+.playwright-mcp/
+PRODUCT.md
