@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { ETICHETTE } from '../../components/configuratore/steps'
+import { ETICHETTE, TITOLI_CAMPI } from '../../components/configuratore/steps'
 
 /* ============================================================================
    CARD DI UNA SINGOLA RICHIESTA
@@ -35,6 +35,12 @@ export function CardRichiesta({ richiesta, onCambiaStato, onElimina }) {
     ['Testi', leggibile(richiesta.testi)],
     ['Logo', leggibile(richiesta.logo)],
   ]
+
+  // Risposte specifiche del percorso (sito, video, social): salvate nel campo `dettagli`
+  const dettagli = Object.entries(richiesta.dettagli ?? {}).map(([nome, valore]) => [
+    TITOLI_CAMPI[nome] ?? nome,
+    Array.isArray(valore) ? valore.map(leggibile).join(', ') : leggibile(valore),
+  ])
 
   return (
     <motion.article
@@ -80,6 +86,14 @@ export function CardRichiesta({ richiesta, onCambiaStato, onElimina }) {
               {etichetta}
             </dt>
             <dd className="truncate text-[0.875rem] text-ink-800">{valore}</dd>
+          </div>
+        ))}
+        {dettagli.map(([etichetta, valore]) => (
+          <div key={etichetta} className="col-span-2 min-w-0">
+            <dt className="text-[0.6875rem] uppercase tracking-[0.08em] text-ink-400">
+              {etichetta}
+            </dt>
+            <dd className="text-[0.875rem] text-ink-800">{valore}</dd>
           </div>
         ))}
       </dl>

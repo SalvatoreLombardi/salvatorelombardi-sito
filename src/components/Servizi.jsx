@@ -7,11 +7,11 @@ import { Reveal } from '../ui/Reveal'
    ========================================================================== */
 
 // Contenuto separato dal markup: per cambiare un testo non si tocca la grafica.
-const SERVIZI = [
+export const SERVIZI = [
   {
     titolo: 'Sviluppo web',
     testo:
-      'Siti, ecommerce e app per i tuoi clienti. Veloci, sicuri e facili da gestire in autonomia.',
+      'Siti, ecommerce e app per la tua attività. Veloci, sicuri e facili da gestire in autonomia.',
     voci: ['Siti vetrina e one page', 'Ecommerce', 'App mobile e PWA per i tuoi clienti', 'Manutenzione e assistenza'],
     // Icona: parentesi angolari, il segno più immediato per "codice"
     icona: (

@@ -16,4 +16,4 @@
 - Far rivedere a un consulente privacy la pagina `/#/privacy` (bozza del 10/10/2026). Riferimento: `documenti/competenze-privacy-gdpr.md`.
 - Cubo 3D animato (stile Rubik nero con facce che ruotano, come la home di resend.com) nella home. Dopo la mail di avviso preventivo.
 - Mail personalizzata sul dominio (registrato su Cloudflare): Resend con dominio verificato per spedire, Cloudflare Email Routing per ricevere su salvatore-lombardi@blu.it.
-- Configuratore: il percorso "Video" ha le stesse domande del sito, sistemarle. Aggiungere il percorso "Social" con domande giuste.
+- Configuratore: fatto nel lato chiaro (`src/pages/PreventivoChiaro.jsx`, percorsi in `configuratore/steps.js` con `passiPer`): sito, video e social hanno domande diverse, risposte nel campo `dettagli`. **Prima di pubblicare** eseguire `supabase/aggiornamento-dettagli.sql` nell'SQL Editor di Supabase. Il configuratore del lato scuro (`Configuratore.jsx`) ha ancora le vecchie domande uguali per tutti.

@@ -15,6 +15,8 @@ create table if not exists public.richieste (
   foto          text,
   testi         text,
   logo          text,
+  -- Risposte specifiche del percorso (sito, video, social), come elenco
+  dettagli      jsonb,
 
   -- Dati di contatto
   nome          text not null,
@@ -46,6 +48,13 @@ alter table public.richieste add constraint richieste_lunghezze check (
   and length(coalesce(logo, '')) <= 50
   and length(coalesce(budget, '')) <= 100
   and length(coalesce(note, '')) <= 2000
+) not valid;
+
+-- Colonna `dettagli` anche su tabelle già esistenti (vedi aggiornamento-dettagli.sql)
+alter table public.richieste add column if not exists dettagli jsonb;
+alter table public.richieste drop constraint if exists richieste_dettagli_lunghezza;
+alter table public.richieste add constraint richieste_dettagli_lunghezza check (
+  dettagli is null or length(dettagli::text) <= 2000
 ) not valid;
 
 -- ============================================================================
