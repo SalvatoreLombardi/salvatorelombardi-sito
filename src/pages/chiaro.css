@@ -1549,3 +1549,8 @@
 @media (min-width: 1025px) {
   .h-nome-2 { top: 72.9%; }
 }
+
+/* Telefono, "Chi sono" aperto: le onde salgono del 20% (da metà schermo, 50%, al 40%) */
+@media (max-width: 760px) {
+  .h-corsa:has(.h-cubo-aperto) .h-onde-musica { transform: translateY(-10vh); }
+}
