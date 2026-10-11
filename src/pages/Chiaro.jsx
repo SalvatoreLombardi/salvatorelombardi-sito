@@ -637,10 +637,8 @@ function PaginaChiaro() {
     }, 1300)
     setTimeout(() => setPortaAperta(true), 1900) // la home inizia a entrare mentre si scopre
     setTimeout(() => {
-      // Home tutta visibile: solo ora parte la musica, sempre dall'inizio del brano
-      setFase('fatto')
+      setFase('fatto') // home tutta visibile
       setComando(modo)
-      accendiMusica()
     }, 3600)
   }
   const [aperto, setAperto] = useState(false)
@@ -740,7 +738,8 @@ function PaginaChiaro() {
           suClic={() => {
             if (fase === 'attesa') {
               suonoScatto() // il rumore dell'interruttore, subito al clic
-              sbloccaMusica() // prepara l'audio dentro il clic, come vuole il telefono; la musica parte più tardi
+              sbloccaMusica() // prepara l'audio dentro il clic, come vuole il telefono
+              accendiMusica() // il brano parte subito al clic: così ha il tempo di caricarsi mentre si aprono i pannelli
             }
             entra('suono')
           }}
