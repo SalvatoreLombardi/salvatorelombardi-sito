@@ -43,6 +43,20 @@ function sfuma(valore, secondi) {
   guadagno.gain.linearRampToValueAtTime(valore, t + secondi)
 }
 
+/** Da chiamare dentro un clic: prepara l'audio e sblocca il telefono, ma non fa ancora partire il brano (che parte con `accendiMusica`). */
+export function sbloccaMusica() {
+  try {
+    const c = prepara()
+    c.resume?.()
+    const vuoto = c.createBufferSource()
+    vuoto.buffer = c.createBuffer(1, 1, 22050)
+    vuoto.connect(c.destination)
+    vuoto.start(0)
+  } catch {
+    /* senza audio il sito funziona lo stesso */
+  }
+}
+
 export function musicaAccesa() {
   return acceso
 }

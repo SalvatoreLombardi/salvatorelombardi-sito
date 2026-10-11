@@ -11,7 +11,7 @@ import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { suonoScatto } from '../lib/suonoScatto.js'
-import { accendiMusica, analizzatoreMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
+import { accendiMusica, analizzatoreMusica, sbloccaMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
 const CuboChiaro = lazy(() => import('../ui/CuboChiaro'))
@@ -635,11 +635,15 @@ export default function Chiaro() {
   // Si entra solo cliccando l'interruttore: quel clic fa partire la musica (il browser lo permette)
   const entra = (modo) => {
     if (fase !== 'attesa') return
-    setComando(modo)
     setFase('acceso') // la leva scatta e i testi si scambiano
     setTimeout(() => setFase('apre'), 1300) // i pannelli si aprono
     setTimeout(() => setPortaAperta(true), 1900) // la home inizia a entrare mentre si scopre
-    setTimeout(() => setFase('fatto'), 3600)
+    setTimeout(() => {
+      // Home tutta visibile: solo ora parte la musica, sempre dall'inizio del brano
+      setFase('fatto')
+      setComando(modo)
+      accendiMusica()
+    }, 3600)
   }
   const [aperto, setAperto] = useState(false)
   const [faccia, setFaccia] = useState(0)
@@ -721,7 +725,7 @@ export default function Chiaro() {
           suClic={() => {
             if (fase === 'attesa') {
               suonoScatto() // il rumore dell'interruttore, subito al clic
-              accendiMusica() // la musica parte dentro il clic, come vuole il telefono
+              sbloccaMusica() // prepara l'audio dentro il clic, come vuole il telefono; la musica parte più tardi
             }
             entra('suono')
           }}
