@@ -12,7 +12,7 @@ export const SERVIZI = [
     titolo: 'Sviluppo web',
     testo:
       'Siti, ecommerce e app per la tua attività. Veloci, sicuri e facili da gestire in autonomia.',
-    voci: ['Siti vetrina e one page', 'Ecommerce', 'App mobile e PWA per i tuoi clienti', 'Manutenzione e assistenza'],
+    voci: ['Siti vetrina e one page', 'Ecommerce', 'App mobile e PWA', 'Manutenzione e assistenza'],
     // Icona: parentesi angolari, il segno più immediato per "codice"
     icona: (
       <>
