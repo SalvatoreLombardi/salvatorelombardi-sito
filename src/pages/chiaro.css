@@ -1517,8 +1517,9 @@
 
 /* Telefono, "Chi sono" aperto: cubo più piccolo (-10%) e più in basso, comandi e "PER TUTTO." più in basso, niente freccia per tornare su */
 @media (max-width: 760px) {
-  .h-cubo-aperto { width: 121.5vw; top: calc(50% + 5vh); }
-  .h-cubo-aperto .h-comandi { margin-top: -5vw; }
+  .h-cubo-aperto { width: 97.2vw; top: calc(50% + 5vh); }
+  /* il cubo è più piccolo del 20% e pagination e "CHIUDI" salgono del 20% dell altezza del cubo */
+  .h-cubo-aperto .h-comandi { margin-top: -12.3vw; }
   .h-titolo-2 { bottom: 1.5%; }
   body:has(.h-cubo-aperto) .h-su { display: none; }
 }
