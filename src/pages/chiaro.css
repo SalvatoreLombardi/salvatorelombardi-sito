@@ -1462,3 +1462,36 @@
 
 /* Bottoni a cerchio: l'anello del focus da tastiera segue la forma tonda */
 .h-cerchio:focus-visible { outline: 1px solid currentColor; outline-offset: 5px; border-radius: 50%; }
+
+/* In inglese "LIGHT UP" è più lungo di "ACCENDI": su telefono il carattere è un po' più piccolo per restare nello schermo */
+@media (max-width: 760px) {
+  .h-ingresso[data-lingua='en'] .h-ing-svuota { font-size: 17vw; }
+  .h-ingresso[data-lingua='en'] .h-ing-riempi { font-size: 16vw; }
+}
+
+/* Cambio lingua nel menu: IT / EN, a mano come il resto; quella attiva è piena */
+.h-menu-lingua {
+  position: absolute;
+  left: var(--gutter);
+  bottom: clamp(24px, 5vh, 48px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 500 0.82rem/1 var(--f-testo);
+  letter-spacing: 0.14em;
+}
+.h-menu-lingua button {
+  padding: 9px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: none;
+  color: #e6e4dd;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.h-menu-lingua button:hover { opacity: 1; border-color: rgba(230, 228, 221, 0.5); }
+.h-menu-lingua button.h-lingua-attiva { opacity: 1; background: #e6e4dd; color: #0b0c0e; }
+.h-menu-lingua button:focus-visible { outline: 1px solid #e6e4dd; outline-offset: 3px; }

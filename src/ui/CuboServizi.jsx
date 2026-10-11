@@ -1,3 +1,4 @@
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
@@ -125,6 +126,7 @@ function texturaFreccia() {
 }
 
 export default function CuboServizi({ variante = 'servizi', onClick }) {
+  const { t, lingua } = useLingua()
   const contenitoreRef = useRef(null)
   const clicRef = useRef(onClick)
   clicRef.current = onClick
@@ -214,7 +216,9 @@ export default function CuboServizi({ variante = 'servizi', onClick }) {
     // --- Scritte sulle quattro facce, sospese dentro il vetro ---
     const materialiTesto = []
     const soloFrecce = variante === 'freccia'
-    const texture = soloFrecce ? FACCE.map(texturaFreccia) : FACCE.map(texturaFaccia)
+    // le scritte seguono la lingua scelta (Web, Grafica/Graphics, Video, Social)
+    const facceTradotte = FACCE.map((f, i) => ({ ...f, etichetta: t.home.facce[i] ?? f.etichetta }))
+    const texture = soloFrecce ? facceTradotte.map(texturaFreccia) : facceTradotte.map(texturaFaccia)
     // +z davanti, +x destra, -z dietro, -x sinistra
     const posizioni = [
       { p: [0, 0, 0.9], r: [0, 0, 0] },
@@ -395,7 +399,7 @@ export default function CuboServizi({ variante = 'servizi', onClick }) {
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [])
+  }, [lingua])
 
   return (
     <div className="relative size-full">
@@ -411,8 +415,8 @@ export default function CuboServizi({ variante = 'servizi', onClick }) {
         role="img"
         aria-label={
           variante === 'freccia'
-            ? 'Cubo tridimensionale con una freccia in su'
-            : 'Cubo tridimensionale con i quattro servizi: Web, Grafica, Video e Social'
+            ? t.scuro.cuboFreccia
+            : t.scuro.cuboServizi
         }
       />
     </div>

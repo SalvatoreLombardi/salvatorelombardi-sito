@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useLingua } from './i18n/LinguaChiaro.jsx'
 import { Hero } from './components/Hero'
 import { Servizi } from './components/Servizi'
 import { Portfolio } from './components/Portfolio'
@@ -14,6 +15,11 @@ import { Footer } from './ui/Footer'
 import { NetworkCanvas } from './components/hero/NetworkCanvas'
 
 export default function App() {
+  const { t, lingua } = useLingua()
+  useEffect(() => {
+    document.title = t.titoloPagina
+    document.documentElement.lang = lingua
+  }, [t, lingua])
   /* Aiuto per la messa a punto: con ?scrollTo=2400 la pagina si posiziona lì
      al caricamento, utile per controllare com'è lo sfondo a metà scroll senza
      doverlo rincorrere a mano. Non tocca nulla per i visitatori normali. */

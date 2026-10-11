@@ -5,6 +5,8 @@ import { Button } from '../ui/Button'
 import { STEP } from './configuratore/steps'
 import { CampoScelta, CampoTesto } from './configuratore/Campi'
 import { supabase, supabaseAttivo } from '../lib/supabase'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { passoTradotto } from '../i18n/contenuti.js'
 
 /* ============================================================================
    CONFIGURATORE PREVENTIVO
@@ -18,6 +20,9 @@ import { supabase, supabaseAttivo } from '../lib/supabase'
 const EASE = [0.16, 1, 0.3, 1]
 
 export function Configuratore() {
+  const { t, lingua } = useLingua()
+  const cf = t.scuro.configuratore
+  const pv = t.preventivo
   const prefersReducedMotion = useReducedMotion()
 
   const [passo, setPasso] = useState(0)
@@ -32,7 +37,7 @@ export function Configuratore() {
   // Campo-trappola contro i bot: le persone non lo vedono e non lo riempiono
   const [trappola, setTrappola] = useState('')
 
-  const stepCorrente = STEP[passo]
+  const stepCorrente = passoTradotto(STEP[passo], lingua) // i testi seguono la lingua; nomi dei campi e valori restano quelli di sempre
   const ultimoPasso = passo === STEP.length - 1
   const avanzamento = ((passo + 1) / STEP.length) * 100
 
@@ -73,7 +78,7 @@ export function Configuratore() {
     // Se le credenziali non sono ancora configurate lo diciamo chiaramente,
     // invece di far finta che la richiesta sia partita.
     if (!supabaseAttivo) {
-      setErrore('Invio non ancora collegato: mancano le credenziali Supabase in .env.local')
+      setErrore(pv.erroreNonCollegato)
       return
     }
 
@@ -81,6 +86,7 @@ export function Configuratore() {
 
     // I nomi delle colonne seguono lo schema in supabase/schema.sql
     const { error } = await supabase.from('richieste').insert({
+      dettagli: { lingua }, // così so in che lingua rispondere
       tipo_progetto: dati.tipoProgetto,
       stile: dati.stile,
       palette: dati.palette,
@@ -96,7 +102,7 @@ export function Configuratore() {
 
     if (error) {
       console.error('Errore invio richiesta:', error)
-      setErrore('Non sono riuscito a inviare la richiesta. Riprova fra poco.')
+      setErrore(pv.erroreInvio)
       return
     }
 
@@ -114,13 +120,13 @@ export function Configuratore() {
           <Reveal y={16}>
             <p className="flex items-center justify-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Configuratore
+              {cf.eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Cinque domande,</span>{' '}
-            <span className="text-white/40">e il preventivo è in arrivo.</span>
+            <span className="text-white">{cf.t1}</span>{' '}
+            <span className="text-white/40">{cf.t2}</span>
           </Reveal>
         </div>
 
@@ -199,7 +205,7 @@ export function Configuratore() {
                   {ultimoPasso && (
                     <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
                       <label>
-                        Non compilare questo campo
+                        {pv.trappola}
                         <input
                           type="text"
                           name="sito_web"
@@ -222,16 +228,16 @@ export function Configuratore() {
                         className="mt-0.5 size-4 shrink-0 accent-[#14b8a6]"
                       />
                       <span>
-                        Ho letto l'
+                        {pv.privacyA}
                         <a
                           href="#/privacy"
                           target="_blank"
                           rel="noreferrer"
                           className="text-white/85 underline underline-offset-2 hover:text-white"
                         >
-                          informativa sulla privacy
-                        </a>{' '}
-                        e so che userete i miei dati per rispondere a questa richiesta di preventivo.
+                          {pv.privacyLink}
+                        </a>
+                        {pv.privacyB}
                       </span>
                     </label>
                   )}
@@ -268,7 +274,7 @@ export function Configuratore() {
                       >
                         <path d="M16 10H4m0 0 5.5-5.5M4 10l5.5 5.5" />
                       </svg>
-                      Indietro
+                      {cf.indietro}
                     </Button>
 
                     {ultimoPasso ? (
@@ -279,7 +285,7 @@ export function Configuratore() {
                         disabled={!stepCompleto || invioInCorso || !lettoPrivacy}
                         className={!stepCompleto || invioInCorso || !lettoPrivacy ? 'pointer-events-none opacity-40' : ''}
                       >
-                        {invioInCorso ? 'Invio in corso…' : 'Invia richiesta'}
+                        {invioInCorso ? pv.invioInCorso : pv.invia}
                       </Button>
                     ) : (
                       <Button
@@ -290,7 +296,7 @@ export function Configuratore() {
                         disabled={!stepCompleto}
                         className={!stepCompleto ? 'pointer-events-none opacity-40' : ''}
                       >
-                        Avanti
+                        {cf.avanti}
                         <svg
                           aria-hidden="true"
                           viewBox="0 0 20 20"
@@ -318,6 +324,7 @@ export function Configuratore() {
 
 /** Schermata finale dopo l'invio */
 function Conferma() {
+  const { t } = useLingua()
   return (
     <div className="flex min-h-[28rem] flex-col items-center justify-center px-6 py-16 text-center">
       <motion.span
@@ -341,10 +348,10 @@ function Conferma() {
       </motion.span>
 
       <h3 className="mt-6 font-display text-[1.625rem] font-semibold tracking-[-0.022em] text-white">
-        Richiesta ricevuta
+        {t.preventivo.grazieTitolo}
       </h3>
       <p className="mt-3 max-w-sm text-[0.9375rem] text-white/55 text-pretty">
-        Ti mando il preventivo entro 24 ore all’indirizzo che hai indicato.
+        {t.preventivo.grazieTesto}
       </p>
     </div>
   )

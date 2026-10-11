@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion } from 'motion/react'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    BOTTONE CTA
@@ -10,7 +11,9 @@ import { motion } from 'motion/react'
    - freccia in un cerchio turchese che scorre al passaggio e si preme al clic.
    Gli stili (.cta-*) sono in index.css. Con "riduci movimento" restano fermi.
    ========================================================================== */
-export function BottoneCta({ href, onClick, children = 'Richiedi il tuo preventivo', className = '' }) {
+export function BottoneCta({ href, onClick, children, className = '' }) {
+  const { t } = useLingua()
+  const testo = children ?? t.scuro.cta
   const ref = useRef(null)
 
   // Il faro segue il mouse: si scrivono le coordinate in due variabili CSS
@@ -34,7 +37,7 @@ export function BottoneCta({ href, onClick, children = 'Richiedi il tuo preventi
     >
       <span className="cta-corpo">
         <span className="cta-faro" aria-hidden="true" />
-        <span className="cta-testo">{children}</span>
+        <span className="cta-testo">{testo}</span>
         <span className="cta-freccia" aria-hidden="true">
           <svg
             viewBox="0 0 20 20"

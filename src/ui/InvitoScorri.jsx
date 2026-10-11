@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    INVITO A SCORRERE
@@ -11,20 +12,21 @@ import { vaiAllaSezione } from '../lib/scroll'
    ========================================================================== */
 
 export function InvitoScorri({ verso = 'servizi' }) {
+  const { t } = useLingua()
   const ridotto = useReducedMotion()
 
   return (
     <motion.a
       href={`#${verso}`}
       onClick={(e) => vaiAllaSezione(e, verso)}
-      aria-label="Scorri verso i servizi"
+      aria-label={t.scuro.scorri.aria}
       className="group absolute inset-x-0 top-[calc(100svh-8.75rem)] mx-auto hidden w-fit flex-col items-center gap-4 sm:flex"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       <span className="text-[0.75rem] font-medium uppercase tracking-[0.34em] text-white/75 transition-colors duration-300 group-hover:text-accent-400">
-        Scorri
+        {t.scuro.scorri.testo}
       </span>
 
       {/* Linea sottile con il puntino che scende */}

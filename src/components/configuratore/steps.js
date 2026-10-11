@@ -540,14 +540,19 @@ export function passiPer(tipoProgetto) {
 const TUTTI_I_PASSI = [STEP_PROGETTO, DIMENSIONE_VETRINA, DIMENSIONE_ECOMMERCE, DIMENSIONE_APP, ...PASSI_VIDEO, ...PASSI_SOCIAL, ...STEP]
 
 /** Mappa `nome campo` -> titolo leggibile (per la pagina admin). */
-export const TITOLI_CAMPI = Object.fromEntries(
-  TUTTI_I_PASSI.flatMap((passo) => passo.campi).map((campo) => [campo.nome, campo.titolo ?? campo.nome]),
-)
+export const TITOLI_CAMPI = {
+  ...Object.fromEntries(TUTTI_I_PASSI.flatMap((passo) => passo.campi).map((campo) => [campo.nome, campo.titolo ?? campo.nome])),
+  lingua: 'Lingua della richiesta', // aggiunta dal lato chiaro: serve a sapere in che lingua rispondere
+}
 
 /* Mappa `valore` -> etichetta leggibile.
    Serve alla pagina admin per mostrare "Sito vetrina" invece di "vetrina". */
-export const ETICHETTE = Object.fromEntries(
-  TUTTI_I_PASSI.flatMap((step) => step.campi)
-    .filter((campo) => campo.tipo === 'scelta')
-    .flatMap((campo) => campo.opzioni.map((opzione) => [opzione.valore, opzione.label])),
-)
+export const ETICHETTE = {
+  ...Object.fromEntries(
+    TUTTI_I_PASSI.flatMap((step) => step.campi)
+      .filter((campo) => campo.tipo === 'scelta')
+      .flatMap((campo) => campo.opzioni.map((opzione) => [opzione.valore, opzione.label])),
+  ),
+  it: 'Italiano',
+  en: 'Inglese: rispondi in inglese',
+}

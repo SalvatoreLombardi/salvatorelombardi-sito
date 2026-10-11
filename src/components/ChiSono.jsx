@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { motion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
 import { useParallax } from '../hooks/useParallax'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    CHI SONO
@@ -13,6 +14,8 @@ import { useParallax } from '../hooks/useParallax'
    ========================================================================== */
 
 export function ChiSono() {
+  const { t } = useLingua()
+  const c = t.scuro.chiSono
   const sezioneRef = useRef(null)
 
   // La foto si muove un po' più lenta del testo: dà profondità allo scroll
@@ -28,7 +31,7 @@ export function ChiSono() {
               <div className="relative mx-auto aspect-[4/5] w-full max-w-md overflow-hidden rounded-2xl bg-ink-950 ring-1 ring-white/10">
                 <img
                   src="/salvatore.jpg"
-                  alt="Salvatore Lombardi"
+                  alt={c.foto}
                   className="size-full object-cover"
                 />
               </div>
@@ -40,34 +43,20 @@ export function ChiSono() {
             <Reveal y={16}>
               <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
                 <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-                Chi sono
+                {c.eyebrow}
               </p>
             </Reveal>
 
             <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-              <span className="text-white">Salvatore Lombardi,</span>{' '}
-              <span className="text-white/40">un solo interlocutore per tutto.</span>
+              <span className="text-white">{c.t1}</span>{' '}
+              <span className="text-white/40">{c.t2}</span>
             </Reveal>
 
             <Reveal delay={0.2}>
               <div className="mt-7 space-y-5 text-lead text-white/60 text-pretty">
-                <p>
-                  Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti,
-                  e-commerce, app, grafica e video per le attività del territorio.
-                </p>
-                <p>
-                  Non realizzo mai due lavori identici: ogni attività ha una storia propria, e
-                  il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo
-                  ogni dettaglio finché l’insieme risulta armonioso. Per te significa un
-                  risultato rifinito, mai approssimativo.
-                </p>
-                <p>
-                  Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso
-                  quando previene gli errori o aiuta a rimediarvi. Parli sempre direttamente con
-                  me: ti ascolto con pazienza, mi metto nei tuoi panni e lavoro nel rispetto
-                  delle persone e dei loro tempi. Studio con costanza le novità del settore, per
-                  proporti soluzioni sempre attuali.
-                </p>
+                {c.paragrafi.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
               </div>
             </Reveal>
           </div>

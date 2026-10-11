@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { SERVIZI } from '../components/Servizi.jsx'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { servizioTradotto } from '../i18n/contenuti.js'
 
 /* ============================================================================
    SERVIZI — lato chiaro.
@@ -89,7 +91,8 @@ function TitoloCarta({ children, progresso }) {
 
 function Carta({ voce, indice }) {
   const ref = useRef(null)
-  const servizio = SERVIZI[voce.da]
+  const { t, lingua } = useLingua()
+  const servizio = servizioTradotto(SERVIZI[voce.da], lingua)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 95%', 'start 35%'] })
   return (
     <article ref={ref} className="h-sv-carta" style={{ '--i': indice }} data-cursore="">
@@ -99,7 +102,7 @@ function Carta({ voce, indice }) {
         </span>
         <Disegno tratti={voce.disegno} />
         <h3>
-          <TitoloCarta progresso={scrollYProgress}>{voce.nome}</TitoloCarta>
+          <TitoloCarta progresso={scrollYProgress}>{t.servizi.nomi[indice]}</TitoloCarta>
         </h3>
       </div>
       <div className="h-sv-colonna h-sv-destra">
@@ -115,6 +118,7 @@ function Carta({ voce, indice }) {
 }
 
 export function ServiziChiaro() {
+  const { t } = useLingua()
   const intesta = useRef(null)
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
   return (
@@ -122,12 +126,12 @@ export function ServiziChiaro() {
       <h2 id="h-sv-titolo" ref={intesta} className="h-sv-intesta">
         {/* "Dal sito al video," parte pieno e si svuota da sinistra; "sempre con me." parte vuoto e si riempie da destra */}
         <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">Dal sito al video,</span>
-          <span className="h-sv-riempimento">Dal sito al video,</span>
+          <span className="h-sv-contorno">{t.servizi.titolo1}</span>
+          <span className="h-sv-riempimento">{t.servizi.titolo1}</span>
         </span>
         <span className={`h-sv-riga h-sv-riempi ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">sempre con me.</span>
-          <span className="h-sv-riempimento">sempre con me.</span>
+          <span className="h-sv-contorno">{t.servizi.titolo2}</span>
+          <span className="h-sv-riempimento">{t.servizi.titolo2}</span>
         </span>
       </h2>
 

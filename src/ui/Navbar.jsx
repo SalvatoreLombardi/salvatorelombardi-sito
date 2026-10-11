@@ -2,6 +2,7 @@ import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    NAVBAR
@@ -13,15 +14,12 @@ import { vaiAllaSezione } from '../lib/scroll'
    Per aggiungere una voce quando creiamo una sezione nuova basta una riga qui
    sotto: il resto (link, menu mobile, evidenziazione) si adatta da solo.
    ========================================================================== */
-const VOCI = [
-  { id: 'servizi', label: 'Servizi' },
-  { id: 'portfolio', label: 'Portfolio' },
-  { id: 'chi-sono', label: 'Chi sono' },
-  { id: 'configuratore', label: 'Preventivo' },
-  { id: 'contatti', label: 'Contatti' },
-]
+const ID_VOCI = ['servizi', 'portfolio', 'chi-sono', 'configuratore', 'contatti']
 
 export function Navbar() {
+  const { t, lingua, setLingua } = useLingua()
+  const n = t.scuro.navbar
+  const VOCI = ID_VOCI.map((id) => ({ id, label: n.voci[id] }))
   const [scrollata, setScrollata] = useState(false)
   const [menuAperto, setMenuAperto] = useState(false)
   const [sezioneAttiva, setSezioneAttiva] = useState('')
@@ -83,7 +81,7 @@ export function Navbar() {
             href="#/scuro"
             onClick={tornaSu}
             className="flex items-end"
-            aria-label="Salvatore Lombardi — torna all'inizio"
+            aria-label={n.logoAria}
           >
             <span className="flex items-center gap-2.5 text-accent-400" role="img" aria-label="Salvatore Lombardi">
               <LogoInterruttore className="h-9 w-auto lg:h-12" />
@@ -123,15 +121,32 @@ export function Navbar() {
               className="rounded-full border border-white/20 px-4 py-1.5 text-[0.875rem] text-white/80
                          transition-colors duration-300 hover:border-white/50 hover:text-white"
             >
-              ← Sito principale
+              {n.principale}
             </a>
+            {/* Cambio lingua: IT / EN, la scelta vale anche per il sito principale */}
+            <div className="flex items-center gap-0.5 text-[0.8125rem] font-medium tracking-[0.1em]" role="group" aria-label={n.lingua}>
+              {['it', 'en'].map((codice) => (
+                <button
+                  key={codice}
+                  type="button"
+                  lang={codice}
+                  aria-pressed={lingua === codice}
+                  onClick={() => setLingua(codice)}
+                  className={`rounded-full px-2.5 py-1 uppercase transition-colors duration-300 ${
+                    lingua === codice ? 'bg-white text-ink-950' : 'text-white/55 hover:text-white'
+                  }`}
+                >
+                  {codice}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* --- Bottone del menu (solo mobile) --- */}
           <button
             type="button"
             onClick={() => setMenuAperto((aperto) => !aperto)}
-            aria-label={menuAperto ? 'Chiudi il menu' : 'Apri il menu'}
+            aria-label={menuAperto ? n.chiudiMenu : n.apriMenu}
             aria-expanded={menuAperto}
             className="flex size-10 items-center justify-center md:hidden"
           >
@@ -184,8 +199,24 @@ export function Navbar() {
                 transition={{ delay: 0.06 * VOCI.length, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 className="py-5 text-[1rem] text-accent-400"
               >
-                ← Torna al sito principale
+                {n.tornaPrincipale}
               </motion.a>
+              <div className="flex items-center gap-1 pt-2 text-[0.9375rem] font-medium tracking-[0.1em]" role="group" aria-label={n.lingua}>
+                {['it', 'en'].map((codice) => (
+                  <button
+                    key={codice}
+                    type="button"
+                    lang={codice}
+                    aria-pressed={lingua === codice}
+                    onClick={() => setLingua(codice)}
+                    className={`rounded-full px-3.5 py-1.5 uppercase transition-colors duration-300 ${
+                      lingua === codice ? 'bg-white text-ink-950' : 'text-white/55 hover:text-white'
+                    }`}
+                  >
+                    {codice}
+                  </button>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}

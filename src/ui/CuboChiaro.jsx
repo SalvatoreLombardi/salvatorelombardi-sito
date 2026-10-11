@@ -99,7 +99,7 @@ function texturaTesto({ titolo, corpo }) {
   return tex
 }
 
-export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = [] }) {
+export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = [], facce = FACCE, descrizioneCubo }) {
   const contenitoreRef = useRef(null)
 
   useEffect(() => {
@@ -242,7 +242,7 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
         { p: [-0.756, 0, 0], r: [0, -Math.PI / 2, 0] },
         { p: [0, 0.756, 0], r: [-Math.PI / 2, 0, 0] },
       ]
-      FACCE.forEach((parola, i) => {
+      facce.forEach((parola, i) => {
         const tex = texturaParola(parola)
         const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false })
         dispose.push(tex, mat)
@@ -375,14 +375,14 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [progresso, apertoRef, facciaRef, testi])
+  }, [progresso, apertoRef, facciaRef, testi, facce])
 
   return (
     <div
       ref={contenitoreRef}
       className="size-full"
       role="img"
-      aria-label="Cubo tridimensionale di vetro con il ritratto di Salvatore Lombardi e i servizi Web, Grafica, Video e Social"
+      aria-label={descrizioneCubo ?? 'Cubo tridimensionale di vetro con il ritratto di Salvatore Lombardi e i servizi Web, Grafica, Video e Social'}
     />
   )
 }

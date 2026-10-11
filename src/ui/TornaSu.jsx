@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    TORNA SU
@@ -15,6 +16,7 @@ const CuboServizi = lazy(() => import('./CuboServizi'))
 const SOGLIA = 600 // px di scroll dopo i quali compare
 
 export function TornaSu() {
+  const { t } = useLingua()
   const [visibile, setVisibile] = useState(false)
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export function TornaSu() {
             className="sr-only focus:not-sr-only focus:absolute focus:inset-0 focus:flex focus:items-center
                        focus:justify-center focus:rounded-full focus:bg-ink-950/80 focus:text-sm focus:text-white"
           >
-            Torna su
+            {t.scuro.tornaSu}
           </button>
         </motion.div>
       )}

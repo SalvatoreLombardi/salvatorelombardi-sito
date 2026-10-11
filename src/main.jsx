@@ -4,6 +4,7 @@ import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-d
 import App from './App.jsx'
 import '@fontsource-variable/inter'
 import './index.css'
+import { LinguaProvider } from './i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    ROUTING
@@ -33,6 +34,7 @@ function InCimaAlCambioPagina() {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <LinguaProvider>
     <HashRouter>
       <InCimaAlCambioPagina />
       <Suspense fallback={null}>
@@ -49,5 +51,6 @@ createRoot(document.getElementById('root')).render(
         </Routes>
       </Suspense>
     </HashRouter>
+    </LinguaProvider>
   </StrictMode>,
 )

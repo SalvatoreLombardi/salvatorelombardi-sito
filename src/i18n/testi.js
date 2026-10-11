@@ -1,0 +1,406 @@
+/* ============================================================================
+   TESTI DELL'INTERFACCIA — lato chiaro, italiano e inglese.
+   Stessa struttura nelle due lingue: per cambiare una frase si tocca solo qui.
+   I testi dei lavori, dei video, dei servizi e delle domande del preventivo
+   stanno in `contenuti.js`.
+   ========================================================================== */
+export const TESTI = {
+  it: {
+    titoloPagina: 'Salvatore Lombardi — Sviluppo web, graphic design, social media',
+    descrizionePagina: 'Siti, ecommerce e app per la tua attività. Compila il configuratore e ricevi un preventivo in poche ore.',
+
+    ingresso: {
+      etichetta: 'Accendi il tuo progetto',
+      bottone: 'Accendi il tuo progetto e il suono',
+      riga1: 'Accendi',
+      riga2: 'il tuo progetto',
+      cliccaQui: 'clicca qui',
+    },
+    suono: { acceso: 'Suono acceso', spento: 'Clicca per il suono' },
+
+    home: {
+      fraseSr: 'Salvatore Lombardi, un solo interlocutore per tutto',
+      frase: 'un solo interlocutore per tutto.',
+      servizi: 'Web · Grafica · Video · Social',
+      titolo1: 'Un solo interlocutore',
+      titolo2: 'per tutto.',
+      apriChiSono: 'Apri Chi sono',
+      frecciaChiSono: 'chi sono',
+      chiSono: 'Chi sono',
+      facciaPrecedente: 'Faccia precedente',
+      facciaSuccessiva: 'Faccia successiva',
+      chiudi: 'Chiudi',
+      cubo: 'Cubo tridimensionale di vetro con il ritratto di Salvatore Lombardi e i servizi Web, Grafica, Video e Social',
+      facce: ['Web', 'Grafica', 'Video', 'Social'],
+    },
+    chiSono: [
+      {
+        titolo: 'Chi sono',
+        corpo: 'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
+      },
+      {
+        titolo: 'Cura',
+        corpo: 'Non realizzo mai due lavori identici: ogni attività ha una storia propria, e il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo ogni dettaglio finché l’insieme risulta armonioso. Per te significa un risultato rifinito, mai approssimativo.',
+      },
+      {
+        titolo: 'Metodo',
+        corpo: 'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi. Mi aggiorno con costanza sulle novità del settore, per proporti soluzioni sempre attuali.',
+      },
+      {
+        titolo: 'Ascolto',
+        corpo: 'Il rapporto è diretto, senza intermediari. Dedico il tempo necessario ad ascoltare le tue esigenze e a capire il contesto della tua attività, per definire insieme obiettivi chiari prima di iniziare a lavorare.',
+      },
+    ],
+
+    menu: {
+      etichetta: 'Menu',
+      apri: 'Apri il menu',
+      chiudi: 'Chiudi il menu',
+      sezioni: 'Sezioni del sito',
+      lingua: 'Lingua',
+      voci: [
+        { id: 'chi-sono', nome: 'Chi sono' },
+        { id: 'servizi', nome: 'Servizi' },
+        { id: 'lavori', nome: 'Lavori' },
+        { id: 'video', nome: 'Video' },
+        { id: 'preventivo', nome: 'Preventivo' },
+        { id: 'contatti', nome: 'Contatti' },
+      ],
+    },
+    tornaSu: 'Torna in cima',
+
+    servizi: {
+      titolo1: 'Dal sito al video,',
+      titolo2: 'sempre con me.',
+      nomi: ['Web', 'Grafica', 'Video', 'Social'],
+    },
+
+    lavori: {
+      titolo1: 'Ogni lavoro',
+      titolo2: 'ha una storia.',
+      leggiDiPiu: 'Leggi di più',
+      visita: 'Visita il sito',
+      chiudi: 'Chiudi',
+      confronto: {
+        parliamone: 'Parliamone',
+        chiaro: 'Lato chiaro',
+        scuro: 'Lato scuro',
+        chiaroFrase: ['un solo interlocutore', 'per tutto.'],
+        scuroFrase: ['Un solo interlocutore', 'per tutto.'],
+      },
+    },
+
+    video: {
+      titolo1: 'Riprese aeree,',
+      titolo2: 'dettagli, montaggio.',
+      continuaScendere: 'Continua a scendere',
+      scorriLato: 'Scorri di lato',
+      ospitato: 'Il video è ospitato da Instagram. Caricandolo, Instagram può ricevere il tuo indirizzo IP e usare cookie.',
+      dettagli: 'Dettagli',
+      carica: 'Carica il video',
+      leggiDiPiu: 'Leggi di più',
+      visualizzazioni: 'visualizzazioni',
+      unitaMigliaia: ' mila',
+      unitaMilioni: ' milioni',
+      localeNumeri: 'it-IT',
+      vaiSuInstagram: 'Vai su Instagram',
+    },
+
+    preventivo: {
+      titolo1: 'Poche domande,',
+      titolo2: 'e il preventivo è in arrivo.',
+      facoltativo: ' (facoltativo)',
+      trappola: 'Non compilare questo campo',
+      privacyA: 'Ho letto l’',
+      privacyLink: 'informativa sulla privacy',
+      privacyB: ' e so che userete i miei dati per rispondere a questa richiesta di preventivo.',
+      indietro: '← Indietro',
+      avanti: 'Avanti →',
+      invia: 'Invia richiesta',
+      invioInCorso: 'Invio in corso…',
+      grazieTitolo: 'Richiesta ricevuta',
+      grazieTesto: 'Ti mando il preventivo entro 24 ore all’indirizzo che hai indicato.',
+      erroreInvio: 'Non sono riuscito a inviare la richiesta. Riprova fra poco.',
+      erroreNonCollegato: 'Invio non ancora collegato: mancano le credenziali Supabase in .env.local',
+    },
+
+    contatti: {
+      titolo1: 'Parliamone.',
+      titolo2: 'Scegli come.',
+      testoA: 'Il primo confronto non si paga. Se preferisci partire dal progetto, ',
+      testoLink: 'il preventivo',
+      testoB: ' fa metà del lavoro.',
+      canali: {
+        telefono: { etichetta: 'Telefono', nota: 'Chiamami, rispondo io' },
+        whatsapp: { etichetta: 'WhatsApp', nota: 'Scrivimi quando vuoi' },
+        email: { etichetta: 'Email', nota: 'Per preventivi e documenti' },
+      },
+      privacy: 'Privacy e cookie',
+      luogo: 'Gravina in Puglia, Italia',
+    },
+  },
+
+  en: {
+    titoloPagina: 'Salvatore Lombardi — Web development, graphic design, social media',
+    descrizionePagina: 'Websites, e-commerce and apps for your business. Fill in the quote form and get a quote within hours.',
+
+    ingresso: {
+      etichetta: 'Light up your project',
+      bottone: 'Light up your project and switch on the sound',
+      riga1: 'Light up',
+      riga2: 'your project',
+      cliccaQui: 'click here',
+    },
+    suono: { acceso: 'Sound on', spento: 'Click for sound' },
+
+    home: {
+      fraseSr: 'Salvatore Lombardi, one point of contact for everything',
+      frase: 'one point of contact for everything.',
+      servizi: 'Web · Graphics · Video · Social',
+      titolo1: 'One point of contact',
+      titolo2: 'for everything.',
+      apriChiSono: 'Open About me',
+      frecciaChiSono: 'about me',
+      chiSono: 'About me',
+      facciaPrecedente: 'Previous face',
+      facciaSuccessiva: 'Next face',
+      chiudi: 'Close',
+      cubo: 'Three-dimensional glass cube showing a portrait of Salvatore Lombardi and the services Web, Graphics, Video and Social',
+      facce: ['Web', 'Graphics', 'Video', 'Social'],
+    },
+    chiSono: [
+      {
+        titolo: 'About me',
+        corpo: 'I’m Salvatore, a developer and designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
+      },
+      {
+        titolo: 'Care',
+        corpo: 'I never make two identical projects: every business has its own story, and the project has to be able to tell it. I’m an aesthete and a perfectionist: I look after every detail until the whole feels harmonious. For you, that means a polished result, never an approximate one.',
+      },
+      {
+        titolo: 'Method',
+        corpo: 'I start from the difficulties you face every day, because technology makes sense when it prevents mistakes or helps put them right. I keep up with news in the industry, so I can offer you solutions that are always up to date.',
+      },
+      {
+        titolo: 'Listening',
+        corpo: 'The relationship is direct, with no middlemen. I take the time to listen to your needs and understand the context of your business, so that we can set clear goals together before work begins.',
+      },
+    ],
+
+    menu: {
+      etichetta: 'Menu',
+      apri: 'Open menu',
+      chiudi: 'Close menu',
+      sezioni: 'Site sections',
+      lingua: 'Language',
+      voci: [
+        { id: 'chi-sono', nome: 'About me' },
+        { id: 'servizi', nome: 'Services' },
+        { id: 'lavori', nome: 'Work' },
+        { id: 'video', nome: 'Video' },
+        { id: 'preventivo', nome: 'Quote' },
+        { id: 'contatti', nome: 'Contact' },
+      ],
+    },
+    tornaSu: 'Back to top',
+
+    servizi: {
+      titolo1: 'From website to video,',
+      titolo2: 'always with me.',
+      nomi: ['Web', 'Graphics', 'Video', 'Social'],
+    },
+
+    lavori: {
+      titolo1: 'Every project',
+      titolo2: 'has a story.',
+      leggiDiPiu: 'Read more',
+      visita: 'Visit the website',
+      chiudi: 'Close',
+      confronto: {
+        parliamone: 'Let’s talk',
+        chiaro: 'Light side',
+        scuro: 'Dark side',
+        chiaroFrase: ['one point of contact', 'for everything.'],
+        scuroFrase: ['One point of contact', 'for everything.'],
+      },
+    },
+
+    video: {
+      titolo1: 'Aerial shots,',
+      titolo2: 'details, editing.',
+      continuaScendere: 'Keep scrolling',
+      scorriLato: 'Swipe sideways',
+      ospitato: 'This video is hosted by Instagram. By loading it, Instagram may receive your IP address and use cookies.',
+      dettagli: 'Details',
+      carica: 'Load video',
+      leggiDiPiu: 'Read more',
+      visualizzazioni: 'views',
+      unitaMigliaia: 'K',
+      unitaMilioni: 'M',
+      localeNumeri: 'en-GB',
+      vaiSuInstagram: 'Go to Instagram',
+    },
+
+    preventivo: {
+      titolo1: 'A few questions,',
+      titolo2: 'and your quote is on its way.',
+      facoltativo: ' (optional)',
+      trappola: 'Do not fill in this field',
+      privacyA: 'I have read the ',
+      privacyLink: 'privacy notice',
+      privacyB: ' and I understand that my data will be used to reply to this quote request.',
+      indietro: '← Back',
+      avanti: 'Next →',
+      invia: 'Send request',
+      invioInCorso: 'Sending…',
+      grazieTitolo: 'Request received',
+      grazieTesto: 'I’ll send you the quote within 24 hours, to the email address you gave me.',
+      erroreInvio: 'I couldn’t send your request. Please try again in a moment.',
+      erroreNonCollegato: 'Sending is not connected yet: the Supabase credentials are missing in .env.local',
+    },
+
+    contatti: {
+      titolo1: 'Let’s talk.',
+      titolo2: 'Choose how.',
+      testoA: 'The first conversation is free. If you’d rather start from your project, the ',
+      testoLink: 'quote form',
+      testoB: ' does half the work.',
+      canali: {
+        telefono: { etichetta: 'Phone', nota: 'Call me, I pick up myself' },
+        whatsapp: { etichetta: 'WhatsApp', nota: 'Message me anytime' },
+        email: { etichetta: 'Email', nota: 'For quotes and documents' },
+      },
+      privacy: 'Privacy and cookies',
+      luogo: 'Gravina in Puglia, Italy',
+    },
+  },
+}
+
+/* ----------------------------------------------------------------------------
+   TESTI DEL SITO SCURO (stessa lingua scelta dal visitatore, condivisa col lato chiaro)
+   -------------------------------------------------------------------------- */
+TESTI.it.scuro = {
+  navbar: {
+    voci: { servizi: 'Servizi', portfolio: 'Portfolio', 'chi-sono': 'Chi sono', configuratore: 'Preventivo', contatti: 'Contatti' },
+    logoAria: 'Salvatore Lombardi — torna all’inizio',
+    apriMenu: 'Apri il menu',
+    chiudiMenu: 'Chiudi il menu',
+    principale: '← Sito principale',
+    tornaPrincipale: '← Torna al sito principale',
+    lingua: 'Lingua',
+  },
+  hero: {
+    eyebrow: 'Web · Grafica · Video · Social',
+    t1: 'Il tuo progetto digitale,',
+    t2: 'dal preventivo al sito online',
+    lead: 'Siti, ecommerce e app per la tua attività. Compila il configuratore e ricevi un preventivo in poche ore.',
+    garanzia: 'Risposta entro 24 ore · Nessun impegno',
+  },
+  cta: 'Richiedi il tuo preventivo',
+  scorri: { aria: 'Scorri verso i servizi', testo: 'Scorri' },
+  servizi: {
+    eyebrow: 'Servizi',
+    t1: 'Quello che ti serve,',
+    t2: 'dal sito ai social.',
+    lead: 'Che ti serva solo un sito o l’intera presenza online, parti da un preventivo chiaro e senza sorprese.',
+  },
+  portfolio: { eyebrow: 'Portfolio', t1: 'Lavori recenti,', t2: 'ognuno con uno scopo.', vuoto: 'Nessun lavoro in questa categoria.', leggi: 'Leggi di più' },
+  modale: { chiudi: 'Chiudi', visita: 'Visita il sito' },
+  video: {
+    eyebrow: 'Video',
+    t1: 'Video recenti,',
+    t2: 'riprese aeree, dettagli e montaggio.',
+    guarda: 'Guarda il video',
+    pausa: 'Pausa',
+  },
+  chiSono: {
+    eyebrow: 'Chi sono',
+    t1: 'Salvatore Lombardi,',
+    t2: 'un solo interlocutore per tutto.',
+    foto: 'Salvatore Lombardi',
+    paragrafi: [
+      'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
+      'Non realizzo mai due lavori identici: ogni attività ha una storia propria, e il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo ogni dettaglio finché l’insieme risulta armonioso. Per te significa un risultato rifinito, mai approssimativo.',
+      'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi. Parli sempre direttamente con me: ti ascolto con pazienza, mi metto nei tuoi panni e lavoro nel rispetto delle persone e dei loro tempi. Studio con costanza le novità del settore, per proporti soluzioni sempre attuali.',
+    ],
+  },
+  configuratore: { eyebrow: 'Configuratore', t1: 'Cinque domande,', t2: 'e il preventivo è in arrivo.', indietro: 'Indietro', avanti: 'Avanti' },
+  contatti: {
+    eyebrow: 'Contatti',
+    t1: 'Parliamone.',
+    t2: 'Il primo confronto non si paga.',
+    lead: 'Se preferisci partire dal preventivo, il configuratore qui sopra fa metà del lavoro. Altrimenti scegli il canale che ti è più comodo.',
+  },
+  footer: {
+    tagline: 'Siti, ecommerce e app per la tua attività. Grafica, video e social, con un solo interlocutore.',
+    sezioni: 'Sezioni',
+    contatti: 'Contatti',
+    diritti: 'Tutti i diritti riservati.',
+  },
+  tornaSu: 'Torna su',
+  cuboFreccia: 'Cubo tridimensionale con una freccia in su',
+  cuboServizi: 'Cubo tridimensionale con i quattro servizi: Web, Grafica, Video e Social',
+}
+
+TESTI.en.scuro = {
+  navbar: {
+    voci: { servizi: 'Services', portfolio: 'Portfolio', 'chi-sono': 'About me', configuratore: 'Quote', contatti: 'Contact' },
+    logoAria: 'Salvatore Lombardi — back to the top',
+    apriMenu: 'Open menu',
+    chiudiMenu: 'Close menu',
+    principale: '← Main site',
+    tornaPrincipale: '← Back to the main site',
+    lingua: 'Language',
+  },
+  hero: {
+    eyebrow: 'Web · Graphics · Video · Social',
+    t1: 'Your digital project,',
+    t2: 'from quote to live website',
+    lead: 'Websites, e-commerce and apps for your business. Fill in the configurator and get a quote within hours.',
+    garanzia: 'Reply within 24 hours · No commitment',
+  },
+  cta: 'Request your quote',
+  scorri: { aria: 'Scroll down to the services', testo: 'Scroll' },
+  servizi: {
+    eyebrow: 'Services',
+    t1: 'What you need,',
+    t2: 'from the website to social media.',
+    lead: 'Whether you only need a website or your whole online presence, start from a clear quote with no surprises.',
+  },
+  portfolio: { eyebrow: 'Portfolio', t1: 'Recent work,', t2: 'each with a purpose.', vuoto: 'No work in this category.', leggi: 'Read more' },
+  modale: { chiudi: 'Close', visita: 'Visit the website' },
+  video: {
+    eyebrow: 'Video',
+    t1: 'Recent videos,',
+    t2: 'aerial footage, details and editing.',
+    guarda: 'Watch the video',
+    pausa: 'Pause',
+  },
+  chiSono: {
+    eyebrow: 'About me',
+    t1: 'Salvatore Lombardi,',
+    t2: 'one point of contact for everything.',
+    foto: 'Salvatore Lombardi',
+    paragrafi: [
+      'I’m Salvatore, a developer and designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
+      'I never make two identical projects: every business has its own story, and the project has to be able to tell it. I’m an aesthete and a perfectionist: I look after every detail until the whole feels harmonious. For you, that means a polished result, never an approximate one.',
+      'I start from the difficulties you face every day, because technology makes sense when it prevents mistakes or helps put them right. You always deal with me directly: I listen patiently, I put myself in your shoes and I work with respect for people and their time. I keep up with news in the industry, so I can offer you solutions that are always up to date.',
+    ],
+  },
+  configuratore: { eyebrow: 'Configurator', t1: 'Five questions,', t2: 'and your quote is on its way.', indietro: 'Back', avanti: 'Next' },
+  contatti: {
+    eyebrow: 'Contact',
+    t1: 'Let’s talk.',
+    t2: 'The first conversation is free.',
+    lead: 'If you’d rather start from a quote, the configurator above does half the work. Otherwise, choose the channel that suits you best.',
+  },
+  footer: {
+    tagline: 'Websites, e-commerce and apps for your business. Graphics, video and social media, with a single point of contact.',
+    sezioni: 'Sections',
+    contatti: 'Contact',
+    diritti: 'All rights reserved.',
+  },
+  tornaSu: 'Back to top',
+  cuboFreccia: 'Three-dimensional cube with an up arrow',
+  cuboServizi: 'Three-dimensional cube with the four services: Web, Graphics, Video and Social',
+}

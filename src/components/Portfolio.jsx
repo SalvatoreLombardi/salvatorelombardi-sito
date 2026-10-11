@@ -1,3 +1,5 @@
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { etichettaCategoria, lavoroTradotto } from '../i18n/contenuti.js'
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
@@ -15,6 +17,8 @@ import { LogoConBolle } from './portfolio/LogoConBolle'
 const EASE = [0.16, 1, 0.3, 1]
 
 export function Portfolio() {
+  const { t, lingua } = useLingua()
+  const pf = t.scuro.portfolio
   const [filtro, setFiltro] = useState('tutti')
 
   const visibili =
@@ -28,13 +32,13 @@ export function Portfolio() {
           <Reveal y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Portfolio
+              {pf.eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Lavori recenti,</span>{' '}
-            <span className="text-white/40">ognuno con uno scopo.</span>
+            <span className="text-white">{pf.t1}</span>{' '}
+            <span className="text-white/40">{pf.t2}</span>
           </Reveal>
         </div>
 
@@ -51,7 +55,7 @@ export function Portfolio() {
                   : 'bg-white/[0.06] text-white/60 hover:bg-white/10 hover:text-white'
               }`}
             >
-              {categoria.label}
+              {etichettaCategoria(categoria.id, categoria.label, lingua)}
             </button>
           ))}
         </Reveal>
@@ -60,13 +64,13 @@ export function Portfolio() {
         <motion.div layout className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {visibili.map((lavoro, i) => (
-              <CardLavoro key={lavoro.id} lavoro={lavoro} indice={i} />
+              <CardLavoro key={lavoro.id} lavoro={lavoroTradotto(lavoro, lingua)} indice={i} />
             ))}
           </AnimatePresence>
         </motion.div>
 
         {visibili.length === 0 && (
-          <p className="mt-16 text-center text-white/40">Nessun lavoro in questa categoria.</p>
+          <p className="mt-16 text-center text-white/40">{pf.vuoto}</p>
         )}
       </div>
     </section>
@@ -75,6 +79,7 @@ export function Portfolio() {
 
 /** Una singola card. Diventa un link solo se il progetto ha un indirizzo. */
 function CardLavoro({ lavoro, indice }) {
+  const { t } = useLingua()
   const [aperta, setAperta] = useState(false)
   // Il link è solo sull'immagine, così il bottone "Leggi di più" non finisce dentro un <a>
   const Immagine = lavoro.link ? 'a' : 'div'
@@ -185,7 +190,7 @@ function CardLavoro({ lavoro, indice }) {
             className="mt-auto inline-flex self-start pt-4 items-center gap-1.5 text-[0.9375rem] font-medium text-accent-400
                        transition-colors duration-300 hover:text-white"
           >
-            Leggi di più
+            {t.scuro.portfolio.leggi}
             <svg
               viewBox="0 0 20 20"
               className="size-4"

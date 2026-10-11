@@ -1,3 +1,5 @@
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { etichettaCategoria, lavoroTradotto } from '../i18n/contenuti.js'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
@@ -37,7 +39,7 @@ const SITO_SCURO = {
       ['Lato scuro', 'Fondo nero, vetro e riflessi, angoli morbidi, un solo colore verde acqua e un cubo 3D che segue il mouse.'],
       ['Lato chiaro', 'Carta e inchiostro, angoli vivi, titoli enormi in contorno e in pieno, linee a matita e un cubo che mostra le sue facce con lo scroll.'],
       ['Stessi contenuti', 'Servizi, lavori e contatti sono gli stessi: cambia solo il modo di raccontarli, così la manutenzione resta una sola.'],
-      ['Si passa con un clic', 'Dal lato chiaro un bottone nell’angolo porta al lato scuro.'],
+      ['Si passa con un clic', 'Il bottone “Apri il lato scuro” porta al lato scuro, e da lì il bottone “Sito principale” riporta qui.'],
     ],
   },
 }
@@ -46,9 +48,9 @@ const SITO_SCURO = {
 const ORDINE = ['le-terrazze-sul-mondo', 'identitario', 'sito-scuro', 'baggo', 'identitario-instagram']
 const ELENCO = ORDINE.map((id) => (id === 'sito-scuro' ? SITO_SCURO : LAVORI.find((l) => l.id === id))).filter(Boolean)
 
-const etichetta = (cat) => {
+const etichetta = (cat, lingua = 'it') => {
   const lista = Array.isArray(cat) ? cat : [cat]
-  return lista.map((id) => CATEGORIE.find((c) => c.id === id)?.label ?? id).join(' · ')
+  return lista.map((id) => etichettaCategoria(id, CATEGORIE.find((c) => c.id === id)?.label ?? id, lingua)).join(' · ')
 }
 
 /** Link esterno (scheda nuova) oppure interno al sito. */
@@ -76,6 +78,8 @@ function Collegamento({ lavoro, children, ...resto }) {
 
 /** Anteprima: lo stesso contenuto nei due stili, scuro sopra e chiaro sotto, divisi da una linea che segue il mouse. */
 function ConfrontoStili() {
+  const { t } = useLingua()
+  const cf = t.lavori.confronto
   const ref = useRef(null)
   useEffect(() => {
     const el = ref.current
@@ -109,21 +113,21 @@ function ConfrontoStili() {
     <div ref={ref} className="h-cf" aria-hidden="true">
       <div className="h-cf-chiaro">
         <p className="h-cf-frase">
-          un solo interlocutore
+          {cf.chiaroFrase[0]}
           <br />
-          per tutto.
+          {cf.chiaroFrase[1]}
         </p>
-        <span className="h-cf-bottone">Parliamone</span>
-        <span className="h-cf-etichetta h-cf-etichetta-dx">Lato chiaro</span>
+        <span className="h-cf-bottone">{cf.parliamone}</span>
+        <span className="h-cf-etichetta h-cf-etichetta-dx">{cf.chiaro}</span>
       </div>
       <div className="h-cf-scuro">
         <p className="h-cf-frase">
-          Un solo interlocutore
+          {cf.scuroFrase[0]}
           <br />
-          <span>per tutto.</span>
+          <span>{cf.scuroFrase[1]}</span>
         </p>
-        <span className="h-cf-bottone">Parliamone</span>
-        <span className="h-cf-etichetta">Lato scuro</span>
+        <span className="h-cf-bottone">{cf.parliamone}</span>
+        <span className="h-cf-etichetta">{cf.scuro}</span>
       </div>
       <span className="h-cf-linea" />
     </div>
@@ -154,6 +158,7 @@ function Anteprima({ lavoro }) {
 }
 
 function Lavoro({ lavoro, indice, apri }) {
+  const { t, lingua } = useLingua()
   const ref = useRef(null)
   const cornice = useRef(null)
   const ridotto = useReducedMotion()
@@ -191,7 +196,7 @@ function Lavoro({ lavoro, indice, apri }) {
             lavoro={lavoro}
             className="h-lv-apri"
             data-cursore=""
-            aria-label={`${lavoro.testoLink ?? 'Visita il sito'}: ${lavoro.titolo}`}
+            aria-label={`${lavoro.testoLink ?? t.lavori.visita}: ${lavoro.titolo}`}
           />
         )}
       </motion.div>
@@ -201,18 +206,18 @@ function Lavoro({ lavoro, indice, apri }) {
           0{indice + 1}
         </span>
         <p className="h-lv-meta">
-          {etichetta(lavoro.categoria)} · {lavoro.anno}
+          {etichetta(lavoro.categoria, lingua)} · {lavoro.anno}
         </p>
         <p className="h-lv-testo">{lavoro.descrizione}</p>
         <div className="h-lv-azioni">
           {lavoro.completa && (
             <button type="button" className="h-lv-piu" onClick={() => apri(lavoro)}>
-              Leggi di più <span aria-hidden="true">→</span>
+              {t.lavori.leggiDiPiu} <span aria-hidden="true">→</span>
             </button>
           )}
           {lavoro.link && (
             <Collegamento lavoro={lavoro} className="h-lv-link">
-              {lavoro.testoLink ?? 'Visita il sito'} <span aria-hidden="true">{lavoro.interno || lavoro.stessaScheda ? '→' : '↗'}</span>
+              {lavoro.testoLink ?? t.lavori.visita} <span aria-hidden="true">{lavoro.interno || lavoro.stessaScheda ? '→' : '↗'}</span>
             </Collegamento>
           )}
         </div>
@@ -223,6 +228,7 @@ function Lavoro({ lavoro, indice, apri }) {
 
 /** Descrizione completa di un lavoro: pannello squadrato sopra la pagina. Si chiude con Esc, fuori o "Chiudi". */
 export function ModaleLavoro({ lavoro, chiudi }) {
+  const { t, lingua } = useLingua()
   const ridotto = useReducedMotion()
   const pannello = useRef(null)
   useEffect(() => {
@@ -262,9 +268,9 @@ export function ModaleLavoro({ lavoro, chiudi }) {
             transition={{ duration: ridotto ? 0 : 0.7, ease: EASE }}
           >
             <button type="button" className="h-mod-chiudi" onClick={chiudi}>
-              Chiudi
+              {t.lavori.chiudi}
             </button>
-            <p className="h-mod-meta">{[lavoro.categoria && etichetta(lavoro.categoria), lavoro.anno].filter(Boolean).join(' · ')}</p>
+            <p className="h-mod-meta">{[lavoro.categoria && etichetta(lavoro.categoria, lingua), lavoro.anno].filter(Boolean).join(' · ')}</p>
             <h3 className="h-mod-titolo">{lavoro.titolo}</h3>
             {lavoro.completa.intro && <p className="h-mod-intro">{lavoro.completa.intro}</p>}
             {lavoro.completa.paragrafi?.map((p) => (
@@ -283,7 +289,7 @@ export function ModaleLavoro({ lavoro, chiudi }) {
             </ul>
             {lavoro.link && (
               <Collegamento lavoro={lavoro} className="h-mod-bottone">
-                {lavoro.testoLink ?? 'Visita il sito'} {lavoro.interno || lavoro.stessaScheda ? '→' : '↗'}
+                {lavoro.testoLink ?? t.lavori.visita} {lavoro.interno || lavoro.stessaScheda ? '→' : '↗'}
               </Collegamento>
             )}
           </motion.div>
@@ -294,30 +300,32 @@ export function ModaleLavoro({ lavoro, chiudi }) {
 }
 
 export function LavoriChiaro() {
+  const { t, lingua } = useLingua()
   const intesta = useRef(null)
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
   const [aperto, setAperto] = useState(null)
   const chiudi = () => setAperto(null)
+  const apertoOriginale = ELENCO.find((l) => l.id === aperto)
   return (
     <section className="h-lvs" id="lavori" aria-labelledby="h-lvs-titolo">
       <h2 id="h-lvs-titolo" ref={intesta} className="h-sv-intesta">
         <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">Ogni lavoro</span>
-          <span className="h-sv-riempimento">Ogni lavoro</span>
+          <span className="h-sv-contorno">{t.lavori.titolo1}</span>
+          <span className="h-sv-riempimento">{t.lavori.titolo1}</span>
         </span>
         <span className={`h-sv-riga h-sv-riempi ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">ha una storia.</span>
-          <span className="h-sv-riempimento">ha una storia.</span>
+          <span className="h-sv-contorno">{t.lavori.titolo2}</span>
+          <span className="h-sv-riempimento">{t.lavori.titolo2}</span>
         </span>
       </h2>
 
       <div className="h-lv-elenco">
         {ELENCO.map((lavoro, i) => (
-          <Lavoro key={lavoro.id} lavoro={lavoro} indice={i} apri={setAperto} />
+          <Lavoro key={lavoro.id} lavoro={lavoroTradotto(lavoro, lingua)} indice={i} apri={(l) => setAperto(l.id)} />
         ))}
       </div>
 
-      <ModaleLavoro lavoro={aperto} chiudi={chiudi} />
+      <ModaleLavoro lavoro={apertoOriginale ? lavoroTradotto(apertoOriginale, lingua) : null} chiudi={chiudi} />
     </section>
   )
 }

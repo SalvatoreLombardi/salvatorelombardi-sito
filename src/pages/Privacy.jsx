@@ -41,6 +41,7 @@ export default function Privacy() {
   useEffect(() => {
     window.scrollTo(0, 0)
     document.title = 'Privacy e cookie — Salvatore Lombardi'
+    document.documentElement.lang = 'it' // l'informativa è solo in italiano
   }, [])
 
   return (

@@ -1,21 +1,19 @@
 import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati'
 import { vaiAllaSezione } from '../lib/scroll'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    FOOTER
    Chiusura scura: stacca dal bianco del sito e dà un finale netto alla pagina.
    ========================================================================== */
 
-const VOCI = [
-  { id: 'servizi', label: 'Servizi' },
-  { id: 'portfolio', label: 'Portfolio' },
-  { id: 'chi-sono', label: 'Chi sono' },
-  { id: 'configuratore', label: 'Preventivo' },
-  { id: 'contatti', label: 'Contatti' },
-]
+const ID_VOCI = ['servizi', 'portfolio', 'chi-sono', 'configuratore', 'contatti']
 
 export function Footer() {
+  const { t } = useLingua()
+  const f = t.scuro.footer
+  const VOCI = ID_VOCI.map((id) => ({ id, label: t.scuro.navbar.voci[id] }))
   const anno = new Date().getFullYear()
   const socialAttivi = SOCIAL.filter((s) => s.url)
 
@@ -34,8 +32,7 @@ export function Footer() {
               </span>
             </span>
             <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-ink-500 text-pretty">
-              Siti, ecommerce e app per la tua attività. Grafica, video e social, con un solo
-              interlocutore.
+              {f.tagline}
             </p>
 
             {socialAttivi.length > 0 && (
@@ -60,7 +57,7 @@ export function Footer() {
 
           {/* --- Navigazione --- */}
           <nav>
-            <p className="text-[0.6875rem] uppercase tracking-[0.08em] text-ink-600">Sezioni</p>
+            <p className="text-[0.6875rem] uppercase tracking-[0.08em] text-ink-600">{f.sezioni}</p>
             <ul className="mt-4 space-y-2.5">
               {VOCI.map((voce) => (
                 <li key={voce.id}>
@@ -78,7 +75,7 @@ export function Footer() {
 
           {/* --- Contatti --- */}
           <div>
-            <p className="text-[0.6875rem] uppercase tracking-[0.08em] text-ink-600">Contatti</p>
+            <p className="text-[0.6875rem] uppercase tracking-[0.08em] text-ink-600">{f.contatti}</p>
             <ul className="mt-4 space-y-2.5">
               <li>
                 <a
@@ -113,14 +110,14 @@ export function Footer() {
         {/* --- Riga finale --- */}
         <div className="mt-14 flex flex-col gap-2 border-t border-ink-800 pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[0.8125rem] text-ink-600">
-            © {anno} Salvatore Lombardi. Tutti i diritti riservati.
+            © {anno} Salvatore Lombardi. {f.diritti}
           </p>
           {/* TODO: quando apri la partita IVA, aggiungila qui accanto */}
           <p className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[0.8125rem] text-ink-600">
             <a href="#/privacy" className="transition-colors duration-300 hover:text-white">
-              Privacy e cookie
+              {t.contatti.privacy}
             </a>
-            <span>Gravina in Puglia, Italia</span>
+            <span>{t.contatti.luogo}</span>
           </p>
         </div>
       </div>

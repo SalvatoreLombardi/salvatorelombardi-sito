@@ -1,3 +1,5 @@
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { passoTradotto } from '../i18n/contenuti.js'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useInView, useReducedMotion } from 'motion/react'
@@ -52,11 +54,12 @@ function Scelta({ campo, valore, onChange }) {
 
 /** Campo di testo o email: solo la linea sotto, scrittura grande. */
 function Testo({ campo, valore, onChange }) {
+  const { t } = useLingua()
   return (
     <div className="h-pv-campo">
       <label htmlFor={`pv-${campo.nome}`}>
         {campo.titolo}
-        {!campo.obbligatorio && <em> (facoltativo)</em>}
+        {!campo.obbligatorio && <em>{t.preventivo.facoltativo}</em>}
       </label>
       <input
         id={`pv-${campo.nome}`}
@@ -88,6 +91,7 @@ function Avanzamento({ quota }) {
 }
 
 export function PreventivoChiaro() {
+  const { t, lingua } = useLingua()
   const ridotto = useReducedMotion()
   const intesta = useRef(null)
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
@@ -103,7 +107,7 @@ export function PreventivoChiaro() {
 
   // I passi dipendono dal tipo di progetto scelto al primo passo
   const passi = passiPer(dati.tipoProgetto)
-  const step = passi[passo]
+  const step = passoTradotto(passi[passo], lingua) // i testi seguono la lingua; i nomi dei campi e i valori restano quelli di sempre
   const ultimo = passo === passi.length - 1
   const aggiorna = (nome, valore) => setDati((p) => ({ ...p, [nome]: valore }))
 
@@ -135,7 +139,7 @@ export function PreventivoChiaro() {
       return
     }
     if (!supabaseAttivo) {
-      setErrore('Invio non ancora collegato: mancano le credenziali Supabase in .env.local')
+      setErrore(t.preventivo.erroreNonCollegato)
       return
     }
     setInvioInCorso(true)
@@ -149,6 +153,7 @@ export function PreventivoChiaro() {
         dettagli[campo.nome] = v
       }
     }
+    dettagli.lingua = lingua // così so in che lingua rispondere
     // I nomi delle colonne seguono lo schema in supabase/schema.sql
     const { error } = await supabase.from('richieste').insert({
       dettagli,
@@ -165,7 +170,7 @@ export function PreventivoChiaro() {
     setInvioInCorso(false)
     if (error) {
       console.error('Errore invio richiesta:', error)
-      setErrore('Non sono riuscito a inviare la richiesta. Riprova fra poco.')
+      setErrore(t.preventivo.erroreInvio)
       return
     }
     setInviato(true)
@@ -178,12 +183,12 @@ export function PreventivoChiaro() {
     <section className="h-pv" id="preventivo" aria-labelledby="h-pv-titolo">
       <h2 id="h-pv-titolo" ref={intesta} className="h-sv-intesta h-pv-intesta">
         <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">Poche domande,</span>
-          <span className="h-sv-riempimento">Poche domande,</span>
+          <span className="h-sv-contorno">{t.preventivo.titolo1}</span>
+          <span className="h-sv-riempimento">{t.preventivo.titolo1}</span>
         </span>
         <span className={`h-sv-riga h-sv-riempi ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">e il preventivo è in arrivo.</span>
-          <span className="h-sv-riempimento">e il preventivo è in arrivo.</span>
+          <span className="h-sv-contorno">{t.preventivo.titolo2}</span>
+          <span className="h-sv-riempimento">{t.preventivo.titolo2}</span>
         </span>
       </h2>
 
@@ -198,8 +203,8 @@ export function PreventivoChiaro() {
                 transition={{ duration: 1.2, delay: 0.3, ease: EASE }}
               />
             </svg>
-            <h3>Richiesta ricevuta</h3>
-            <p>Ti mando il preventivo entro 24 ore all’indirizzo che hai indicato.</p>
+            <h3>{t.preventivo.grazieTitolo}</h3>
+            <p>{t.preventivo.grazieTesto}</p>
           </motion.div>
         ) : (
           <form onSubmit={invia}>
@@ -241,7 +246,7 @@ export function PreventivoChiaro() {
             {ultimo && (
               <div aria-hidden="true" className="h-sr">
                 <label>
-                  Non compilare questo campo
+                  {t.preventivo.trappola}
                   <input type="text" name="sito_web" tabIndex={-1} autoComplete="off" value={trappola} onChange={(e) => setTrappola(e.target.value)} />
                 </label>
               </div>
@@ -252,11 +257,11 @@ export function PreventivoChiaro() {
                 <input type="checkbox" checked={lettoPrivacy} onChange={(e) => setLettoPrivacy(e.target.checked)} />
                 <span className="h-pv-casella" aria-hidden="true" />
                 <span>
-                  Ho letto l’
+                  {t.preventivo.privacyA}
                   <Link to="/privacy" target="_blank" rel="noreferrer">
-                    informativa sulla privacy
-                  </Link>{' '}
-                  e so che userete i miei dati per rispondere a questa richiesta di preventivo.
+                    {t.preventivo.privacyLink}
+                  </Link>
+                  {t.preventivo.privacyB}
                 </span>
               </label>
             )}
@@ -269,15 +274,15 @@ export function PreventivoChiaro() {
 
             <div className="h-pv-nav">
               <button type="button" className="h-pv-indietro" onClick={indietro} style={{ visibility: passo === 0 ? 'hidden' : 'visible' }}>
-                ← Indietro
+                {t.preventivo.indietro}
               </button>
               {ultimo ? (
                 <button type="submit" className="h-pv-avanti" disabled={bloccato}>
-                  {invioInCorso ? 'Invio in corso…' : 'Invia richiesta'}
+                  {invioInCorso ? t.preventivo.invioInCorso : t.preventivo.invia}
                 </button>
               ) : (
                 <button type="button" className="h-pv-avanti" onClick={avanti} disabled={!completo}>
-                  Avanti →
+                  {t.preventivo.avanti}
                 </button>
               )}
             </div>

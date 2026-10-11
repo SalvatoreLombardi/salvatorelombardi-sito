@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useInView } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll.js'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati.jsx'
 
 /* ============================================================================
@@ -11,20 +12,14 @@ import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '.
    sito scuro (`components/contatti/dati.jsx`): un solo punto da modificare.
    ========================================================================== */
 
-const CANALI = [
-  { id: 'telefono', etichetta: 'Telefono', valore: TELEFONO_LEGGIBILE, nota: 'Chiamami, rispondo io', href: `tel:${TELEFONO_INTL}` },
-  {
-    id: 'whatsapp',
-    etichetta: 'WhatsApp',
-    valore: TELEFONO_LEGGIBILE,
-    nota: 'Scrivimi quando vuoi',
-    href: `https://wa.me/${TELEFONO_INTL.replace('+', '')}`,
-    esterno: true,
-  },
-  { id: 'email', etichetta: 'Email', valore: EMAIL, nota: 'Per preventivi e documenti', href: `mailto:${EMAIL}` },
-]
-
 export function ContattiChiaro() {
+  const { t } = useLingua()
+  const c = t.contatti
+  const CANALI = [
+    { id: 'telefono', valore: TELEFONO_LEGGIBILE, href: `tel:${TELEFONO_INTL}` },
+    { id: 'whatsapp', valore: TELEFONO_LEGGIBILE, href: `https://wa.me/${TELEFONO_INTL.replace('+', '')}`, esterno: true },
+    { id: 'email', valore: EMAIL, href: `mailto:${EMAIL}` },
+  ]
   const intesta = useRef(null)
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
   const social = SOCIAL.filter((s) => s.url)
@@ -35,18 +30,19 @@ export function ContattiChiaro() {
       <h2 id="h-ct-titolo" ref={intesta} className="h-sv-intesta h-ct-intesta">
         {/* "Parliamone." parte pieno e si svuota da sinistra; la seconda riga parte vuota e si riempie da destra */}
         <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">Parliamone.</span>
-          <span className="h-sv-riempimento">Parliamone.</span>
+          <span className="h-sv-contorno">{c.titolo1}</span>
+          <span className="h-sv-riempimento">{c.titolo1}</span>
         </span>
         <span className={`h-sv-riga h-sv-riempi ${dentro ? 'h-sv-scambiato' : ''}`}>
-          <span className="h-sv-contorno">Scegli come.</span>
-          <span className="h-sv-riempimento">Scegli come.</span>
+          <span className="h-sv-contorno">{c.titolo2}</span>
+          <span className="h-sv-riempimento">{c.titolo2}</span>
         </span>
       </h2>
 
       <p className="h-ct-testo">
-        Il primo confronto non si paga. Se preferisci partire dal progetto,{' '}
-        <a href="#preventivo" onClick={(e) => vaiAllaSezione(e, 'preventivo')}>il preventivo</a> fa metà del lavoro.
+        {c.testoA}
+        <a href="#preventivo" onClick={(e) => vaiAllaSezione(e, 'preventivo')}>{c.testoLink}</a>
+        {c.testoB}
       </p>
 
       <ul className="h-ct-canali">
@@ -59,9 +55,9 @@ export function ContattiChiaro() {
               rel={canale.esterno ? 'noreferrer' : undefined}
               data-cursore=""
             >
-              <span className="h-ct-etichetta">{canale.etichetta}</span>
+              <span className="h-ct-etichetta">{c.canali[canale.id].etichetta}</span>
               <span className="h-ct-valore">{canale.valore}</span>
-              <span className="h-ct-nota">{canale.nota}</span>
+              <span className="h-ct-nota">{c.canali[canale.id].nota}</span>
               <span className="h-ct-freccia" aria-hidden="true">
                 →
               </span>
@@ -83,8 +79,8 @@ export function ContattiChiaro() {
       <footer className="h-ct-fine">
         <p>© {anno} Salvatore Lombardi</p>
         <p>
-          <Link to="/privacy">Privacy e cookie</Link>
-          <span>Gravina in Puglia, Italia</span>
+          <Link to="/privacy">{c.privacy}</Link>
+          <span>{c.luogo}</span>
         </p>
       </footer>
     </section>

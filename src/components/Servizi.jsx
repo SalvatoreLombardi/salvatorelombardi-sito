@@ -1,4 +1,6 @@
 import { Reveal } from '../ui/Reveal'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { servizioTradotto } from '../i18n/contenuti.js'
 
 /* ============================================================================
    SERVIZI — le tre cose che offri.
@@ -68,6 +70,8 @@ export const SERVIZI = [
 ]
 
 export function Servizi() {
+  const { t, lingua } = useLingua()
+  const sz = t.scuro.servizi
   return (
     <section id="servizi" className="relative">
       <div className="container-site section-y">
@@ -76,28 +80,29 @@ export function Servizi() {
           <Reveal y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Servizi
+              {sz.eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Quello che ti serve,</span>{' '}
-            <span className="text-white/40">dal sito ai social.</span>
+            <span className="text-white">{sz.t1}</span>{' '}
+            <span className="text-white/40">{sz.t2}</span>
           </Reveal>
 
           <Reveal delay={0.2}>
             <p className="mt-6 text-lead text-white/55 text-pretty">
-              Che ti serva solo un sito o l’intera presenza online, parti da un preventivo
-              chiaro e senza sorprese.
+              {sz.lead}
             </p>
           </Reveal>
         </div>
 
         {/* --- Le tre card --- */}
         <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-4">
-          {SERVIZI.map((servizio, i) => (
+          {SERVIZI.map((servizioIt, i) => {
+            const servizio = servizioTradotto(servizioIt, lingua)
+            return (
             <Reveal
-              key={servizio.titolo}
+              key={servizioIt.titolo}
               // Cascata: ogni card entra poco dopo la precedente
               delay={0.1 * i}
               className="group flex flex-col rounded-xl border border-white/10 bg-white/[0.04] p-8
@@ -154,7 +159,8 @@ export function Servizi() {
                 ))}
               </ul>
             </Reveal>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>

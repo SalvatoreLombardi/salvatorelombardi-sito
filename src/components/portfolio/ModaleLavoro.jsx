@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'motion/react'
+import { useLingua } from '../../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    FINESTRA CON LA DESCRIZIONE COMPLETA DI UN LAVORO
@@ -9,6 +10,7 @@ import { AnimatePresence, motion } from 'motion/react'
    ========================================================================== */
 
 export function ModaleLavoro({ lavoro, aperta, onChiudi }) {
+  const { t } = useLingua()
   useEffect(() => {
     if (!aperta) return
     const suTasto = (e) => e.key === 'Escape' && onChiudi()
@@ -52,7 +54,7 @@ export function ModaleLavoro({ lavoro, aperta, onChiudi }) {
               <button
                 type="button"
                 onClick={onChiudi}
-                aria-label="Chiudi"
+                aria-label={t.scuro.modale.chiudi}
                 className="absolute right-4 top-4 flex size-9 items-center justify-center rounded-full
                            bg-white/[0.06] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
@@ -120,7 +122,7 @@ export function ModaleLavoro({ lavoro, aperta, onChiudi }) {
                   className="mt-9 inline-flex h-11 items-center gap-2 rounded-full bg-accent-500 px-6
                              text-[0.9375rem] font-medium text-white transition-colors hover:bg-accent-600"
                 >
-                  {lavoro.testoLink ?? 'Visita il sito'}
+                  {lavoro.testoLink ?? t.scuro.modale.visita}
                 </a>
               )}
             </div>

@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { NOTA_MUSICA, VIDEO } from '../components/portfolio/video.js'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { NOTA_MUSICA_EN, videoTradotto } from '../i18n/contenuti.js'
 import { ModaleLavoro } from './LavoriChiaro.jsx'
 
 /* ============================================================================
@@ -28,10 +30,11 @@ function Pin() {
 
 /** Visualizzazioni: il numero sale da 0 quando la carta entra nello schermo. */
 function Visualizzazioni({ valore }) {
+  const { t } = useLingua()
   const ref = useRef(null)
   const visibile = useInView(ref, { once: true })
   const ridotto = useReducedMotion()
-  const [divisore, unita] = valore >= 1_000_000 ? [1_000_000, 'milioni'] : valore >= 1000 ? [1000, 'mila'] : [1, '']
+  const [divisore, unita] = valore >= 1_000_000 ? [1_000_000, t.video.unitaMilioni] : valore >= 1000 ? [1000, t.video.unitaMigliaia] : [1, '']
   const arrivo = valore / divisore
   const decimali = Number.isInteger(arrivo) ? 0 : 1
   const [mostrato, setMostrato] = useState(ridotto ? arrivo : 0)
@@ -40,20 +43,21 @@ function Visualizzazioni({ valore }) {
     const c = animate(0, arrivo, { duration: 2.2, ease: EASE, onUpdate: setMostrato })
     return () => c.stop()
   }, [visibile, arrivo, ridotto])
-  const numero = mostrato.toLocaleString('it-IT', { minimumFractionDigits: decimali, maximumFractionDigits: decimali })
+  const numero = mostrato.toLocaleString(t.video.localeNumeri, { minimumFractionDigits: decimali, maximumFractionDigits: decimali })
   return (
     <p ref={ref} className="h-vd-viste">
       <strong>
         {numero}
-        {unita && ` ${unita}`}
+        {unita}
       </strong>
-      <span>visualizzazioni</span>
+      <span>{t.video.visualizzazioni}</span>
     </p>
   )
 }
 
 /** Riquadro 9:16: copertina nostra; l'embed di Instagram arriva solo dopo il clic. */
 function Riquadro({ video }) {
+  const { t } = useLingua()
   const [caricato, setCaricato] = useState(false)
   return (
     <div className="h-vd-riquadro" style={{ containerType: 'inline-size' }}>
@@ -73,11 +77,10 @@ function Riquadro({ video }) {
           <div className="h-vd-velo" />
           <div className="h-vd-cop">
             <p className="h-vd-privacy">
-              Il video è ospitato da Instagram. Caricandolo, Instagram può ricevere il tuo indirizzo IP e usare cookie.{' '}
-              <Link to="/privacy">Dettagli</Link>
+              {t.video.ospitato} <Link to="/privacy">{t.video.dettagli}</Link>
             </p>
             <button type="button" className="h-vd-carica" onClick={() => setCaricato(true)}>
-              Carica il video
+              {t.video.carica}
             </button>
           </div>
         </>
@@ -87,6 +90,7 @@ function Riquadro({ video }) {
 }
 
 function Carta({ video, apri }) {
+  const { t } = useLingua()
   return (
     <article className="h-vd-carta" data-cursore="">
       <Riquadro video={video} />
@@ -101,7 +105,7 @@ function Carta({ video, apri }) {
       <div className="h-vd-fondo">
         {video.testo && (
           <button type="button" className="h-lv-piu" onClick={() => apri(video)}>
-            Leggi di più <span aria-hidden="true">→</span>
+            {t.video.leggiDiPiu} <span aria-hidden="true">→</span>
           </button>
         )}
         {video.visualizzazioni && <Visualizzazioni valore={video.visualizzazioni} />}
@@ -111,6 +115,7 @@ function Carta({ video, apri }) {
 }
 
 export function VideoChiaro() {
+  const { t, lingua } = useLingua()
   const sezione = useRef(null)
   const traccia = useRef(null)
   const intesta = useRef(null)
@@ -138,12 +143,14 @@ export function VideoChiaro() {
     }
   }, [])
 
-  const datiModale = aperto && {
-    titolo: aperto.titolo,
+  const apertoOriginale = VIDEO.find((v) => v.id === aperto)
+  const apertoTradotto = apertoOriginale && videoTradotto(apertoOriginale, lingua)
+  const datiModale = apertoTradotto && {
+    titolo: apertoTradotto.titolo,
     categoria: 'video',
-    completa: { paragrafi: aperto.testo, nota: NOTA_MUSICA },
-    link: `https://www.instagram.com/p/${aperto.instagram}/`,
-    testoLink: 'Vai su Instagram',
+    completa: { paragrafi: apertoTradotto.testo, nota: lingua === 'en' ? NOTA_MUSICA_EN : NOTA_MUSICA },
+    link: `https://www.instagram.com/p/${apertoTradotto.instagram}/`,
+    testoLink: t.video.vaiSuInstagram,
   }
 
   return (
@@ -160,21 +167,21 @@ export function VideoChiaro() {
           <div className="h-vd-intro">
             <h2 id="h-vd-titolo" ref={intesta} className="h-sv-intesta h-vd-intesta">
               <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
-                <span className="h-sv-contorno">Riprese aeree,</span>
-                <span className="h-sv-riempimento">Riprese aeree,</span>
+                <span className="h-sv-contorno">{t.video.titolo1}</span>
+                <span className="h-sv-riempimento">{t.video.titolo1}</span>
               </span>
               <span className={`h-sv-riga h-sv-riempi ${dentro ? 'h-sv-scambiato' : ''}`}>
-                <span className="h-sv-contorno">dettagli, montaggio.</span>
-                <span className="h-sv-riempimento">dettagli, montaggio.</span>
+                <span className="h-sv-contorno">{t.video.titolo2}</span>
+                <span className="h-sv-riempimento">{t.video.titolo2}</span>
               </span>
             </h2>
             <p className="h-vd-guida" aria-hidden="true">
-              <span>{orizzontale ? 'Continua a scendere' : 'Scorri di lato'}</span>
+              <span>{orizzontale ? t.video.continuaScendere : t.video.scorriLato}</span>
               <FrecciaMatita lunghezza={150} altezza={40} className="h-vd-freccia" />
             </p>
           </div>
           {VIDEO.map((video) => (
-            <Carta key={video.id} video={video} apri={setAperto} />
+            <Carta key={video.id} video={videoTradotto(video, lingua)} apri={(v) => setAperto(v.id)} />
           ))}
         </motion.div>
       </div>

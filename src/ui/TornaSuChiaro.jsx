@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    TORNA SU — lato chiaro.
@@ -9,6 +10,7 @@ import { useEffect, useState } from 'react'
 const SOGLIA = 500 // px di scroll dopo i quali compare
 
 export function TornaSuChiaro() {
+  const { t } = useLingua()
   const [visibile, setVisibile] = useState(false)
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export function TornaSuChiaro() {
       type="button"
       className={`h-su ${visibile ? 'h-su-visibile' : ''}`}
       onClick={vaiSu}
-      aria-label="Torna in cima"
+      aria-label={t.tornaSu}
       tabIndex={visibile ? 0 : -1}
       data-cursore=""
     >

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    MENU — lato chiaro.
@@ -8,15 +9,6 @@ import { useEffect, useRef } from 'react'
    a mano, la stessa dell'ingresso: ondula piano e ogni voce ha il suo cerchietto
    sulla linea. Esc o il cerchio con la X lo chiudono.
    ========================================================================== */
-const VOCI = [
-  { id: 'chi-sono', nome: 'Chi sono' },
-  { id: 'servizi', nome: 'Servizi' },
-  { id: 'lavori', nome: 'Lavori' },
-  { id: 'video', nome: 'Video' },
-  { id: 'preventivo', nome: 'Preventivo' },
-  { id: 'contatti', nome: 'Contatti' },
-]
-
 // Lo stesso cerchio disegnato a mano del bottone del menu (viewBox 100)
 const CERCHIO = typeof Path2D !== 'undefined' ? new Path2D('M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5') : null
 const LARGHEZZA_LINEA = 44 // px: la colonna a sinistra dove corre la linea
@@ -138,6 +130,8 @@ function LineaTempo({ aperto, elenco, vociRef, attivaRef }) {
 }
 
 export function MenuChiaro({ aperto, chiudi, vai }) {
+  const { t, lingua, setLingua } = useLingua()
+  const VOCI = t.menu.voci
   const chiudiRef = useRef(null)
   const elencoRef = useRef(null)
   const vociRef = useRef([])
@@ -162,11 +156,11 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
       className={`h-menu ${aperto ? 'h-menu-aperto' : ''}`}
       role="dialog"
       aria-modal="true"
-      aria-label="Menu"
+      aria-label={t.menu.etichetta}
       inert={aperto ? undefined : true}
     >
       <div className="h-menu-fondo h-pannello-v" />
-      <button ref={chiudiRef} type="button" className="h-cerchio h-menu-chiudi" onClick={chiudi} aria-label="Chiudi il menu">
+      <button ref={chiudiRef} type="button" className="h-cerchio h-menu-chiudi" onClick={chiudi} aria-label={t.menu.chiudi}>
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <path d="M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5" />
         </svg>
@@ -176,7 +170,7 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
         </svg>
       </button>
 
-      <nav className="h-menu-voci" aria-label="Sezioni del sito">
+      <nav className="h-menu-voci" aria-label={t.menu.sezioni}>
         <LineaTempo aperto={aperto} elenco={elencoRef} vociRef={vociRef} attivaRef={attivaRef} />
         <ol ref={elencoRef}>
           {VOCI.map((voce, i) => (
@@ -202,6 +196,17 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
           ))}
         </ol>
       </nav>
+
+      <div className="h-menu-lingua" role="group" aria-label={t.menu.lingua}>
+        {[
+          ['it', 'IT'],
+          ['en', 'EN'],
+        ].map(([codice, sigla]) => (
+          <button key={codice} type="button" className={lingua === codice ? 'h-lingua-attiva' : ''} aria-pressed={lingua === codice} onClick={() => setLingua(codice)} lang={codice} data-cursore="">
+            {sigla}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { NOTA_MUSICA_EN, videoTradotto } from '../i18n/contenuti.js'
 import { useEffect, useRef, useState } from 'react'
 import { animate, motion, useInView, useReducedMotion } from 'motion/react'
 import { Reveal } from '../ui/Reveal'
@@ -13,6 +15,8 @@ import { ModaleLavoro } from './portfolio/ModaleLavoro'
 const EASE = [0.16, 1, 0.3, 1]
 
 export function Video() {
+  const { t, lingua } = useLingua()
+  const vv = t.scuro.video
   return (
     <section id="video" className="relative">
       <div className="container-site pb-24 sm:pb-32">
@@ -20,19 +24,19 @@ export function Video() {
           <Reveal y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Video
+              {vv.eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Video recenti,</span>{' '}
-            <span className="text-white/40">riprese aeree, dettagli e montaggio.</span>
+            <span className="text-white">{vv.t1}</span>{' '}
+            <span className="text-white/40">{vv.t2}</span>
           </Reveal>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3">
           {VIDEO.map((video, i) => (
-            <CardVideo key={video.id} video={video} indice={i} />
+            <CardVideo key={video.id} video={videoTradotto(video, lingua)} indice={i} />
           ))}
         </div>
       </div>
@@ -44,6 +48,7 @@ export function Video() {
     Instagram è un servizio di terzi: finché la persona non clicca "Carica il
     video" non carichiamo nulla (niente cookie, niente IP trasmesso). */
 function PlayerInstagram({ video }) {
+  const { t } = useLingua()
   const [caricato, setCaricato] = useState(false)
 
   return (
@@ -79,10 +84,9 @@ function PlayerInstagram({ video }) {
           )}
           <p className="relative text-[0.9375rem] font-medium text-white/90">{video.titolo}</p>
           <p className="relative text-[0.8125rem] leading-relaxed text-white/60 text-pretty">
-            Il video è ospitato da Instagram. Caricandolo, Instagram può ricevere il tuo indirizzo IP
-            e usare cookie.{' '}
+            {t.video.ospitato}{' '}
             <a href="#/privacy" className="underline underline-offset-2 hover:text-white">
-              Dettagli
+              {t.video.dettagli}
             </a>
           </p>
           <button
@@ -90,7 +94,7 @@ function PlayerInstagram({ video }) {
             onClick={() => setCaricato(true)}
             className="vetro-verde relative inline-flex h-11 items-center rounded-full px-6 text-[0.9375rem] font-medium"
           >
-            Carica il video
+            {t.video.carica}
           </button>
         </div>
       )}
@@ -100,6 +104,7 @@ function PlayerInstagram({ video }) {
 
 /** Player del sito: copertina, video e bottone verde di vetro sotto. */
 function PlayerVideo({ video }) {
+  const { t } = useLingua()
   const ref = useRef(null)
   const [inRiproduzione, setInRiproduzione] = useState(false)
 
@@ -142,7 +147,7 @@ function PlayerVideo({ video }) {
             <path d="M6 3.8v12.4a.8.8 0 0 0 1.2.7l10-6.2a.8.8 0 0 0 0-1.4l-10-6.2A.8.8 0 0 0 6 3.8Z" />
           </svg>
         )}
-        {inRiproduzione ? 'Pausa' : 'Guarda il video'}
+        {inRiproduzione ? t.scuro.video.pausa : t.scuro.video.guarda}
       </button>
     </div>
   )
@@ -151,13 +156,14 @@ function PlayerVideo({ video }) {
 /** Numero di visualizzazioni: sale da 0 al valore quando entra nello schermo.
  *  Sopra le mille si scrive "mila" (352 mila), sopra il milione "milioni". */
 function Visualizzazioni({ valore }) {
+  const { t } = useLingua()
   const ref = useRef(null)
   const visibile = useInView(ref, { once: true, margin: '-10% 0px' })
   const prefersReducedMotion = useReducedMotion()
 
   // Il numero che si vede e la parola che lo segue: 352000 -> 352 + "mila"
   const [divisore, unita] =
-    valore >= 1_000_000 ? [1_000_000, 'milioni'] : valore >= 1000 ? [1000, 'mila'] : [1, '']
+    valore >= 1_000_000 ? [1_000_000, t.video.unitaMilioni] : valore >= 1000 ? [1000, t.video.unitaMigliaia] : [1, '']
   const arrivo = valore / divisore
   const decimali = Number.isInteger(arrivo) ? 0 : 1
 
@@ -173,7 +179,7 @@ function Visualizzazioni({ valore }) {
     return () => controllo.stop()
   }, [visibile, arrivo, prefersReducedMotion])
 
-  const numero = mostrato.toLocaleString('it-IT', {
+  const numero = mostrato.toLocaleString(t.video.localeNumeri, {
     minimumFractionDigits: decimali,
     maximumFractionDigits: decimali,
   })
@@ -182,9 +188,9 @@ function Visualizzazioni({ valore }) {
     <p ref={ref} className="mt-3 flex items-baseline gap-2">
       <span className="font-display text-[1.75rem] font-semibold tabular-nums tracking-[-0.02em] text-accent-400">
         {numero}
-        {unita && ` ${unita}`}
+        {unita}
       </span>
-      <span className="text-[0.875rem] text-white/55">visualizzazioni</span>
+      <span className="text-[0.875rem] text-white/55">{t.video.visualizzazioni}</span>
     </p>
   )
 }
@@ -210,6 +216,7 @@ function PinLuogo() {
 
 /** Una card: video, titolo, descrizione, luogo, "Leggi di più" e visualizzazioni. */
 function CardVideo({ video, indice }) {
+  const { t, lingua } = useLingua()
   const [aperta, setAperta] = useState(false)
 
   return (
@@ -247,7 +254,7 @@ function CardVideo({ video, indice }) {
               className="inline-flex items-center gap-1.5 self-start text-[0.9375rem] font-medium text-accent-400
                          transition-colors duration-300 hover:text-white"
             >
-              Leggi di più
+              {t.video.leggiDiPiu}
               <svg
                 viewBox="0 0 20 20"
                 className="size-4"
@@ -264,9 +271,9 @@ function CardVideo({ video, indice }) {
             <ModaleLavoro
               lavoro={{
                 titolo: video.titolo,
-                completa: { paragrafi: video.testo, nota: NOTA_MUSICA },
+                completa: { paragrafi: video.testo, nota: lingua === 'en' ? NOTA_MUSICA_EN : NOTA_MUSICA },
                 link: `https://www.instagram.com/p/${video.instagram}/`,
-                testoLink: 'Vai su Instagram',
+                testoLink: t.video.vaiSuInstagram,
               }}
               aperta={aperta}
               onChiudi={() => setAperta(false)}

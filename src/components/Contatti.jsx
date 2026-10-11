@@ -1,4 +1,5 @@
 import { Reveal } from '../ui/Reveal'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import {
   EMAIL,
   IconaSocial,
@@ -31,28 +32,30 @@ const ICONE = {
 }
 
 export function Contatti() {
+  const { t } = useLingua()
+  const c = t.scuro.contatti
   const canali = [
     {
       id: 'telefono',
-      etichetta: 'Telefono',
+      etichetta: t.contatti.canali.telefono.etichetta,
       valore: TELEFONO_LEGGIBILE,
-      nota: 'Chiamami, rispondo io',
+      nota: t.contatti.canali.telefono.nota,
       href: `tel:${TELEFONO_INTL}`,
     },
     {
       id: 'whatsapp',
-      etichetta: 'WhatsApp',
+      etichetta: t.contatti.canali.whatsapp.etichetta,
       valore: TELEFONO_LEGGIBILE,
-      nota: 'Scrivimi quando vuoi',
+      nota: t.contatti.canali.whatsapp.nota,
       // wa.me vuole il numero senza + e senza spazi
       href: `https://wa.me/${TELEFONO_INTL.replace('+', '')}`,
       esterno: true,
     },
     {
       id: 'email',
-      etichetta: 'Email',
+      etichetta: t.contatti.canali.email.etichetta,
       valore: EMAIL,
-      nota: 'Per preventivi e documenti',
+      nota: t.contatti.canali.email.nota,
       href: `mailto:${EMAIL}`,
     },
   ]
@@ -67,19 +70,18 @@ export function Contatti() {
           <Reveal y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Contatti
+              {c.eyebrow}
             </p>
           </Reveal>
 
           <Reveal delay={0.1} as="h2" className="mt-7 text-title font-display text-balance">
-            <span className="text-white">Parliamone.</span>{' '}
-            <span className="text-white/40">Il primo confronto non si paga.</span>
+            <span className="text-white">{c.t1}</span>{' '}
+            <span className="text-white/40">{c.t2}</span>
           </Reveal>
 
           <Reveal delay={0.2}>
             <p className="mt-6 text-lead text-white/55 text-pretty">
-              Se preferisci partire dal preventivo, il configuratore qui sopra fa metà del
-              lavoro. Altrimenti scegli il canale che ti è più comodo.
+              {c.lead}
             </p>
           </Reveal>
         </div>

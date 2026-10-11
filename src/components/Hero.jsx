@@ -3,6 +3,7 @@ import { Reveal } from '../ui/Reveal'
 import { BottoneCta } from '../ui/BottoneCta'
 import { InvitoScorri } from '../ui/InvitoScorri'
 import { vaiAllaSezione } from '../lib/scroll'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 
 /* ============================================================================
    HERO
@@ -30,6 +31,8 @@ function useMediaQuery(query) {
 }
 
 export function Hero() {
+  const { t } = useLingua()
+  const h = t.scuro.hero
   // Il cubo sta in tre posti diversi: a destra del testo (schermi larghi), accanto al titolo (tablet)
   // o nello spazio libero sotto il testo (telefono). Se ne monta sempre uno solo.
   const schermoLargo = useMediaQuery('(min-width: 1024px)')
@@ -58,14 +61,14 @@ export function Hero() {
           <Reveal delay={0.05} y={16}>
             <p className="flex items-center gap-2.5 text-eyebrow uppercase text-white/55">
               <span className="inline-block size-1.5 rounded-full bg-accent-400" />
-              Web · Grafica · Video · Social
+              {h.eyebrow}
             </p>
           </Reveal>
 
           <div className="relative">
             <Reveal delay={0.15} as="h1" className="mt-5 text-display font-display text-balance max-sm:text-[clamp(1.2rem,6.9vw,2rem)] max-sm:leading-tight sm:mt-7">
-              <span className="text-white max-sm:block">Il tuo progetto digitale,</span>{' '}
-              <span className="text-white/40">dal preventivo al sito online</span>
+              <span className="text-white max-sm:block">{h.t1}</span>{' '}
+              <span className="text-white/40">{h.t2}</span>
             </Reveal>
 
             {/* Tablet: cubo a destra, accanto alle righe corte del titolo */}
@@ -80,13 +83,12 @@ export function Hero() {
 
           <Reveal delay={0.3}>
             <p className="mt-5 max-w-lg text-lead text-white/60 text-pretty max-sm:max-w-none max-sm:text-[clamp(0.75rem,3.6vw,0.9rem)] max-sm:leading-snug max-sm:text-balance sm:mt-7">
-              Siti, ecommerce e app per la tua attività. Compila il configuratore e ricevi un
-              preventivo in poche ore.
+              {h.lead}
             </p>
           </Reveal>
 
           <Reveal delay={0.4}>
-            <p className="mt-3 text-sm text-accent-400">Risposta entro 24 ore · Nessun impegno</p>
+            <p className="mt-3 text-sm text-accent-400">{h.garanzia}</p>
           </Reveal>
 
           {/* Telefono: lo spazio libero fra il testo e il bottone ospita il cubo, a destra */}

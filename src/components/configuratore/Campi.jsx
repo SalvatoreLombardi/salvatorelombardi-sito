@@ -1,3 +1,5 @@
+import { useLingua } from '../../i18n/LinguaChiaro.jsx'
+
 /* ============================================================================
    CAMPI DEL CONFIGURATORE
    Componenti di input riutilizzabili, coerenti con i token del design system.
@@ -62,6 +64,7 @@ export function CampoScelta({ campo, valore, onChange }) {
 
 /** Campo di testo / email / data */
 export function CampoTesto({ campo, valore, onChange }) {
+  const { t } = useLingua()
   const tipoHtml = { testo: 'text', email: 'email', data: 'date' }[campo.tipo]
 
   return (
@@ -71,7 +74,7 @@ export function CampoTesto({ campo, valore, onChange }) {
         className="mb-2 block text-sm font-medium text-white/70"
       >
         {campo.titolo}
-        {!campo.obbligatorio && <span className="ml-2 text-white/40">(facoltativo)</span>}
+        {!campo.obbligatorio && <span className="ml-2 text-white/40">{t.preventivo.facoltativo.trim()}</span>}
       </label>
 
       <input

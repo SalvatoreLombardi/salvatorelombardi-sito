@@ -12,6 +12,7 @@ import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { MenuChiaro } from './MenuChiaro.jsx'
+import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { suonoScatto } from '../lib/suonoScatto.js'
 import { accendiMusica, analizzatoreMusica, sbloccaMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
@@ -95,6 +96,7 @@ function Cursore() {
 
 /** Interruttore del suono. Il browser non fa partire l'audio da solo: serve un clic, poi sfuma dentro. La musica sta in `lib/musica.js`. */
 function Suono({ analisi, comando }) {
+  const { t } = useLingua()
   const [acceso, setAcceso] = useState(false)
   // Il bottone compare solo se il brano esiste davvero
   const [disponibile, setDisponibile] = useState(false)
@@ -179,7 +181,7 @@ function Suono({ analisi, comando }) {
       <span className="h-onde" aria-hidden="true">
         <i /><i /><i /><i />
       </span>
-      <span className="h-suono-testo">{acceso ? 'Suono acceso' : 'Clicca per il suono'}</span>
+      <span className="h-suono-testo">{acceso ? t.suono.acceso : t.suono.spento}</span>
     </button>
   )
 }
@@ -254,25 +256,6 @@ function OndeMusica({ analisi }) {
   }, [analisi])
   return <canvas ref={ref} className="h-onde-musica" aria-hidden="true" />
 }
-
-const CHI_SONO = [
-  {
-    titolo: 'Chi sono',
-    corpo: 'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
-  },
-  {
-    titolo: 'Cura',
-    corpo: 'Non realizzo mai due lavori identici: ogni attività ha una storia propria, e il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo ogni dettaglio finché l’insieme risulta armonioso. Per te significa un risultato rifinito, mai approssimativo.',
-  },
-  {
-    titolo: 'Metodo',
-    corpo: 'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi. Mi aggiorno con costanza sulle novità del settore, per proporti soluzioni sempre attuali.',
-  },
-  {
-    titolo: 'Ascolto',
-    corpo: 'Il rapporto è diretto, senza intermediari. Dedico il tempo necessario ad ascoltare le tue esigenze e a capire il contesto della tua attività, per definire insieme obiettivi chiari prima di iniziare a lavorare.',
-  },
-]
 
 /** Titolo che sale dalla maschera quando `mostra` diventa vero e ci ridiscende quando torna falso. */
 function RigaSe({ mostra, delay = 0, children }) {
@@ -560,6 +543,7 @@ function FiloMatita({ acceso }) {
 
 /** Schermata d'ingresso: sfondo scuro, "accendi il tuo progetto", interruttore. Al clic la leva scatta, parte la musica e i due pannelli si aprono. I testi si scambiano da soli, una volta. */
 function Ingresso({ fase, suClic }) {
+  const { t, lingua } = useLingua()
   const acceso = fase !== 'attesa'
   // Una volta sola, da soli: "Accendi" si svuota da sinistra a destra, "il tuo progetto" si riempie da destra a sinistra
   const [scambio, setScambio] = useState(false)
@@ -568,36 +552,41 @@ function Ingresso({ fase, suClic }) {
     return () => clearTimeout(t)
   }, [])
   return (
-    <div className={`h-ingresso h-ingresso-${fase}`} role="dialog" aria-modal="true" aria-label="Accendi il tuo progetto">
+    <div className={`h-ingresso h-ingresso-${fase}`} data-lingua={lingua} role="dialog" aria-modal="true" aria-label={t.ingresso.etichetta}>
       <div className="h-pannello-v h-pannello-sx" />
       <div className="h-pannello-v h-pannello-dx" />
       <div className="h-ingresso-contenuto">
-        <h2 className="h-sr">Accendi il tuo progetto</h2>
+        <h2 className="h-sr">{t.ingresso.etichetta}</h2>
         <p className={`h-ing-riga h-ing-svuota ${scambio ? 'h-ing-scambiato' : ''}`} aria-hidden="true">
-          <span className="h-ing-contorno">Accendi</span>
-          <span className="h-ing-riempimento">Accendi</span>
+          <span className="h-ing-contorno">{t.ingresso.riga1}</span>
+          <span className="h-ing-riempimento">{t.ingresso.riga1}</span>
         </p>
         <div className="h-ing-centro">
-          <button type="button" className="h-ing-bottone" onClick={suClic} disabled={acceso} aria-label="Accendi il tuo progetto e il suono" autoFocus>
+          <button type="button" className="h-ing-bottone" onClick={suClic} disabled={acceso} aria-label={t.ingresso.bottone} autoFocus>
             <Suspense fallback={null}>
               <InterruttoreChiaro giu={acceso} alternativa={<Interruttore acceso={acceso} />} />
             </Suspense>
           </button>
           <FiloMatita acceso={acceso} />
           <div className="h-clicca" aria-hidden="true">
-            <span>clicca qui</span>
+            <span>{t.ingresso.cliccaQui}</span>
           </div>
         </div>
         <p className={`h-ing-riga h-ing-riempi ${scambio ? 'h-ing-scambiato' : ''}`} aria-hidden="true">
-          <span className="h-ing-contorno">il tuo progetto</span>
-          <span className="h-ing-riempimento">il tuo progetto</span>
+          <span className="h-ing-contorno">{t.ingresso.riga2}</span>
+          <span className="h-ing-riempimento">{t.ingresso.riga2}</span>
         </p>
       </div>
     </div>
   )
 }
 
-export default function Chiaro() {
+function PaginaChiaro() {
+  const { t, lingua } = useLingua()
+  useEffect(() => {
+    document.title = t.titoloPagina
+    document.documentElement.lang = lingua
+  }, [t, lingua])
   const ref = useRef(null)
   const analisi = useRef(null)
   const apertoRef = useRef(false)
@@ -650,7 +639,7 @@ export default function Chiaro() {
   const [aperto, setAperto] = useState(false)
   const [faccia, setFaccia] = useState(0)
   const vai = (d) => {
-    const n = (facciaRef.current + d + CHI_SONO.length) % CHI_SONO.length
+    const n = (facciaRef.current + d + t.chiSono.length) % t.chiSono.length
     facciaRef.current = n
     setFaccia(n)
   }
@@ -763,7 +752,7 @@ export default function Chiaro() {
               </span>
             </span>
             <Suono analisi={analisi} comando={comando} />
-            <button type="button" className="h-cerchio" aria-label="Apri il menu" aria-expanded={menuAperto} onClick={() => setMenuAperto(true)}>
+            <button type="button" className="h-cerchio" aria-label={t.menu.apri} aria-expanded={menuAperto} onClick={() => setMenuAperto(true)}>
               <svg viewBox="0 0 100 100" aria-hidden="true">
                 <path d="M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5" />
               </svg>
@@ -782,10 +771,10 @@ export default function Chiaro() {
 
           {/* Il nuovo titolo grande: prende il posto dei nomi quando si apre "Chi sono" */}
           <p className="h-titolo h-titolo-1" aria-hidden="true">
-            <RigaSe mostra={aperto} delay={0.55}>Un solo interlocutore</RigaSe>
+            <RigaSe mostra={aperto} delay={0.55}>{t.home.titolo1}</RigaSe>
           </p>
           <p className="h-titolo h-titolo-2" aria-hidden="true">
-            <RigaSe mostra={aperto} delay={0.7}>per tutto.</RigaSe>
+            <RigaSe mostra={aperto} delay={0.7}>{t.home.titolo2}</RigaSe>
           </p>
 
           <div
@@ -793,20 +782,20 @@ export default function Chiaro() {
             data-cursore=""
             role={aperto ? undefined : 'button'}
             tabIndex={aperto ? undefined : 0}
-            aria-label={aperto ? undefined : 'Apri Chi sono'}
+            aria-label={aperto ? undefined : t.home.apriChiSono}
             onClick={aperto ? () => vai(1) : apri}
             onKeyDown={aperto ? undefined : (e) => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), apri())}
           >
             <div className="h-ombra" aria-hidden="true" />
             <Suspense fallback={null}>
-              <CuboChiaro progresso={ridotto ? undefined : scrollYProgress} apertoRef={apertoRef} facciaRef={facciaRef} testi={CHI_SONO} />
+              <CuboChiaro progresso={ridotto ? undefined : scrollYProgress} apertoRef={apertoRef} facciaRef={facciaRef} testi={t.chiSono} facce={t.home.facce} descrizioneCubo={t.home.cubo} />
             </Suspense>
 
             {/* Freccia "Chi sono": compare quando arriva il volto */}
             {!aperto && (
               <motion.div className="h-freccia" style={{ opacity: ridotto ? 1 : opFreccia }} aria-hidden="true">
                 <FrecciaMatita />
-                <span>chi sono</span>
+                <span>{t.home.frecciaChiSono}</span>
               </motion.div>
             )}
 
@@ -814,7 +803,7 @@ export default function Chiaro() {
             <motion.div
               className="h-comandi"
               role="dialog"
-              aria-label="Chi sono"
+              aria-label={t.home.chiSono}
               aria-hidden={!aperto}
               initial={false}
               animate={{ opacity: aperto ? 1 : 0 }}
@@ -822,29 +811,29 @@ export default function Chiaro() {
               style={{ pointerEvents: aperto ? 'auto' : 'none' }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button type="button" tabIndex={aperto ? 0 : -1} onClick={() => vai(-1)} aria-label="Faccia precedente">←</button>
-              <span aria-live="polite">{faccia + 1} / {CHI_SONO.length}</span>
-              <button type="button" tabIndex={aperto ? 0 : -1} onClick={() => vai(1)} aria-label="Faccia successiva">→</button>
+              <button type="button" tabIndex={aperto ? 0 : -1} onClick={() => vai(-1)} aria-label={t.home.facciaPrecedente}>←</button>
+              <span aria-live="polite">{faccia + 1} / {t.chiSono.length}</span>
+              <button type="button" tabIndex={aperto ? 0 : -1} onClick={() => vai(1)} aria-label={t.home.facciaSuccessiva}>→</button>
               <button type="button" className="h-chiudi" tabIndex={aperto ? 0 : -1} onClick={() => setAperto(false)}>
-                Chiudi
+                {t.home.chiudi}
               </button>
-              <p className="h-sr">{CHI_SONO.map((t) => t.corpo).join(' ')}</p>
+              <p className="h-sr">{t.chiSono.map((c) => c.corpo).join(' ')}</p>
             </motion.div>
           </div>
 
           <h1 className="h-nome-testo">
-            <span className="h-sr">Salvatore Lombardi, un solo interlocutore per tutto</span>
+            <span className="h-sr">{t.home.fraseSr}</span>
           </h1>
           <motion.p className="h-nome h-nome-2" style={{ x: xNome2 }} aria-hidden="true">
             <Riga delay={0.45}>Lombardi</Riga>
           </motion.p>
 
           <motion.p className="h-frase" style={{ opacity: opRighe, x: xRighe }}>
-            <Riga delay={0.9}>un solo interlocutore per tutto.</Riga>
+            <Riga key={lingua} delay={0.9}>{t.home.frase}</Riga>
           </motion.p>
 
           <motion.p className="h-servizi" style={{ opacity: opRighe, x: xRighe }}>
-            <Riga delay={1}>Web · Grafica · Video · Social</Riga>
+            <Riga key={lingua} delay={1}>{t.home.servizi}</Riga>
           </motion.p>
         </div>
       </div>
@@ -860,4 +849,8 @@ export default function Chiaro() {
       <TornaSuChiaro />
     </div>
   )
+}
+
+export default function Chiaro() {
+  return <PaginaChiaro />
 }
