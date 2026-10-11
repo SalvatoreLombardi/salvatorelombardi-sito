@@ -17,6 +17,8 @@ const VOCI = [
   { id: 'contatti', nome: 'Contatti' },
 ]
 
+// Lo stesso cerchio disegnato a mano del bottone del menu (viewBox 100)
+const CERCHIO = typeof Path2D !== 'undefined' ? new Path2D('M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5') : null
 const LARGHEZZA_LINEA = 44 // px: la colonna a sinistra dove corre la linea
 const LUNGHEZZA_ONDA = 260
 const VELOCITA_ONDA = 2.1
@@ -43,13 +45,16 @@ function LineaTempo({ aperto, elenco, vociRef, attivaRef }) {
     const K = (Math.PI * 2) / LUNGHEZZA_ONDA
 
     let altezza = 0
-    let centri = [] // altezza del centro di ogni voce, rispetto alla colonna
+    let corpo = 80 // grandezza del carattere dei titoli, per dimensionare i cerchi
+    let centri = [] // altezza del centro delle lettere di ogni voce, rispetto alla colonna
     const misura = () => {
       const r = elenco.current.getBoundingClientRect()
       altezza = r.height
+      corpo = parseFloat(getComputedStyle(elenco.current.querySelector('.h-menu-titolo')).fontSize) || 80
       centri = [...vociRef.current].map((el) => {
         const v = el.getBoundingClientRect()
-        return v.top - r.top + v.height / 2
+        // il centro delle maiuscole sta un po' sopra il centro della riga
+        return v.top - r.top + v.height / 2 - corpo * 0.3
       })
       canvas.style.height = `${altezza}px`
       canvas.width = Math.round(LARGHEZZA_LINEA * dpr)
@@ -84,28 +89,26 @@ function LineaTempo({ aperto, elenco, vociRef, attivaRef }) {
       for (let y = 4; y <= fino; y += 4) c.lineTo(xa(y, t), y)
       c.stroke()
 
-      // un cerchietto a mano per ogni voce, attaccato alla linea; quello sotto il mouse si riempie
+      // per ogni voce lo stesso cerchio a mano del bottone, in piccolo, al centro del testo e attaccato alla linea;
+      // quello sotto il mouse è un po' più grande e leggermente pieno
       centri.forEach((y, i) => {
         if (y > fino) return
         const attiva = attivaRef.current === i
+        const diametro = corpo * (attiva ? 0.36 : 0.28)
         const x = xa(y, t)
-        const r = attiva ? 11 : 8.5
         c.globalAlpha = clamp((fino - y) / 40, 0, 1)
-        c.beginPath()
-        const inizio = f[2] + i * 1.7
-        for (let k = 0; k <= 22; k++) {
-          const a = inizio + (k / 20) * Math.PI * 2
-          const d = 1 + 0.07 * Math.sin(3 * a + f[3] + i)
-          const px = x + Math.cos(a) * r * d
-          const py = y + Math.sin(a) * r * d
-          if (k === 0) c.moveTo(px, py)
-          else c.lineTo(px, py)
-        }
+        c.save()
+        c.translate(x, y)
+        c.rotate(i * 1.3)
+        c.scale(diametro / 100, diametro / 100)
+        c.translate(-50, -50)
+        c.lineWidth = 1.3 / (diametro / 100)
         if (attiva) {
-          c.fillStyle = '#e6e4dd'
-          c.fill()
+          c.fillStyle = 'rgba(230, 228, 221, 0.22)'
+          c.fill(CERCHIO)
         }
-        c.stroke()
+        c.stroke(CERCHIO)
+        c.restore()
       })
       c.globalAlpha = 1
     }
@@ -147,7 +150,7 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
     window.addEventListener('keydown', suTasto)
     const prima = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    chiudiRef.current?.focus({ preventScroll: true })
+    chiudiRef.current?.focus({ preventScroll: true, focusVisible: false })
     return () => {
       window.removeEventListener('keydown', suTasto)
       document.body.style.overflow = prima
