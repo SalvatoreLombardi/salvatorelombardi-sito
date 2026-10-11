@@ -468,6 +468,9 @@
   .h-cubo {
     width: 74vw;
   }
+  /* "Chi sono" aperto: cubo più grande, così il testo si legge; i comandi scendono un po' */
+  .h-cubo-aperto { width: 135vw; }
+  .h-cubo-aperto .h-comandi { margin-top: -11vw; }
   .h-servizi,
   .h-scorri {
     display: none;
