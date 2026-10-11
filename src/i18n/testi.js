@@ -205,7 +205,7 @@ export const TESTI = {
     tornaSu: 'Back to top',
 
     servizi: {
-      titolo1: 'From website to video,',
+      titolo1: 'From site to video,',
       titolo2: 'always with me.',
       nomi: ['Web', 'Graphics', 'Video', 'Social'],
     },
