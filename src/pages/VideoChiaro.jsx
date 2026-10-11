@@ -117,15 +117,14 @@ export function VideoChiaro() {
   const ridotto = useReducedMotion()
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
   const [dist, setDist] = useState(0) // quanto deve scorrere la striscia di lato
-  const [stretto, setStretto] = useState(false) // telefono: si scorre con il dito, niente blocco della pagina
   const [aperto, setAperto] = useState(null)
   const { scrollYProgress } = useScroll({ target: sezione, offset: ['start start', 'end end'] })
   const x = useTransform(scrollYProgress, (v) => -v * dist)
-  const orizzontale = !stretto && !ridotto
+  // La striscia si muove di lato scorrendo la pagina, anche da telefono; solo con "riduci movimento" si scorre col dito
+  const orizzontale = !ridotto
 
   useEffect(() => {
     const misura = () => {
-      setStretto(window.matchMedia('(max-width: 760px)').matches)
       const el = traccia.current
       if (el) setDist(Math.max(el.scrollWidth - window.innerWidth, 0))
     }
@@ -154,7 +153,7 @@ export function VideoChiaro() {
       id="video"
       aria-labelledby="h-vd-titolo"
       // L'altezza dà lo spazio di scroll che serve a far passare tutta la striscia
-      style={orizzontale ? { height: `calc(100vh + ${dist}px)` } : undefined}
+      style={orizzontale ? { height: `calc(100svh + ${dist}px)` } : undefined}
     >
       <div className={orizzontale ? 'h-vd-scena' : 'h-vd-scena h-vd-libera'}>
         <motion.div ref={traccia} className="h-vd-traccia" style={orizzontale ? { x } : undefined}>

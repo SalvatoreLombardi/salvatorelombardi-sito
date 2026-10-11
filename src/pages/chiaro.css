@@ -1141,7 +1141,7 @@
   .h-vd-intro { width: calc(100vw - var(--gutter)); padding-right: 0; }
   .h-vd-intesta { white-space: normal; font-size: 11.5vw; }
   .h-vd-intesta .h-sv-riga { white-space: normal; }
-  .h-vd-carta { --w: 62vw; }
+  .h-vd-carta { --w: min(62vw, 33svh); }
 }
 
 /* ============================================================================
@@ -1350,3 +1350,29 @@
 /* Su telefono la striscia dei video si scorre col dito: niente barra nera, c'è già la freccia "Scorri di lato" */
 .h-vd-libera { scrollbar-width: none; -ms-overflow-style: none; }
 .h-vd-libera::-webkit-scrollbar { display: none; }
+
+/* Freccia per tornare in cima: solo da telefono. Cerchio e freccia a mano, in basso a destra */
+.h-su { display: none; }
+@media (max-width: 760px) { .h-su { display: block; } }
+.h-su {
+  position: fixed;
+  right: clamp(14px, 2.4vw, 32px);
+  bottom: clamp(14px, 2.4vw, 32px);
+  z-index: 55;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: #e6e4dd;
+  mix-blend-mode: difference; /* chiaro sul fondo scuro, scuro sul fondo chiaro */
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.h-su-visibile { opacity: 1; transform: none; pointer-events: auto; }
+.h-su svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.h-su:hover svg:first-child { transform: rotate(120deg) scale(1.06); }
+@media (prefers-reduced-motion: reduce) { .h-su, .h-su svg { transition: none; } }

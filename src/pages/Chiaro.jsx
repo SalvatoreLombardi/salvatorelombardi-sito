@@ -10,6 +10,7 @@ import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
+import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { suonoScatto } from '../lib/suonoScatto.js'
 import { accendiMusica, analizzatoreMusica, sbloccaMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
@@ -839,6 +840,7 @@ export default function Chiaro() {
 
       <ContattiChiaro />
       <AvvisoRichieste />
+      <TornaSuChiaro />
     </div>
   )
 }
