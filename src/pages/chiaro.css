@@ -541,6 +541,8 @@
 
 .h-ing-riga {
   margin: 0;
+  /* la spaziatura stretta aggiunge uno spazio negativo dopo l'ultima lettera: si compensa per centrare le lettere davvero */
+  padding-right: 0.045em;
   display: grid;
   font-family: var(--f-titoli);
   font-weight: 600;
@@ -1495,3 +1497,8 @@
 .h-menu-lingua button:hover { opacity: 1; border-color: rgba(230, 228, 221, 0.5); }
 .h-menu-lingua button.h-lingua-attiva { opacity: 1; background: #e6e4dd; color: #0b0c0e; }
 .h-menu-lingua button:focus-visible { outline: 1px solid #e6e4dd; outline-offset: 3px; }
+
+/* "ACCENDI" su telefono: le lettere (la A sottile a sinistra, la I larga a destra) pesano diversamente e a occhio la parola sembra spostata a destra; si riporta al centro */
+@media (max-width: 760px) {
+  .h-ingresso[data-lingua='it'] .h-ing-svuota { transform: translateX(-0.032em); }
+}

@@ -71,7 +71,7 @@ export const TESTI = {
 
     servizi: {
       titolo1: 'Dal sito al video,',
-      titolo2: 'sempre con me.',
+      titolo2: 'un solo referente.',
       nomi: ['Web', 'Grafica', 'Video', 'Social'],
     },
 
@@ -206,7 +206,7 @@ export const TESTI = {
 
     servizi: {
       titolo1: 'From site to video,',
-      titolo2: 'always with me.',
+      titolo2: 'one contact person.',
       nomi: ['Web', 'Graphics', 'Video', 'Social'],
     },
 
