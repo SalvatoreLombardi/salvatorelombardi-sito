@@ -11,6 +11,7 @@ import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { suonoScatto } from '../lib/suonoScatto.js'
+import { accendiMusica, analizzatoreMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
 const CuboChiaro = lazy(() => import('../ui/CuboChiaro'))
@@ -90,12 +91,10 @@ function Cursore() {
   )
 }
 
-/** Interruttore del suono. Il browser non fa partire l'audio da solo: serve un clic, poi sfuma dentro. */
+/** Interruttore del suono. Il browser non fa partire l'audio da solo: serve un clic, poi sfuma dentro. La musica sta in `lib/musica.js`. */
 function Suono({ analisi, comando }) {
-  const audioRef = useRef(null)
-  const contestoRef = useRef(null)
   const [acceso, setAcceso] = useState(false)
-  // Il bottone compare solo se il brano esiste davvero (finché non è chiara la licenza, online il file manca)
+  // Il bottone compare solo se il brano esiste davvero
   const [disponibile, setDisponibile] = useState(false)
   useEffect(() => {
     let attivo = true
@@ -107,25 +106,18 @@ function Suono({ analisi, comando }) {
     }
   }, [])
 
-  useEffect(() => {
-    const audio = new Audio('/audio/atmosfera.mp3')
-    audio.loop = true
-    audio.volume = 0
-    audio.preload = 'none'
-    audioRef.current = audio
-    return () => {
-      audio.pause()
-      audioRef.current = null
-      contestoRef.current?.close?.()
-      contestoRef.current = null
+  // Lasciando la pagina la musica si spegne
+  useEffect(
+    () => () => {
+      spegniMusica()
       analisi.current = null
-    }
-  }, [analisi])
+    },
+    [analisi],
+  )
 
-  // Il suono parte da solo appena il browser lo permette: subito se il visitatore ha già
-  // fatto un clic nel sito (per esempio su "Lato chiaro"), altrimenti al primo clic, tocco o tasto
+  // Ingresso: al clic sull'interruttore la musica parte già dal gestore del clic; qui si aggiorna solo il bottone.
+  // Tornando da un'altra pagina parte al primo clic, tocco o tasto.
   useEffect(() => {
-    // Con l'ingresso: il suono parte solo se si accende l'interruttore, mai da solo prima
     if (comando === 'attesa' || comando === 'muto') return
     if (comando === 'suono') {
       setAcceso(true)
@@ -133,7 +125,9 @@ function Suono({ analisi, comando }) {
     }
     const scelta = { fatta: false } // se l'utente usa il bottone, non lo scavalchiamo
     const accendi = () => {
-      if (!scelta.fatta) setAcceso(true)
+      if (scelta.fatta) return
+      accendiMusica()
+      setAcceso(true)
     }
     if (navigator.userActivation?.hasBeenActive) accendi()
     const suInterazione = (e) => {
@@ -150,56 +144,27 @@ function Suono({ analisi, comando }) {
     return togli
   }, [comando])
 
-  // Sfuma il volume invece di accendere e spegnere di colpo
+  // Le onde seguono il suono vero: servono l'analizzatore della musica
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    let frame = 0
-    const bersaglio = acceso ? 0.55 : 0
-    if (acceso) {
-      // L'analizzatore ascolta il brano per far muovere le onde (va creato dopo un clic)
-      if (!contestoRef.current) {
-        try {
-          const ctx = new (window.AudioContext || window.webkitAudioContext)()
-          const sorgente = ctx.createMediaElementSource(audio)
-          const analizzatore = ctx.createAnalyser()
-          analizzatore.fftSize = 1024
-          analizzatore.smoothingTimeConstant = 0.82
-          sorgente.connect(analizzatore)
-          analizzatore.connect(ctx.destination)
-          contestoRef.current = ctx
-          analisi.current = analizzatore
-        } catch {
-          /* senza analizzatore il brano suona lo stesso, le onde restano ferme */
-        }
-      }
-      contestoRef.current?.resume?.()
-      audio.play().catch(() => setAcceso(false))
-    }
-    const passo = () => {
-      audio.volume += (bersaglio - audio.volume) * 0.06
-      if (Math.abs(bersaglio - audio.volume) < 0.01) {
-        audio.volume = bersaglio
-        if (!acceso) audio.pause()
-        return
-      }
-      frame = requestAnimationFrame(passo)
-    }
-    passo()
-    return () => cancelAnimationFrame(frame)
+    analisi.current = acceso ? analizzatoreMusica() : analisi.current
   }, [acceso, analisi])
 
-  // Se la scheda va in secondo piano, il suono si ferma
+  // Scheda in secondo piano: il suono si ferma
   useEffect(() => {
-    const suVisibilita = () => {
-      const audio = audioRef.current
-      if (!audio) return
-      if (document.hidden) audio.pause()
-      else if (acceso) audio.play().catch(() => {})
-    }
+    const suVisibilita = () => (document.hidden ? sospendiMusica() : riprendiMusica())
     document.addEventListener('visibilitychange', suVisibilita)
     return () => document.removeEventListener('visibilitychange', suVisibilita)
-  }, [acceso])
+  }, [])
+
+  const alternaSuono = () => {
+    if (acceso) {
+      spegniMusica()
+      setAcceso(false)
+    } else {
+      accendiMusica() // dentro il clic, così il telefono lo permette
+      setAcceso(true)
+    }
+  }
 
   if (!disponibile) return null
   return (
@@ -207,7 +172,7 @@ function Suono({ analisi, comando }) {
       type="button"
       className={`h-suono ${acceso ? 'h-suono-on' : ''}`}
       aria-pressed={acceso}
-      onClick={() => setAcceso((v) => !v)}
+      onClick={alternaSuono}
     >
       <span className="h-onde" aria-hidden="true">
         <i /><i /><i /><i />
@@ -754,7 +719,10 @@ export default function Chiaro() {
       {fase !== 'fatto' && <Ingresso
           fase={fase}
           suClic={() => {
-            if (fase === 'attesa') suonoScatto() // il rumore dell'interruttore, subito al clic
+            if (fase === 'attesa') {
+              suonoScatto() // il rumore dell'interruttore, subito al clic
+              accendiMusica() // la musica parte dentro il clic, come vuole il telefono
+            }
             entra('suono')
           }}
         />}
