@@ -13,7 +13,7 @@ import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { MenuChiaro } from './MenuChiaro.jsx'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
-import { suonoScatto } from '../lib/suonoScatto.js'
+import { suonoPannelli, suonoScatto } from '../lib/suonoScatto.js'
 import { accendiMusica, analizzatoreMusica, sbloccaMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
@@ -631,7 +631,10 @@ function PaginaChiaro() {
   const entra = (modo) => {
     if (fase !== 'attesa') return
     setFase('acceso') // la leva scatta e i testi si scambiano
-    setTimeout(() => setFase('apre'), 1300) // i pannelli si aprono
+    setTimeout(() => {
+      setFase('apre') // i pannelli si aprono
+      suonoPannelli() // e parte il loro suono
+    }, 1300)
     setTimeout(() => setPortaAperta(true), 1900) // la home inizia a entrare mentre si scopre
     setTimeout(() => {
       // Home tutta visibile: solo ora parte la musica, sempre dall'inizio del brano

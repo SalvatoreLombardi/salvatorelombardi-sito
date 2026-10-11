@@ -1,34 +1,66 @@
 /* ============================================================================
-   SCATTO DELL'INTERRUTTORE
-   Riproduce public/audio/interruttore.mp3 (per cambiarlo basta sostituire il
-   file con lo stesso nome). Se il file non si carica, c'è un rumore di riserva
+   SUONI DELL'INGRESSO
+   Lo scatto dell'interruttore (public/audio/interruttore.mp3) e l'apertura dei
+   pannelli (public/audio/apertura-pannelli.mp3): per cambiarli basta sostituire
+   i file con lo stesso nome. Se il file non si carica, c'è un rumore di riserva
    generato dal browser.
    Va chiamata da un clic: i browser non fanno partire l'audio da soli.
    ========================================================================== */
 const FILE = '/audio/interruttore.mp3'
-// Il file è piccolo: si scarica subito all'apertura della pagina, così al clic è già pronto
-const scaricato = typeof window !== 'undefined' ? fetch(FILE).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject())).catch(() => null) : null
+const FILE_PANNELLI = '/audio/apertura-pannelli.mp3'
+// I file sono piccoli: si scaricano subito all'apertura della pagina, così al clic sono già pronti
+const scarica = (file) => (typeof window !== 'undefined' ? fetch(file).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject())).catch(() => null) : null)
+const scaricato = scarica(FILE)
+const scaricatoPannelli = scarica(FILE_PANNELLI)
+
+// Un solo AudioContext per gli effetti: nasce dentro il clic (il telefono lo vuole così) e resta vivo,
+// così il suono dei pannelli può partire più tardi senza un altro clic
+let contesto = null
+function prendiContesto() {
+  const Contesto = window.AudioContext || window.webkitAudioContext
+  if (!Contesto) return null
+  if (!contesto) contesto = new Contesto()
+  if (contesto.state === 'suspended') contesto.resume()
+  return contesto
+}
+
+const decodifica = (ctx, dati) =>
+  new Promise((ok, no) => ctx.decodeAudioData(dati.slice(0), ok, no))
+
+let bufferPannelli = null // decodificato al clic, pronto per quando si aprono i pannelli
 
 export function suonoScatto() {
   try {
-    const Contesto = window.AudioContext || window.webkitAudioContext
-    if (!Contesto) return
-    const ctx = new Contesto()
-    if (ctx.state === 'suspended') ctx.resume()
+    const ctx = prendiContesto()
+    if (!ctx) return
+    // intanto si prepara il suono dei pannelli
+    ;(scaricatoPannelli || Promise.resolve(null)).then((dati) => dati && decodifica(ctx, dati).then((b) => (bufferPannelli = b)).catch(() => {}))
     ;(scaricato || Promise.resolve(null)).then((dati) => {
       if (!dati) return suonoSintetico() // se il file non c'è, il rumore generato dal browser
-      ctx.decodeAudioData(
-        dati.slice(0),
-        (buffer) => {
+      decodifica(ctx, dati)
+        .then((buffer) => {
           const sorgente = ctx.createBufferSource()
           sorgente.buffer = buffer
           sorgente.connect(ctx.destination)
           sorgente.start()
-          sorgente.onended = () => ctx.close?.()
-        },
-        () => suonoSintetico(),
-      )
+        })
+        .catch(() => suonoSintetico())
     })
+  } catch {
+    /* senza audio il sito funziona lo stesso */
+  }
+}
+
+/** Il suono dei pannelli che si aprono: va chiamato nell'istante in cui iniziano a muoversi. */
+export function suonoPannelli() {
+  try {
+    const ctx = contesto
+    if (!ctx || !bufferPannelli) return
+    if (ctx.state === 'suspended') ctx.resume()
+    const sorgente = ctx.createBufferSource()
+    sorgente.buffer = bufferPannelli
+    sorgente.connect(ctx.destination)
+    sorgente.start()
   } catch {
     /* senza audio il sito funziona lo stesso */
   }
