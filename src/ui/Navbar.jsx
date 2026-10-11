@@ -79,7 +79,7 @@ export function Navbar() {
         <nav className="container-site flex h-16 items-center justify-between gap-6">
           {/* --- Nome / logo --- */}
           <a
-            href="#/"
+            href="#/scuro"
             onClick={tornaSu}
             className="flex items-end"
             aria-label="Salvatore Lombardi — torna all'inizio"
@@ -111,6 +111,14 @@ export function Navbar() {
                 )}
               </a>
             ))}
+            {/* Torna al sito principale (lato chiaro) */}
+            <a
+              href="#/"
+              className="rounded-full border border-white/20 px-4 py-1.5 text-[0.875rem] text-white/80
+                         transition-colors duration-300 hover:border-white/50 hover:text-white"
+            >
+              ← Sito principale
+            </a>
           </div>
 
           {/* --- Bottone del menu (solo mobile) --- */}
@@ -163,6 +171,15 @@ export function Navbar() {
                   {voce.label}
                 </motion.a>
               ))}
+              <motion.a
+                href="#/"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.06 * VOCI.length, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="py-5 text-[1rem] text-accent-400"
+              >
+                ← Torna al sito principale
+              </motion.a>
             </div>
           </motion.div>
         )}

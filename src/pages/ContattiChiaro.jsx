@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useInView } from 'motion/react'
+import { vaiAllaSezione } from '../lib/scroll.js'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati.jsx'
 
 /* ============================================================================
@@ -45,7 +46,7 @@ export function ContattiChiaro() {
 
       <p className="h-ct-testo">
         Il primo confronto non si paga. Se preferisci partire dal progetto,{' '}
-        <a href="#preventivo">il preventivo</a> fa metà del lavoro.
+        <a href="#preventivo" onClick={(e) => vaiAllaSezione(e, 'preventivo')}>il preventivo</a> fa metà del lavoro.
       </p>
 
       <ul className="h-ct-canali">

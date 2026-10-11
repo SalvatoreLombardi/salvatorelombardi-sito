@@ -28,7 +28,7 @@ const SITO_SCURO = {
   confronto: true,
   // ricarica la pagina con ?loader: così il lato scuro mostra sempre il suo caricamento (percentuale, scintille, pannelli)
   stessaScheda: true,
-  link: `${import.meta.env.BASE_URL}?loader#/`,
+  link: `${import.meta.env.BASE_URL}?loader#/scuro`,
   testoLink: 'Apri il lato scuro',
   completa: {
     intro:

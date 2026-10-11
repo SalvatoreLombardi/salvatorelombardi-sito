@@ -23,6 +23,7 @@ const InterruttoreChiaro = lazy(() => import('../ui/InterruttoreChiaro'))
    ========================================================================== */
 
 const EASE = [0.16, 1, 0.3, 1]
+const CHIAVE_SALTA_INGRESSO = 'salta-ingresso'
 
 /** Vero quando l'ingresso (interruttore e pannelli) si è aperto: solo allora i titoli della home entrano. */
 const PortaAperta = createContext(true)
@@ -93,6 +94,17 @@ function Suono({ analisi, comando }) {
   const audioRef = useRef(null)
   const contestoRef = useRef(null)
   const [acceso, setAcceso] = useState(false)
+  // Il bottone compare solo se il brano esiste davvero (finché non è chiara la licenza, online il file manca)
+  const [disponibile, setDisponibile] = useState(false)
+  useEffect(() => {
+    let attivo = true
+    fetch('/audio/atmosfera.mp3', { method: 'HEAD' })
+      .then((r) => attivo && setDisponibile(r.ok && (r.headers.get('content-type') || '').includes('audio')))
+      .catch(() => attivo && setDisponibile(false))
+    return () => {
+      attivo = false
+    }
+  }, [])
 
   useEffect(() => {
     const audio = new Audio('/audio/atmosfera.mp3')
@@ -188,6 +200,7 @@ function Suono({ analisi, comando }) {
     return () => document.removeEventListener('visibilitychange', suVisibilita)
   }, [acceso])
 
+  if (!disponibile) return null
   return (
     <button
       type="button"
@@ -624,8 +637,34 @@ export default function Chiaro() {
 
   // Ingresso: compare a ogni apertura della pagina (anche ricaricando). Chi riduce il movimento lo salta.
   const senzaMovimento = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const [fase, setFase] = useState(senzaMovimento ? 'fatto' : 'attesa')
-  const [comando, setComando] = useState(senzaMovimento ? 'auto' : 'attesa')
+  // Se si torna dalla Privacy (o da un'altra pagina del sito) l'ingresso non si ripete; a ogni caricamento nuovo sì
+  const [tornaDaAltraPagina] = useState(() => {
+    try {
+      return sessionStorage.getItem(CHIAVE_SALTA_INGRESSO) === '1'
+    } catch {
+      return false
+    }
+  })
+  const saltaIngresso = senzaMovimento || tornaDaAltraPagina
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem(CHIAVE_SALTA_INGRESSO)
+    } catch {
+      /* niente da fare */
+    }
+    // Quando si lascia la home per un'altra pagina (l'indirizzo è già cambiato) si ricorda di saltare l'ingresso al ritorno
+    return () => {
+      if (window.location.hash !== '#/' && window.location.hash !== '') {
+        try {
+          sessionStorage.setItem(CHIAVE_SALTA_INGRESSO, '1')
+        } catch {
+          /* niente da fare */
+        }
+      }
+    }
+  }, [])
+  const [fase, setFase] = useState(saltaIngresso ? 'fatto' : 'attesa')
+  const [comando, setComando] = useState(saltaIngresso ? 'auto' : 'attesa')
   const [portaAperta, setPortaAperta] = useState(fase === 'fatto')
   // Si entra solo cliccando l'interruttore: quel clic fa partire la musica (il browser lo permette)
   const entra = (modo) => {
