@@ -770,10 +770,10 @@ function PaginaChiaro() {
           </motion.p>
 
           {/* Il nuovo titolo grande: prende il posto dei nomi quando si apre "Chi sono" */}
-          <p className="h-titolo h-titolo-1" aria-hidden="true">
+          <p className="h-titolo h-titolo-1" style={{ '--c': Math.max(t.home.titolo1.length, t.home.titolo2.length) }} aria-hidden="true">
             <RigaSe mostra={aperto} delay={0.55}>{t.home.titolo1}</RigaSe>
           </p>
-          <p className="h-titolo h-titolo-2" aria-hidden="true">
+          <p className="h-titolo h-titolo-2" style={{ '--c': Math.max(t.home.titolo1.length, t.home.titolo2.length) }} aria-hidden="true">
             <RigaSe mostra={aperto} delay={0.7}>{t.home.titolo2}</RigaSe>
           </p>
 
@@ -829,7 +829,9 @@ function PaginaChiaro() {
           </motion.p>
 
           <motion.p className="h-frase" style={{ opacity: opRighe, x: xRighe }}>
-            <Riga key={lingua} delay={0.9}>{t.home.frase}</Riga>
+            <Riga key={lingua} delay={0.9}>{t.home.frase[0]}</Riga>
+            <Riga key={lingua + '2'} delay={1}>{t.home.frase[1]}</Riga>
+            <span className="h-frase-autore">{t.home.autore}</span>
           </motion.p>
 
           <motion.p className="h-servizi" style={{ opacity: opRighe, x: xRighe }}>

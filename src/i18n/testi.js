@@ -19,11 +19,12 @@ export const TESTI = {
     suono: { acceso: 'Suono acceso', spento: 'Clicca per il suono' },
 
     home: {
-      fraseSr: 'Salvatore Lombardi, un solo interlocutore per tutto',
-      frase: 'un solo interlocutore per tutto.',
+      fraseSr: 'Salvatore Lombardi, sviluppatore e designer',
+      frase: ['Complicare è facile,', 'semplificare è difficile.'],
+      autore: '— Bruno Munari',
       servizi: 'Web · Grafica · Video · Social',
-      titolo1: 'Un solo interlocutore',
-      titolo2: 'per tutto.',
+      titolo1: 'Complicare è facile,',
+      titolo2: 'semplificare è difficile.',
       apriChiSono: 'Apri Chi sono',
       frecciaChiSono: 'chi sono',
       chiSono: 'Chi sono',
@@ -85,8 +86,8 @@ export const TESTI = {
         parliamone: 'Parliamone',
         chiaro: 'Lato chiaro',
         scuro: 'Lato scuro',
-        chiaroFrase: ['un solo interlocutore', 'per tutto.'],
-        scuroFrase: ['Un solo interlocutore', 'per tutto.'],
+        chiaroFrase: ['complicare è facile,', 'semplificare è difficile.'],
+        scuroFrase: ['Complicare è facile,', 'semplificare è difficile.'],
       },
     },
 
@@ -154,11 +155,12 @@ export const TESTI = {
     suono: { acceso: 'Sound on', spento: 'Click for sound' },
 
     home: {
-      fraseSr: 'Salvatore Lombardi, one point of contact for everything',
-      frase: 'one point of contact for everything.',
+      fraseSr: 'Salvatore Lombardi, developer and designer',
+      frase: ['To complicate is easy,', 'to simplify is difficult.'],
+      autore: '— Bruno Munari',
       servizi: 'Web · Graphics · Video · Social',
-      titolo1: 'One point of contact',
-      titolo2: 'for everything.',
+      titolo1: 'To complicate is easy,',
+      titolo2: 'to simplify is difficult.',
       apriChiSono: 'Open About me',
       frecciaChiSono: 'about me',
       chiSono: 'About me',
@@ -220,8 +222,8 @@ export const TESTI = {
         parliamone: 'Let’s talk',
         chiaro: 'Light side',
         scuro: 'Dark side',
-        chiaroFrase: ['one point of contact', 'for everything.'],
-        scuroFrase: ['One point of contact', 'for everything.'],
+        chiaroFrase: ['to complicate is easy,', 'to simplify is difficult.'],
+        scuroFrase: ['To complicate is easy,', 'to simplify is difficult.'],
       },
     },
 
@@ -315,8 +317,9 @@ TESTI.it.scuro = {
   },
   chiSono: {
     eyebrow: 'Chi sono',
-    t1: 'Salvatore Lombardi,',
-    t2: 'un solo interlocutore per tutto.',
+    t1: 'Complicare è facile,',
+    t2: 'semplificare è difficile.',
+    autore: '— Bruno Munari',
     foto: 'Salvatore Lombardi',
     paragrafi: [
       'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
@@ -332,7 +335,7 @@ TESTI.it.scuro = {
     lead: 'Se preferisci partire dal preventivo, il configuratore qui sopra fa metà del lavoro. Altrimenti scegli il canale che ti è più comodo.',
   },
   footer: {
-    tagline: 'Siti, ecommerce e app per la tua attività. Grafica, video e social, con un solo interlocutore.',
+    tagline: 'Siti, ecommerce e app per la tua attività. Grafica, video e social.',
     sezioni: 'Sezioni',
     contatti: 'Contatti',
     diritti: 'Tutti i diritti riservati.',
@@ -378,8 +381,9 @@ TESTI.en.scuro = {
   },
   chiSono: {
     eyebrow: 'About me',
-    t1: 'Salvatore Lombardi,',
-    t2: 'one point of contact for everything.',
+    t1: 'To complicate is easy,',
+    t2: 'to simplify is difficult.',
+    autore: '— Bruno Munari',
     foto: 'Salvatore Lombardi',
     paragrafi: [
       'I’m Salvatore, a developer and designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
@@ -395,7 +399,7 @@ TESTI.en.scuro = {
     lead: 'If you’d rather start from a quote, the configurator above does half the work. Otherwise, choose the channel that suits you best.',
   },
   footer: {
-    tagline: 'Websites, e-commerce and apps for your business. Graphics, video and social media, with a single point of contact.',
+    tagline: 'Websites, e-commerce and apps for your business. Graphics, video and social media.',
     sezioni: 'Sections',
     contatti: 'Contact',
     diritti: 'All rights reserved.',
