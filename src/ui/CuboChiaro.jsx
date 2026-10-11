@@ -203,15 +203,22 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
         const lato = Math.min(img.width, img.height * 0.82)
         c.drawImage(img, (img.width - lato) / 2, img.height * 0.04, lato, lato, 0, 0, L, L)
 
-        const maschera = document.createElement('canvas')
-        maschera.width = maschera.height = L
-        const m = maschera.getContext('2d')
-        m.fillStyle = '#fff'
+        // Bordi sfumati: due sfumature lineari (orizzontale e verticale) che dissolvono la foto nel nucleo nero.
+        // Non si usa `filter: blur()` del canvas perché Safari su iPhone non lo supporta: lì la foto restava un quadrato netto.
         const bordo = 150
-        m.filter = 'blur(60px)'
-        m.fillRect(bordo, bordo, L - bordo * 2, L - bordo * 2)
+        const morbido = 95
         c.globalCompositeOperation = 'destination-in'
-        c.drawImage(maschera, 0, 0)
+        for (const verticale of [false, true]) {
+          const g = verticale ? c.createLinearGradient(0, 0, 0, L) : c.createLinearGradient(0, 0, L, 0)
+          g.addColorStop(0, 'rgba(255,255,255,0)')
+          g.addColorStop(Math.max((bordo - morbido) / L, 0), 'rgba(255,255,255,0)')
+          g.addColorStop((bordo + morbido) / L, 'rgba(255,255,255,1)')
+          g.addColorStop(1 - (bordo + morbido) / L, 'rgba(255,255,255,1)')
+          g.addColorStop(Math.min(1 - (bordo - morbido) / L, 1), 'rgba(255,255,255,0)')
+          g.addColorStop(1, 'rgba(255,255,255,0)')
+          c.fillStyle = g
+          c.fillRect(0, 0, L, L)
+        }
 
         const tex = new THREE.CanvasTexture(canvas)
         tex.colorSpace = THREE.SRGBColorSpace
