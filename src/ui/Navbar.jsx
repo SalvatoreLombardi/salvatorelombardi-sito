@@ -1,3 +1,4 @@
+import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll'
@@ -84,9 +85,14 @@ export function Navbar() {
             className="flex items-end"
             aria-label="Salvatore Lombardi — torna all'inizio"
           >
-            {/* L'uccello fa da "S" del nome: le altre lettere (public/logo-nome-senza-s.png, 783x119, stesso turchese) gli stanno accanto, allineate alla base */}
-            <img src="/logo-uccello-piatto.png" alt="" className="mb-px h-8 w-auto lg:h-11" />
-            <img src="/logo-nome-senza-s.png" alt="" className="-ml-1 h-9 w-auto lg:h-12" />
+            <span className="flex items-center gap-2.5 text-accent-400" role="img" aria-label="Salvatore Lombardi">
+              <LogoInterruttore className="h-9 w-auto lg:h-12" />
+              <span className="font-display text-[1.05rem] font-semibold leading-[0.95] tracking-[-0.03em] text-white lg:text-[1.2rem]">
+                Salvatore
+                <br />
+                Lombardi
+              </span>
+            </span>
           </a>
 
           {/* --- Link (solo desktop) --- */}

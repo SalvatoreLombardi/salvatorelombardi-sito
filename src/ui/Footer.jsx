@@ -1,3 +1,4 @@
+import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati'
 import { vaiAllaSezione } from '../lib/scroll'
 
@@ -24,11 +25,14 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           {/* --- Marchio --- */}
           <div>
-            {/* Stesso logo della navbar: l'uccello fa da "S" del nome */}
-            <div className="flex items-end" role="img" aria-label="Salvatore Lombardi">
-              <img src="/logo-uccello-piatto.png" alt="" className="mb-px h-9 w-auto" />
-              <img src="/logo-nome-senza-s.png" alt="" className="-ml-1 h-10 w-auto" />
-            </div>
+            <span className="flex items-center gap-2.5 text-accent-400" role="img" aria-label="Salvatore Lombardi">
+              <LogoInterruttore className="h-10 w-auto" />
+              <span className="font-display text-[1.05rem] font-semibold leading-[0.95] tracking-[-0.03em] text-white ">
+                Salvatore
+                <br />
+                Lombardi
+              </span>
+            </span>
             <p className="mt-3 max-w-xs text-[0.9375rem] leading-relaxed text-ink-500 text-pretty">
               Siti, ecommerce e app per la tua attività. Grafica, video e social, con un solo
               interlocutore.
