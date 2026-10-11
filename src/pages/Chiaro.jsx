@@ -11,6 +11,7 @@ import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
+import { MenuChiaro } from './MenuChiaro.jsx'
 import { suonoScatto } from '../lib/suonoScatto.js'
 import { accendiMusica, analizzatoreMusica, sbloccaMusica, riprendiMusica, sospendiMusica, spegniMusica } from '../lib/musica.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
@@ -712,6 +713,22 @@ export default function Chiaro() {
     }
   }, [fase])
 
+  const [menuAperto, setMenuAperto] = useState(false)
+  const chiudiMenu = () => setMenuAperto(false)
+  /** Dal menu: si chiude e si scorre alla sezione. "Chi sono" riporta in cima e apre il cubo. */
+  const vaiAllaVoce = (id) => {
+    setMenuAperto(false)
+    const liscio = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    setTimeout(() => {
+      if (id === 'chi-sono') {
+        window.scrollTo({ top: 0, behavior: 'auto' })
+        setTimeout(() => apri(), 250)
+        return
+      }
+      document.getElementById(id)?.scrollIntoView({ behavior: liscio ? 'smooth' : 'auto', block: 'start' })
+    }, 350)
+  }
+
   const apri = () => {
     facciaRef.current = 0
     setFaccia(0)
@@ -721,6 +738,7 @@ export default function Chiaro() {
   return (
     <div className="chiaro">
       <Cursore />
+      <MenuChiaro aperto={menuAperto} chiudi={chiudiMenu} vai={vaiAllaVoce} />
       {fase !== 'fatto' && <Ingresso
           fase={fase}
           suClic={() => {
@@ -745,8 +763,7 @@ export default function Chiaro() {
               </span>
             </span>
             <Suono analisi={analisi} comando={comando} />
-            {/* Per ora è solo il bottone: il menu si aggiunge dopo */}
-            <button type="button" className="h-cerchio" aria-label="Apri il menu">
+            <button type="button" className="h-cerchio" aria-label="Apri il menu" aria-expanded={menuAperto} onClick={() => setMenuAperto(true)}>
               <svg viewBox="0 0 100 100" aria-hidden="true">
                 <path d="M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5" />
               </svg>

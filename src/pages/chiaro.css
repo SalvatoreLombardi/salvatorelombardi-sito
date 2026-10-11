@@ -1376,3 +1376,89 @@
 .h-su svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .h-su:hover svg:first-child { transform: rotate(120deg) scale(1.06); }
 @media (prefers-reduced-motion: reduce) { .h-su, .h-su svg { transition: none; } }
+
+/* ============================================================================
+   MENU — schermo scuro che si allarga dal bottone in alto a destra
+   ========================================================================== */
+.h-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(96px, 14vh, 140px) var(--gutter) clamp(40px, 8vh, 80px);
+  color: var(--pietra);
+  --inchiostro: #e6e4dd;
+  visibility: hidden;
+  clip-path: circle(0 at calc(100% - var(--gutter) - 45px) 62px);
+  transition: clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s linear 0.9s;
+}
+.h-menu-aperto {
+  visibility: visible;
+  clip-path: circle(150vmax at calc(100% - var(--gutter) - 45px) 62px);
+  transition: clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1), visibility 0s;
+}
+.h-menu-fondo.h-pannello-v { left: 0; right: 0; width: auto; border-radius: 0; background-color: #0b0c0e; transition: none; z-index: -1; }
+.h-menu-chiudi {
+  position: absolute;
+  top: clamp(18px, 2.6vw, 36px);
+  right: var(--gutter);
+  color: #e6e4dd;
+}
+.h-menu-chiudi svg { stroke: #e6e4dd; }
+.h-menu-voci { position: relative; padding-left: 70px; }
+.h-menu-voci ol { list-style: none; margin: 0; padding: 0; }
+.h-menu-linea { position: absolute; left: 0; top: 0; width: 44px; pointer-events: none; }
+.h-menu-voci li {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.h-menu-aperto .h-menu-voci li {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s ease calc(0.45s + var(--i) * 0.07s), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(0.45s + var(--i) * 0.07s);
+}
+.h-menu-voce {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(14px, 2.4vw, 36px);
+  padding: clamp(2px, 0.6vh, 8px) 0;
+  color: #e6e4dd;
+  text-decoration: none;
+}
+.h-menu-titolo {
+  display: grid;
+  font-family: var(--f-titoli);
+  font-weight: 600;
+  font-size: clamp(2.6rem, min(8.4vw, 10.5vh), 7.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+.h-menu-titolo > span { grid-area: 1 / 1; -webkit-text-stroke: 1.5px #e6e4dd; }
+.h-menu-contorno { color: transparent; }
+.h-menu-riempimento {
+  color: #e6e4dd;
+  clip-path: inset(-5% 101% -5% 0);
+  transition: clip-path 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.h-menu-voce:hover .h-menu-riempimento,
+.h-menu-voce:focus-visible .h-menu-riempimento { clip-path: inset(-5% 0 -5% 0); }
+.h-menu-voce:focus-visible { outline: none; }
+@media (max-width: 760px) {
+  .h-menu-titolo { font-size: 12.5vw; }
+  .h-menu-voci { padding-left: 52px; }
+  .h-menu-voce { gap: 12px; }
+  .h-menu { clip-path: circle(0 at calc(100% - var(--gutter) - 38px) 56px); }
+  .h-menu-aperto { clip-path: circle(150vmax at calc(100% - var(--gutter) - 38px) 56px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .h-menu, .h-menu-aperto { transition: none; }
+  .h-menu-voci li { transition: none; }
+  .h-menu-riempimento { transition: none; }
+}
+
+/* Bottoni a cerchio: l'anello del focus da tastiera segue la forma tonda */
+.h-cerchio:focus-visible { outline: 1px solid currentColor; outline-offset: 5px; border-radius: 50%; }
