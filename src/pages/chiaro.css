@@ -1515,12 +1515,13 @@
   .h-onde-musica { transform: translateY(29.5vh); }
 }
 
-/* Telefono, "Chi sono" aperto: cubo più piccolo (-10%) e più in basso, comandi e "PER TUTTO." più in basso, niente freccia per tornare su */
+/* Telefono, "Chi sono" aperto: "PER TUTTO." sta sotto "UN SOLO INTERLOCUTORE", il cubo è più grande del 15% (e scende per fare posto),
+   pagination e "CHIUDI" stanno in fondo alla pagina, niente freccia per tornare su */
 @media (max-width: 760px) {
-  .h-cubo-aperto { width: 97.2vw; top: calc(50% + 5vh); }
-  /* il cubo è più piccolo del 20% e pagination e "CHIUDI" salgono rispetto a prima, poi scendono di un 20% di quella salita */
-  .h-cubo-aperto .h-comandi { margin-top: -8.4vw; }
-  .h-titolo-2 { bottom: 1.5%; }
+  .h-cubo-aperto { width: 111.8vw; top: calc(50% + 5vh + 6.5vh); }
+  /* il fondo della pagina meno il punto dove finisce il cubo (la sua posizione dipende dall'altezza dello schermo e dalla sua larghezza) */
+  .h-cubo-aperto .h-comandi { margin-top: calc(45svh - 6.5vh - 54px - 58.1vw); }
+  .h-titolo-2 { top: calc(17% + 18.4vw + 4px); bottom: auto; }
   body:has(.h-cubo-aperto) .h-su { display: none; }
 }
 
