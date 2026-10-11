@@ -702,7 +702,7 @@ export default function Chiaro() {
   const xNome2 = useTransform([xLombardi, chiusura], ([a, b]) => `${a - b * 130}vw`)
   const opRighe = useTransform([opacitaRighe, chiusura], ([o, b]) => o * (1 - b))
   const xRighe = useTransform(chiusura, (b) => `${-b * 130}vw`)
-  const opFreccia = useTransform(p, [0.2, 0.28, 0.7, 0.78], [0, 1, 1, 0])
+  const opFreccia = useTransform(p, [0.02, 0.1, 0.7, 0.78], [0, 1, 1, 0])
 
   useEffect(() => {
     const prima = document.body.style.backgroundColor
