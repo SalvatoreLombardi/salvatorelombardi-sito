@@ -52,10 +52,6 @@ export function ChiSono() {
               <span className="text-white/40">{c.t2}</span>
             </Reveal>
 
-            <Reveal delay={0.15}>
-              <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-white/45">{c.autore}</p>
-            </Reveal>
-
             <Reveal delay={0.2}>
               <div className="mt-7 space-y-5 text-lead text-white/60 text-pretty">
                 {c.paragrafi.map((p) => (

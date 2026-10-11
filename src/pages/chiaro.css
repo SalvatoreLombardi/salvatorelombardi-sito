@@ -319,8 +319,7 @@
   right: var(--gutter);
   font-family: var(--f-titoli);
   font-weight: 600;
-  /* si rimpicciolisce se la frase è lunga: --c è il numero di lettere della riga più lunga */
-  font-size: min(clamp(2.4rem, 6.4vw, 8rem), calc((100vw - 2 * var(--gutter)) / (var(--c, 12) * 0.66)));
+  font-size: clamp(2.4rem, 6.4vw, 8rem);
   line-height: 0.92;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -465,7 +464,7 @@
 }
 
 @media (max-width: 760px) {
-  .h-titolo { font-size: min(10vw, calc((100vw - 2 * var(--gutter)) / (var(--c, 12) * 0.66))); }
+  .h-titolo { font-size: 10vw; }
   .h-titolo-1 { top: 17%; }
   .h-titolo-2 { bottom: 5%; }
   .h-freccia { right: 78%; bottom: 28%; }
@@ -1019,7 +1018,7 @@
   color: #fff;
   clip-path: inset(0 calc(100% - var(--x)) 0 0);
 }
-.h-cf-frase { margin: 0; font-size: 5.4cqw; line-height: 1.12; }
+.h-cf-frase { margin: 0; font-size: 7.2cqw; line-height: 1.04; }
 .h-cf-chiaro .h-cf-frase { font-family: var(--f-titoli); font-style: italic; font-weight: 500; letter-spacing: -0.02em; }
 .h-cf-scuro .h-cf-frase { font-family: var(--f-testo); font-weight: 600; letter-spacing: -0.035em; }
 .h-cf-scuro .h-cf-frase span { color: rgba(255, 255, 255, 0.4); }
@@ -1512,12 +1511,39 @@
 @media (max-width: 760px) {
   .h-ingresso[data-lingua='it'] .h-ing-svuota { transform: translateX(-0.032em); }
 }
-
-/* "Chi sono" aperto su schermi larghi: la frase in basso è lunga e arriva sotto i comandi; si abbassa un po' e i comandi salgono */
-@media (min-width: 761px) {
-  .h-corsa:has(.h-cubo-aperto) .h-titolo-2 { bottom: 2.4%; }
-  .h-cubo-aperto .h-comandi { margin-top: -54px; }
-}
 @media (max-width: 760px) {
   .h-onde-musica { transform: translateY(29.5vh); }
+}
+
+/* Telefono, "Chi sono" aperto: cubo più piccolo (-10%) e più in basso, comandi e "PER TUTTO." più in basso, niente freccia per tornare su */
+@media (max-width: 760px) {
+  .h-cubo-aperto { width: 121.5vw; top: calc(50% + 5vh); }
+  .h-cubo-aperto .h-comandi { margin-top: -5vw; }
+  .h-titolo-2 { bottom: 1.5%; }
+  body:has(.h-cubo-aperto) .h-su { display: none; }
+}
+
+/* Telefono, home: il cubo sale di circa il 20% della sua altezza e si ingrandisce del 20% (solo con "Chi sono" chiuso) */
+@media (max-width: 760px) {
+  .h-cubo:not(.h-cubo-aperto) { top: calc(50% - 15.6vw); width: 93.6vw; }
+}
+
+/* Telefono, home: "LOMBARDI" sale del 20% (da 71% a 56,8% dell'altezza della scena) */
+@media (max-width: 760px) {
+  .h-nome-2 { top: 56.8%; }
+}
+
+/* Telefono, home: le onde del suono salgono del 20% (da 29,5vh a 23,6vh sotto il centro) */
+@media (max-width: 760px) {
+  .h-onde-musica { transform: translateY(23.6vh); }
+}
+
+/* Computer e iPad, home: "LOMBARDI" scende del 30% (da 51% a 66,3% dell'altezza della scena) */
+@media (min-width: 761px) {
+  .h-nome-2 { top: 66.3%; }
+}
+
+/* Solo computer (iPad escluso), home: "LOMBARDI" scende ancora del 10% (da 66,3% a 72,9%) */
+@media (min-width: 1025px) {
+  .h-nome-2 { top: 72.9%; }
 }

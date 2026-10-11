@@ -261,7 +261,11 @@ function OndeMusica({ analisi }) {
 function RigaSe({ mostra, delay = 0, children }) {
   const ridotto = useReducedMotion()
   return (
-    <span className="h-riga">
+    // Quando il titolo è nascosto sparisce del tutto (dopo che è sceso): altrimenti accenti e punti delle lettere sporgono dal bordo della maschera
+    <span
+      className="h-riga"
+      style={{ visibility: mostra ? 'visible' : 'hidden', transition: mostra ? 'visibility 0s' : `visibility 0s linear ${ridotto ? 0 : 1.1}s` }}
+    >
       <motion.span
         className="h-riga-dentro"
         initial={false}
@@ -770,10 +774,10 @@ function PaginaChiaro() {
           </motion.p>
 
           {/* Il nuovo titolo grande: prende il posto dei nomi quando si apre "Chi sono" */}
-          <p className="h-titolo h-titolo-1" style={{ '--c': Math.max(t.home.titolo1.length, t.home.titolo2.length) }} aria-hidden="true">
+          <p className="h-titolo h-titolo-1" aria-hidden="true">
             <RigaSe mostra={aperto} delay={0.55}>{t.home.titolo1}</RigaSe>
           </p>
-          <p className="h-titolo h-titolo-2" style={{ '--c': Math.max(t.home.titolo1.length, t.home.titolo2.length) }} aria-hidden="true">
+          <p className="h-titolo h-titolo-2" aria-hidden="true">
             <RigaSe mostra={aperto} delay={0.7}>{t.home.titolo2}</RigaSe>
           </p>
 
