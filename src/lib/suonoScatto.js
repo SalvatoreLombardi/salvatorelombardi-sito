@@ -1,13 +1,41 @@
 /* ============================================================================
    SCATTO DELL'INTERRUTTORE
-   Il rumore di un interruttore della luce, creato al momento dal browser
-   (Web Audio): un clic secco, un piccolo tonfo di plastica e un secondo tic
-   di rimbalzo. Non è un file registrato, quindi non ci sono diritti da
-   controllare. Se un giorno vuoi un suono registrato, basta sostituire il
-   contenuto di questa funzione con la riproduzione del file.
+   Riproduce public/audio/interruttore.mp3 (per cambiarlo basta sostituire il
+   file con lo stesso nome). Se il file non si carica, c'è un rumore di riserva
+   generato dal browser.
    Va chiamata da un clic: i browser non fanno partire l'audio da soli.
    ========================================================================== */
+const FILE = '/audio/interruttore.mp3'
+// Il file è piccolo: si scarica subito all'apertura della pagina, così al clic è già pronto
+const scaricato = typeof window !== 'undefined' ? fetch(FILE).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject())).catch(() => null) : null
+
 export function suonoScatto() {
+  try {
+    const Contesto = window.AudioContext || window.webkitAudioContext
+    if (!Contesto) return
+    const ctx = new Contesto()
+    if (ctx.state === 'suspended') ctx.resume()
+    ;(scaricato || Promise.resolve(null)).then((dati) => {
+      if (!dati) return suonoSintetico() // se il file non c'è, il rumore generato dal browser
+      ctx.decodeAudioData(
+        dati.slice(0),
+        (buffer) => {
+          const sorgente = ctx.createBufferSource()
+          sorgente.buffer = buffer
+          sorgente.connect(ctx.destination)
+          sorgente.start()
+          sorgente.onended = () => ctx.close?.()
+        },
+        () => suonoSintetico(),
+      )
+    })
+  } catch {
+    /* senza audio il sito funziona lo stesso */
+  }
+}
+
+/** Rumore di riserva generato dal browser (clic secco + tonfo), usato solo se il file non si carica. */
+function suonoSintetico() {
   try {
     const Contesto = window.AudioContext || window.webkitAudioContext
     if (!Contesto) return
