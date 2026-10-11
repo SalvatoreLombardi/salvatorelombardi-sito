@@ -285,11 +285,11 @@ const CHI_SONO = [
   },
   {
     titolo: 'Metodo',
-    corpo: 'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi.',
+    corpo: 'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi. Mi aggiorno con costanza sulle novità del settore, per proporti soluzioni sempre attuali.',
   },
   {
     titolo: 'Ascolto',
-    corpo: 'Parli sempre direttamente con me: ti ascolto con pazienza, mi metto nei tuoi panni e lavoro nel rispetto delle persone e dei loro tempi. Studio con costanza le novità del settore, per proporti soluzioni sempre attuali.',
+    corpo: 'Il rapporto è diretto, senza intermediari. Dedico il tempo necessario ad ascoltare le tue esigenze e a capire il contesto della tua attività, per definire insieme obiettivi chiari prima di iniziare a lavorare.',
   },
 ]
 
