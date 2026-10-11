@@ -476,8 +476,8 @@
   /* "Chi sono" aperto: cubo più grande, così il testo si legge; i comandi scendono un po' */
   .h-cubo-aperto { width: 112vw; }
   .h-cubo-aperto .h-comandi { margin-top: -7vw; }
-  /* Con "Chi sono" aperto le onde non servono e non devono coprire i comandi */
-  .h-corsa:has(.h-cubo-aperto) .h-onde-musica { opacity: 0; }
+  /* Con "Chi sono" aperto le onde tornano al centro, dietro il cubo */
+  .h-corsa:has(.h-cubo-aperto) .h-onde-musica { transform: none; }
   .h-servizi,
   .h-scorri {
     display: none;

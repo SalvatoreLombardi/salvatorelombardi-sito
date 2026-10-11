@@ -10,6 +10,7 @@ import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
+import { suonoScatto } from '../lib/suonoScatto.js'
 import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
 const CuboChiaro = lazy(() => import('../ui/CuboChiaro'))
@@ -750,7 +751,13 @@ export default function Chiaro() {
   return (
     <div className="chiaro">
       <Cursore />
-      {fase !== 'fatto' && <Ingresso fase={fase} suClic={() => entra('suono')} />}
+      {fase !== 'fatto' && <Ingresso
+          fase={fase}
+          suClic={() => {
+            if (fase === 'attesa') suonoScatto() // il rumore dell'interruttore, subito al clic
+            entra('suono')
+          }}
+        />}
 
       <PortaAperta.Provider value={portaAperta}>
       <div ref={ref} className={`h-corsa ${fase === 'attesa' || fase === 'acceso' ? 'h-corsa-chiusa' : ''}`} inert={fase !== 'fatto' && fase !== 'apre' ? true : undefined}>
