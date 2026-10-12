@@ -710,6 +710,7 @@ function PaginaChiaro() {
   /** Dal menu: si chiude e si scorre alla sezione. "Chi sono" riporta in cima e apre il cubo. */
   const vaiAllaVoce = (id) => {
     setMenuAperto(false)
+    if (id !== 'chi-sono') setAperto(false) // se "Chi sono" è aperto si chiude: altrimenti la pagina scorre ma il cubo resta
     const liscio = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     setTimeout(() => {
       if (id === 'chi-sono') {

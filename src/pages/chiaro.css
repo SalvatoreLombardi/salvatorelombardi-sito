@@ -1591,3 +1591,15 @@
   }
   .h-corsa:has(.h-cubo-aperto) .h-servizi { display: none; }
 }
+
+/* Computer e iPad in orizzontale, "Chi sono" aperto: "FOR EVERYTHING." copriva freccette e Chiudi sotto il cubo.
+   I comandi passano a sinistra, sulla riga del titolo (a sinistra il titolo non arriva). cqw = larghezza del cubo. */
+@media (min-width: 761px) and (min-aspect-ratio: 1/1) {
+  .h-cubo-aperto .h-comandi {
+    left: calc(var(--gutter) - (50vw - 50cqw));
+    right: auto;
+    justify-content: flex-start;
+    width: max-content;
+    margin-top: calc(45vh - 2.95vw - 17px - 0.52 * min(72vh, 62vw));
+  }
+}

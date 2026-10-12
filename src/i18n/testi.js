@@ -37,7 +37,7 @@ export const TESTI = {
     chiSono: [
       {
         titolo: 'Chi sono',
-        corpo: 'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
+        corpo: 'Sono un web developer e graphic web designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
       },
       {
         titolo: 'Cura',
@@ -173,7 +173,7 @@ export const TESTI = {
     chiSono: [
       {
         titolo: 'About me',
-        corpo: 'I’m Salvatore, a developer and designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
+        corpo: 'I’m a web developer and graphic web designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
       },
       {
         titolo: 'Care',
@@ -321,7 +321,7 @@ TESTI.it.scuro = {
     t2: 'un solo interlocutore per tutto.',
     foto: 'Salvatore Lombardi',
     paragrafi: [
-      'Sono Salvatore, sviluppatore e designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
+      'Sono un web developer e graphic web designer in Puglia. Da sei anni realizzo siti, e-commerce, app, grafica e video per le attività del territorio.',
       'Non realizzo mai due lavori identici: ogni attività ha una storia propria, e il progetto deve saperla raccontare. Sono un esteta e un perfezionista: curo ogni dettaglio finché l’insieme risulta armonioso. Per te significa un risultato rifinito, mai approssimativo.',
       'Parto dalle difficoltà che incontri ogni giorno, perché la tecnologia ha senso quando previene gli errori o aiuta a rimediarvi. Parli sempre direttamente con me: ti ascolto con pazienza, mi metto nei tuoi panni e lavoro nel rispetto delle persone e dei loro tempi. Studio con costanza le novità del settore, per proporti soluzioni sempre attuali.',
     ],
@@ -384,7 +384,7 @@ TESTI.en.scuro = {
     t2: 'one point of contact for everything.',
     foto: 'Salvatore Lombardi',
     paragrafi: [
-      'I’m Salvatore, a developer and designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
+      'I’m a web developer and graphic web designer based in Puglia, Italy. For six years I’ve been building websites, e-commerce, apps, graphics and video for local businesses.',
       'I never make two identical projects: every business has its own story, and the project has to be able to tell it. I’m an aesthete and a perfectionist: I look after every detail until the whole feels harmonious. For you, that means a polished result, never an approximate one.',
       'I start from the difficulties you face every day, because technology makes sense when it prevents mistakes or helps put them right. You always deal with me directly: I listen patiently, I put myself in your shoes and I work with respect for people and their time. I keep up with news in the industry, so I can offer you solutions that are always up to date.',
     ],
