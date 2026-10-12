@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { useRichiesteNuove } from '../ui/AvvisoRichieste'
 
 /* ============================================================================
    MENU — lato chiaro.
@@ -136,6 +137,7 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
   const elencoRef = useRef(null)
   const vociRef = useRef([])
   const attivaRef = useRef(-1)
+  const { sessione, nuove } = useRichiesteNuove() // l'avviso dei preventivi arriva solo dopo il login
 
   // Esc chiude; con il menu aperto la pagina sotto non scorre e il focus va sul bottone di chiusura
   useEffect(() => {
@@ -169,6 +171,13 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
           <path d="M62 35C58 41 55 45 50 50C45 56 42 60 37 66" />
         </svg>
       </button>
+
+      {sessione && nuove > 0 && (
+        <a href="#/admin" className="h-menu-avviso" data-cursore="">
+          <span className="h-menu-pallino" aria-hidden="true" />
+          {nuove} {nuove === 1 ? 'preventivo' : 'preventivi'}
+        </a>
+      )}
 
       <nav className="h-menu-voci" aria-label={t.menu.sezioni}>
         <LineaTempo aperto={aperto} elenco={elencoRef} vociRef={vociRef} attivaRef={attivaRef} />

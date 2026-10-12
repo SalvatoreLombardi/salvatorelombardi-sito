@@ -14,9 +14,8 @@ import { supabase, supabaseAttivo } from '../lib/supabase'
 // Ogni quanto ricontrollare, in millisecondi
 const INTERVALLO = 60_000
 
-export function AvvisoRichieste() {
-  const prefersReducedMotion = useReducedMotion()
-
+/** Sessione attiva e numero di richieste nuove (0 per chi non ha fatto il login). Lo usano la pillola del sito scuro e il menu del sito chiaro. */
+export function useRichiesteNuove() {
   const [sessione, setSessione] = useState(null)
   const [nuove, setNuove] = useState(0)
 
@@ -59,6 +58,13 @@ export function AvvisoRichieste() {
       document.removeEventListener('visibilitychange', alRitorno)
     }
   }, [sessione, conta])
+
+  return { sessione, nuove }
+}
+
+export function AvvisoRichieste() {
+  const prefersReducedMotion = useReducedMotion()
+  const { sessione, nuove } = useRichiesteNuove()
 
   return (
     <AnimatePresence>

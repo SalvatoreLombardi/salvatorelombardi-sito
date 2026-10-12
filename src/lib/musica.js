@@ -15,11 +15,13 @@ let ctx = null
 let guadagno = null
 let analizzatore = null
 let sorgente = null
-let caricamento = null
+let decodifica = null // il brano decodificato (una volta sola, poi si riusa in ogni nuovo contesto)
+let brano = null
 let acceso = false
 
+/** Il contesto audio: se non c'è o è stato chiuso se ne crea uno nuovo (da chiamare dentro un clic). */
 function prepara() {
-  if (ctx) return ctx
+  if (ctx && ctx.state !== 'closed') return ctx
   const Contesto = window.AudioContext || window.webkitAudioContext
   ctx = new Contesto()
   guadagno = ctx.createGain()
@@ -29,9 +31,18 @@ function prepara() {
   analizzatore.smoothingTimeConstant = 0.82
   guadagno.connect(analizzatore)
   analizzatore.connect(ctx.destination)
-  caricamento = fetch(FILE)
-    .then((r) => r.arrayBuffer())
-    .then((dati) => new Promise((ok, no) => ctx.decodeAudioData(dati, ok, no)))
+  sorgente = null
+  if (!decodifica) {
+    const c = ctx
+    decodifica = fetch(FILE)
+      .then((r) => r.arrayBuffer())
+      .then((dati) => new Promise((ok, no) => c.decodeAudioData(dati, ok, no)))
+      .then((b) => (brano = b))
+      .catch((e) => {
+        decodifica = null
+        throw e
+      })
+  }
   return ctx
 }
 
@@ -71,9 +82,9 @@ export function accendiMusica() {
     const c = prepara()
     c.resume?.()
     acceso = true
-    caricamento
+    decodifica
       .then((buffer) => {
-        if (!acceso) return
+        if (!acceso || c !== ctx) return
         if (!sorgente) {
           sorgente = c.createBufferSource()
           sorgente.buffer = buffer
@@ -91,19 +102,27 @@ export function accendiMusica() {
   }
 }
 
+/* Dopo lo spegnimento l'audio si chiude del tutto: su iPhone un contesto fermo a lungo può non ripartire più,
+   uno nuovo (creato dentro il clic) parte sempre. Il brano resta già decodificato, quindi la ripartenza è subito. */
 export function spegniMusica() {
   acceso = false
   if (!ctx) return
   sfuma(0, 0.4)
+  const c = ctx
   setTimeout(() => {
-    if (!acceso && sorgente) {
-      try {
-        sorgente.stop()
-      } catch {
-        /* già fermo */
-      }
-      sorgente.disconnect()
-      sorgente = null
+    if (acceso || c !== ctx) return
+    try {
+      sorgente?.stop()
+    } catch {
+      /* già fermo */
+    }
+    sorgente?.disconnect()
+    sorgente = null
+    if (brano) {
+      c.close?.().catch(() => {})
+      ctx = null
+      guadagno = null
+      analizzatore = null
     }
   }, 500)
 }

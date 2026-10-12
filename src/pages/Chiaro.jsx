@@ -8,7 +8,6 @@ import { LavoriChiaro } from './LavoriChiaro.jsx'
 import { VideoChiaro } from './VideoChiaro.jsx'
 import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
-import { AvvisoRichieste } from '../ui/AvvisoRichieste'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { MenuChiaro } from './MenuChiaro.jsx'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
@@ -841,7 +840,6 @@ function PaginaChiaro() {
       <PreventivoChiaro />
 
       <ContattiChiaro />
-      <AvvisoRichieste />
       <TornaSuChiaro />
     </div>
   )

@@ -1418,6 +1418,31 @@
 }
 .h-menu-chiudi svg { stroke: #e6e4dd; }
 .h-menu-voci { position: relative; padding-left: 70px; }
+/* Avviso dei preventivi nuovi, in alto a sinistra (lo vedo solo io, dopo il login) */
+.h-menu-avviso {
+  position: absolute;
+  top: clamp(18px, 2.6vw, 36px);
+  left: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 54px;
+  color: #e6e4dd;
+  text-decoration: none;
+  font: 500 0.82rem/1 var(--f-testo);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.h-menu-avviso:hover { opacity: 0.75; }
+.h-menu-pallino {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e6e4dd;
+  animation: h-pulsa 1.8s ease-in-out infinite;
+}
+@keyframes h-pulsa { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+@media (prefers-reduced-motion: reduce) { .h-menu-pallino { animation: none; } }
 .h-menu-voci ol { list-style: none; margin: 0; padding: 0; }
 .h-menu-linea { position: absolute; left: 0; top: 0; width: 44px; pointer-events: none; }
 .h-menu-voci li {
