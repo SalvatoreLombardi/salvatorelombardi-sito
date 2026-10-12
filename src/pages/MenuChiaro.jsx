@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { useRichiesteNuove } from '../ui/AvvisoRichieste'
+import { ASSISTENTE_ATTIVO, apriAssistente } from '../lib/assistente.js'
+import { IconaNuvoletta } from '../ui/IconaNuvoletta.jsx'
 
 /* ============================================================================
    MENU — lato chiaro.
@@ -205,6 +207,21 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
           ))}
         </ol>
       </nav>
+
+      {ASSISTENTE_ATTIVO && (
+        <button
+          type="button"
+          className="h-menu-assistente"
+          onClick={() => {
+            chiudi()
+            setTimeout(apriAssistente, 450) // si apre quando il menu si è chiuso
+          }}
+          data-cursore=""
+        >
+          <IconaNuvoletta />
+          {t.menu.assistente}
+        </button>
+      )}
 
       <div className="h-menu-lingua" role="group" aria-label={t.menu.lingua}>
         {[

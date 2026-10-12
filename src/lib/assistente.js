@@ -1,5 +1,11 @@
 import { supabase } from './supabase'
 
+/** L'assistente è acceso solo dove VITE_ASSISTENTE è impostata (in locale; online dopo aver attivato la funzione). */
+export const ASSISTENTE_ATTIVO = Boolean(import.meta.env.VITE_ASSISTENTE)
+
+/** Apre la chat da un altro punto del sito (menu, contatti): la chat ascolta questo evento. */
+export const apriAssistente = () => window.dispatchEvent(new Event('apri-assistente'))
+
 /* ============================================================================
    ASSISTENTE AI — chiamata al server.
    Online la richiesta va alla funzione `assistente` su Supabase (che tiene la

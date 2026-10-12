@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { useInView } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll.js'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
+import { ASSISTENTE_ATTIVO, apriAssistente } from '../lib/assistente.js'
+import { IconaNuvoletta } from '../ui/IconaNuvoletta.jsx'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati.jsx'
 
 /* ============================================================================
@@ -65,6 +67,15 @@ export function ContattiChiaro() {
           </li>
         ))}
       </ul>
+
+      {ASSISTENTE_ATTIVO && (
+        <p className="h-ct-assistente">
+          <button type="button" onClick={apriAssistente} data-cursore="">
+            <IconaNuvoletta />
+            {c.assistente}
+          </button>
+        </p>
+      )}
 
       {social.length > 0 && (
         <p className="h-ct-social">

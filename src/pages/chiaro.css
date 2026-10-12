@@ -1665,3 +1665,46 @@
 /* Con "Chi sono" aperto a sinistra stanno i comandi del cubo: l'assistente si nasconde */
 body:has(.h-cubo-aperto) .h-as-btn, body:has(.h-cubo-aperto) .h-as { display: none; }
 @media (prefers-reduced-motion: reduce) { .h-as, .h-as-btn svg { transition: none; } }
+
+/* Assistente nel menu e nei contatti */
+.h-menu-assistente {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(24px, 5vh, 48px);
+  padding: 9px 0;
+  border: 0;
+  border-bottom: 1px solid rgba(230, 228, 221, 0.5);
+  background: none;
+  color: #e6e4dd;
+  font: 500 0.82rem/1 var(--f-testo);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+.h-menu-assistente:hover { opacity: 1; }
+.h-ct-assistente { margin: clamp(20px, 3vh, 32px) 0 0; }
+.h-ct-assistente button {
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: var(--inchiostro);
+  font: 400 clamp(1rem, 1.2vw, 1.15rem)/1.6 var(--f-testo);
+  cursor: pointer;
+}
+
+/* Telefono: niente cerchio della chat sullo schermo (si apre dal menu o dai contatti); la freccia per tornare su è più piccola e discreta */
+@media (max-width: 760px) {
+  .h-as-btn { display: none; }
+  .h-as { bottom: 14px; }
+  .h-su { width: 40px; height: 40px; right: 12px; bottom: 12px; }
+  .h-su svg { stroke-width: 1.2; }
+}
+
+.h-nuvoletta { width: 2.4em; height: 2.4em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; margin-right: 0.6em; overflow: visible; }
+.h-menu-assistente { display: flex; align-items: center; }
+.h-menu-assistente .h-nuvoletta { margin-right: 0.6em; vertical-align: baseline; }
+.h-ct-assistente button { display: inline-flex; align-items: center; }
+.h-ct-assistente .h-nuvoletta { vertical-align: baseline; }

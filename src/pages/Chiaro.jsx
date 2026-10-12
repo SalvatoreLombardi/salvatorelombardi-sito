@@ -10,6 +10,7 @@ import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { AssistenteChiaro } from '../ui/AssistenteChiaro.jsx'
+import { ASSISTENTE_ATTIVO } from '../lib/assistente.js'
 import { MenuChiaro } from './MenuChiaro.jsx'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { suonoPannelli, suonoScatto } from '../lib/suonoScatto.js'
@@ -842,7 +843,7 @@ function PaginaChiaro() {
 
       <ContattiChiaro />
       <TornaSuChiaro />
-      {fase === 'fatto' && import.meta.env.VITE_ASSISTENTE && <AssistenteChiaro />} {/* acceso solo dove VITE_ASSISTENTE è impostata: online, dopo aver attivato la funzione su Supabase */}
+      {fase === 'fatto' && ASSISTENTE_ATTIVO && <AssistenteChiaro />} {/* acceso solo dove VITE_ASSISTENTE è impostata: online, dopo aver attivato la funzione su Supabase */}
     </div>
   )
 }

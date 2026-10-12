@@ -27,6 +27,13 @@ export function AssistenteChiaro() {
   const domande = messaggi.filter((m) => m.ruolo === 'utente').length
   const finito = domande >= MAX_DOMANDE
 
+  // Dal menu o dai contatti la chat si apre con un evento
+  useEffect(() => {
+    const apri = () => setAperto(true)
+    window.addEventListener('apri-assistente', apri)
+    return () => window.removeEventListener('apri-assistente', apri)
+  }, [])
+
   // Esc chiude; all'apertura il cursore va nel campo (non su telefono, dove aprirebbe la tastiera)
   useEffect(() => {
     if (!aperto) return
