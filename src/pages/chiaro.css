@@ -350,7 +350,7 @@
   position: absolute;
   font-family: var(--f-titoli);
   font-weight: 600;
-  font-size: clamp(3.6rem, 13.2vw, 15.5rem);
+  font-size: clamp(3.24rem, 11.88vw, 13.95rem);
   line-height: 0.9;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -469,7 +469,7 @@
   .h-titolo-2 { bottom: 5%; }
   .h-freccia { right: 78%; bottom: 28%; }
   .h-nome {
-    font-size: 15.2vw;
+    font-size: 13.68vw;
   }
   .h-nome-1 {
     top: 20%;
@@ -487,7 +487,6 @@
   .h-cubo-aperto .h-comandi { margin-top: -7vw; }
   /* Con "Chi sono" aperto le onde tornano al centro, dietro il cubo */
   .h-corsa:has(.h-cubo-aperto) .h-onde-musica { transform: none; }
-  .h-servizi,
   .h-scorri {
     display: none;
   }
@@ -555,7 +554,7 @@
   display: grid;
   font-family: var(--f-titoli);
   font-weight: 600;
-  font-size: min(10.6vw, 16vh);
+  font-size: min(9.54vw, 14.4vh);
   line-height: 0.92;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -604,8 +603,8 @@
 @media (max-width: 760px) {
   /* Sul telefono "Accendi" è più grande e "il tuo progetto" va a capo su due righe */
   .h-ing-riga { max-width: 94vw; justify-items: center; text-align: center; }
-  .h-ing-svuota { font-size: 21vw; }
-  .h-ing-riempi { font-size: 17.5vw; white-space: normal; line-height: 0.95; }
+  .h-ing-svuota { font-size: 18.9vw; }
+  .h-ing-riempi { font-size: 15.75vw; white-space: normal; line-height: 0.95; }
 }
 
 /* Sfondo dell'ingresso a effetto carta opaca: una grana fine e leggera.
@@ -1476,8 +1475,8 @@
 
 /* In inglese "LIGHT UP" è più lungo di "ACCENDI": su telefono il carattere è un po' più piccolo per restare nello schermo */
 @media (max-width: 760px) {
-  .h-ingresso[data-lingua='en'] .h-ing-svuota { font-size: 17vw; }
-  .h-ingresso[data-lingua='en'] .h-ing-riempi { font-size: 16vw; }
+  .h-ingresso[data-lingua='en'] .h-ing-svuota { font-size: 15.3vw; }
+  .h-ingresso[data-lingua='en'] .h-ing-riempi { font-size: 14.4vw; }
 }
 
 /* Cambio lingua nel menu: IT / EN, a mano come il resto; quella attiva è piena */
@@ -1525,19 +1524,19 @@
   body:has(.h-cubo-aperto) .h-su { display: none; }
 }
 
-/* Telefono, home: il cubo sale di circa il 20% della sua altezza e si ingrandisce del 20% (solo con "Chi sono" chiuso) */
+/* Telefono, home: il cubo sale del 20% della sua altezza, poi scende del 10%, e si ingrandisce del 20% (solo con "Chi sono" chiuso) */
 @media (max-width: 760px) {
-  .h-cubo:not(.h-cubo-aperto) { top: calc(50% - 15.6vw); width: 93.6vw; }
+  .h-cubo:not(.h-cubo-aperto) { top: calc(50% - 6.24vw); width: 93.6vw; }
 }
 
-/* Telefono, home: "LOMBARDI" sale del 20% (da 71% a 56,8% dell'altezza della scena) */
+/* Telefono, home: "LOMBARDI" sale del 20% (da 71% a 56,8%), poi scende del 10% e ancora del 10% (68,8% dell'altezza della scena) */
 @media (max-width: 760px) {
-  .h-nome-2 { top: 56.8%; }
+  .h-nome-2 { top: 68.8%; }
 }
 
-/* Telefono, home: le onde del suono salgono del 20% (da 29,5vh a 23,6vh sotto il centro) */
+/* Telefono, home: le onde del suono salgono del 20% (da 29,5vh a 23,6vh), poi scendono del 15% e ancora del 10% (29,8vh sotto il centro) */
 @media (max-width: 760px) {
-  .h-onde-musica { transform: translateY(23.6vh); }
+  .h-onde-musica { transform: translateY(29.8vh); }
 }
 
 /* Computer e iPad, home: "LOMBARDI" scende del 30% (da 51% a 66,3% dell'altezza della scena) */
@@ -1553,4 +1552,17 @@
 /* Telefono, "Chi sono" aperto: le onde salgono del 20% (da metà schermo, 50%, al 40%) */
 @media (max-width: 760px) {
   .h-corsa:has(.h-cubo-aperto) .h-onde-musica { transform: translateY(-10vh); }
+}
+
+/* Telefono, home: la riga dei servizi sta al centro, in fondo alla pagina (con "Chi sono" aperto ci sono i comandi) */
+@media (max-width: 760px) {
+  .h-servizi {
+    left: 0;
+    right: 0;
+    bottom: max(22px, env(safe-area-inset-bottom));
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+  .h-corsa:has(.h-cubo-aperto) .h-servizi { display: none; }
 }

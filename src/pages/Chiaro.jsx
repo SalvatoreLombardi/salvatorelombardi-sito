@@ -828,12 +828,6 @@ function PaginaChiaro() {
             <Riga delay={0.45}>Lombardi</Riga>
           </motion.p>
 
-          <motion.p className="h-frase" style={{ opacity: opRighe, x: xRighe }}>
-            <Riga key={lingua} delay={0.9}>{t.home.frase[0]}</Riga>
-            <Riga key={lingua + '2'} delay={1}>{t.home.frase[1]}</Riga>
-            <span className="h-frase-autore">{t.home.autore}</span>
-          </motion.p>
-
           <motion.p className="h-servizi" style={{ opacity: opRighe, x: xRighe }}>
             <Riga key={lingua} delay={1}>{t.home.servizi}</Riga>
           </motion.p>
