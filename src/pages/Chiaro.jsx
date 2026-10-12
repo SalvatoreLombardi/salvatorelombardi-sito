@@ -9,7 +9,6 @@ import { VideoChiaro } from './VideoChiaro.jsx'
 import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { AvvisoRichieste } from '../ui/AvvisoRichieste'
-import { LogoInterruttore } from '../ui/LogoInterruttore.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
 import { MenuChiaro } from './MenuChiaro.jsx'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
@@ -749,13 +748,8 @@ function PaginaChiaro() {
       <div ref={ref} className={`h-corsa ${fase === 'attesa' || fase === 'acceso' ? 'h-corsa-chiusa' : ''}`} inert={fase !== 'fatto' && fase !== 'apre' ? true : undefined}>
         <div className="h-scena">
           <header className="h-testata">
-            <span className="h-marchio">
-              <LogoInterruttore className="h-logo-int" />
-              <span>
-                Salvatore
-                <br />
-                Lombardi
-              </span>
+            <span className="h-marchio" role="img" aria-label="Salvatore Lombardi">
+              <img className="h-logo-int" src={`${import.meta.env.BASE_URL}logo-interruttore.png`} alt="" width="294" height="480" />
             </span>
             <Suono analisi={analisi} comando={comando} />
             <button type="button" className="h-cerchio" aria-label={t.menu.apri} aria-expanded={menuAperto} onClick={() => setMenuAperto(true)}>
