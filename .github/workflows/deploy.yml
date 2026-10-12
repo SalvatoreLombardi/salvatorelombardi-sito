@@ -28,6 +28,7 @@ jobs:
         env:
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_ASSISTENTE: '1' # accende la chat dell'assistente AI (la funzione `assistente` è attiva su Supabase)
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

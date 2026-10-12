@@ -7,12 +7,12 @@ import { EMAIL, TELEFONO_LEGGIBILE } from '../components/contatti/dati'
    cookie policy (art. 122 Codice privacy, linee guida del Garante 10/06/2021).
    Raggiungibile da  /#/privacy  (link nel footer e nel configuratore).
 
-   Se cambia qualcosa nel sito (nuovo strumento, nuovo fornitore, analytics,
+   Se cambia qualcosa nel sito (nuovo strumento, nuovo fornitore, analytics, assistente AI,
    newsletter, mail con Resend) AGGIORNA QUESTA PAGINA e la data qui sotto.
    Riferimento: documenti/competenze-privacy-gdpr.md
    ========================================================================== */
 
-const ULTIMO_AGGIORNAMENTO = '10 ottobre 2026'
+const ULTIMO_AGGIORNAMENTO = '12 ottobre 2026'
 
 function Sezione({ titolo, children }) {
   return (
@@ -101,6 +101,15 @@ export default function Privacy() {
               'Se usi WhatsApp, il servizio è di Meta, che tratta i dati secondo la propria informativa: io non ne sono il titolare.',
             ]}
           />
+          <p className="text-white">Assistente automatico (chat)</p>
+          <Elenco
+            voci={[
+              'Dati: le domande che scrivi nella chat e le risposte generate. Ti chiedo di non scrivere dati personali (nome, telefono, email, dati di salute): per quelli usa il configuratore o i contatti. Per limitare gli abusi il servizio considera anche, per breve tempo, il tuo indirizzo IP.',
+              'Finalità: rispondere alle tue domande sui miei servizi. Base giuridica: la tua richiesta di informazioni (art. 6, par. 1, lett. b) o il mio legittimo interesse a presentare i miei servizi e a proteggere il servizio da usi impropri (lett. f).',
+              'Le risposte sono generate da un sistema di intelligenza artificiale e possono contenere errori: per qualsiasi preventivo o impegno vale solo quanto ti confermo io. Non prendo decisioni su di te basate su questo strumento.',
+              'Io non salvo le conversazioni. Le domande vengono inviate al servizio di intelligenza artificiale indicato nella sezione 3, che le tratta secondo i propri termini.',
+            ]}
+          />
           <p className="text-white">Dati tecnici di navigazione</p>
           <Elenco
             voci={[
@@ -116,6 +125,7 @@ export default function Privacy() {
           <Elenco
             voci={[
               'Supabase: archivio delle richieste di preventivo. Il database si trova nell\'Unione Europea (Irlanda, regione AWS eu-west-1). Supabase è una società con sede negli Stati Uniti e ha un accordo di trattamento dati con clausole contrattuali standard della Commissione europea.',
+              'Google (Gemini API): genera le risposte dell\'assistente automatico, solo se usi la chat. Società con sede negli Stati Uniti. Secondo i termini d\'uso della Gemini API, per chi si trova nello Spazio economico europeo i contenuti inviati non vengono usati per migliorare i prodotti di Google. Le domande passano da una funzione del mio account Supabase, che non le conserva.',
               'GitHub (GitHub Pages): ospita il sito. Società con sede negli Stati Uniti.',
               'Cloudflare: gestisce il nome di dominio. Società con sede negli Stati Uniti.',
             ]}
@@ -128,8 +138,9 @@ export default function Privacy() {
         <Sezione titolo="4. Trasferimenti fuori dall'Unione Europea">
           <p>
             I dati delle richieste restano nell'Unione Europea. I fornitori indicati sopra hanno sede negli
-            Stati Uniti, quindi alcuni dati tecnici (per esempio l'indirizzo IP nei registri di accesso)
-            possono essere trattati anche lì, con le garanzie previste dal GDPR: decisione di adeguatezza
+            Stati Uniti, quindi alcuni dati tecnici (per esempio l'indirizzo IP nei registri di accesso) e,
+            se usi la chat, le domande che scrivi possono essere trattati anche lì, con le garanzie previste
+            dal GDPR: decisione di adeguatezza
             (EU-US Data Privacy Framework) o clausole contrattuali standard.
           </p>
         </Sezione>
@@ -140,6 +151,7 @@ export default function Privacy() {
               'Richieste di preventivo che non diventano un lavoro: 12 mesi dall\'invio, poi le cancello.',
               'Se nasce un lavoro insieme: per tutta la durata del rapporto e poi per i tempi che la legge impone per i documenti amministrativi e fiscali.',
               'Messaggi ricevuti per email o WhatsApp: fino a 12 mesi dall\'ultimo scambio, salvo che serva conservarli per un rapporto in corso.',
+              'Conversazioni con l\'assistente automatico: non le conservo. Il fornitore del servizio di intelligenza artificiale può tenerle per un periodo limitato, secondo i suoi termini.',
             ]}
           />
         </Sezione>
