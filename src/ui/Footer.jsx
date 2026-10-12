@@ -1,4 +1,3 @@
-import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { EMAIL, IconaSocial, SOCIAL, TELEFONO_INTL, TELEFONO_LEGGIBILE } from '../components/contatti/dati'
 import { vaiAllaSezione } from '../lib/scroll'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
@@ -24,7 +23,7 @@ export function Footer() {
           {/* --- Marchio --- */}
           <div>
             <span className="flex items-center gap-2.5 text-accent-400" role="img" aria-label="Salvatore Lombardi">
-              <LogoInterruttore className="h-10 w-auto" />
+              <img src={`${import.meta.env.BASE_URL}logo-interruttore-verde.png`} alt="" width="294" height="480" className="h-10 w-auto" />
               <span className="font-display text-[1.05rem] font-semibold leading-[0.95] tracking-[-0.03em] text-white ">
                 Salvatore
                 <br />

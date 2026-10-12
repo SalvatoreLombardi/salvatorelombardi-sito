@@ -1,4 +1,3 @@
-import { LogoInterruttore } from './LogoInterruttore.jsx'
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react'
 import { vaiAllaSezione } from '../lib/scroll'
@@ -84,7 +83,7 @@ export function Navbar() {
             aria-label={n.logoAria}
           >
             <span className="flex items-center gap-2.5 text-accent-400" role="img" aria-label="Salvatore Lombardi">
-              <LogoInterruttore className="h-9 w-auto lg:h-12" />
+              <img src={`${import.meta.env.BASE_URL}logo-interruttore-verde.png`} alt="" width="294" height="480" className="h-9 w-auto lg:h-12" />
               <span className="font-display text-[1.05rem] font-semibold leading-[0.95] tracking-[-0.03em] text-white lg:text-[1.2rem]">
                 Salvatore
                 <br />
