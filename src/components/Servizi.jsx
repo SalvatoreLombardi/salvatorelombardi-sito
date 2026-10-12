@@ -13,7 +13,7 @@ export const SERVIZI = [
   {
     titolo: 'Sviluppo web',
     testo:
-      'Siti, ecommerce e app per la tua attività. Veloci, sicuri e facili da gestire in autonomia.',
+      'Siti, ecommerce e app per la tua attività. Veloci, sicuri e facili da gestire in autonomia. Assistente AI per il tuo sito: risponde ai tuoi clienti a ogni ora, con le informazioni della tua attività.',
     voci: ['Siti vetrina e one page', 'Ecommerce', 'App mobile e PWA', 'Manutenzione e assistenza'],
     // Icona: parentesi angolari, il segno più immediato per "codice"
     icona: (

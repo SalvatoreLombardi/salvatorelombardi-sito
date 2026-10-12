@@ -1361,9 +1361,7 @@
 .h-vd-libera { scrollbar-width: none; -ms-overflow-style: none; }
 .h-vd-libera::-webkit-scrollbar { display: none; }
 
-/* Freccia per tornare in cima: solo da telefono. Cerchio e freccia a mano, in basso a destra */
-.h-su { display: none; }
-@media (max-width: 760px) { .h-su { display: block; } }
+/* Freccia per tornare in cima: telefono, iPad e computer. Cerchio e freccia a mano, in basso a destra */
 .h-su {
   position: fixed;
   right: clamp(14px, 2.4vw, 32px);

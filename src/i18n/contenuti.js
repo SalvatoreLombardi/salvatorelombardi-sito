@@ -10,7 +10,7 @@
 const SERVIZI_EN = {
   'Sviluppo web': {
     titolo: 'Web development',
-    testo: 'Websites, e-commerce and apps for your business. Fast, secure and easy to manage on your own.',
+    testo: 'Websites, e-commerce and apps for your business. Fast, secure and easy to manage on your own. An AI assistant for your site: it answers your customers at any hour, using your business’s own information.',
     voci: ['Showcase and one-page websites', 'E-commerce', 'Mobile apps and PWAs', 'Maintenance and support'],
   },
   'Graphic design': {
