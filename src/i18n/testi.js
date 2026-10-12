@@ -17,6 +17,21 @@ export const TESTI = {
       cliccaQui: 'clicca qui',
     },
     suono: { acceso: 'Suono acceso', spento: 'Clicca per il suono' },
+    assistente: {
+      apri: 'Chiedi all’assistente',
+      chiudi: 'Chiudi',
+      titolo: 'Assistente',
+      avviso: 'Sono un assistente automatico: posso sbagliare. Non scrivere dati personali. Le conversazioni sono elaborate da Google.',
+      privacy: 'Privacy',
+      benvenuto: 'Ciao! Chiedimi pure di servizi, tempi e preventivo. Se non so rispondere, ti dico dove trovare Salvatore.',
+      suggerimenti: ['Che servizi offri?', 'Come funziona il preventivo?', 'Cos’è un assistente AI per il sito?'],
+      segnaposto: 'Scrivi una domanda',
+      invia: 'Invia',
+      pensa: 'Sto scrivendo…',
+      nonDisponibile: 'In questo momento non riesco a rispondere. Scrivimi dai contatti e ti risponde Salvatore.',
+      limite: 'Per oggi abbiamo parlato abbastanza. Per continuare scrivi a Salvatore dai contatti.',
+      contatti: 'Vai ai contatti',
+    },
 
     home: {
       fraseSr: 'Salvatore Lombardi, un solo interlocutore per tutto',
@@ -153,6 +168,21 @@ export const TESTI = {
       cliccaQui: 'click here',
     },
     suono: { acceso: 'Sound on', spento: 'Click for sound' },
+    assistente: {
+      apri: 'Ask the assistant',
+      chiudi: 'Close',
+      titolo: 'Assistant',
+      avviso: 'I’m an automated assistant: I can make mistakes. Please don’t share personal data. Conversations are processed by Google.',
+      privacy: 'Privacy',
+      benvenuto: 'Hi! Ask me about services, timing and quotes. If I can’t answer, I’ll tell you where to reach Salvatore.',
+      suggerimenti: ['What services do you offer?', 'How does the quote work?', 'What is an AI assistant for a website?'],
+      segnaposto: 'Type a question',
+      invia: 'Send',
+      pensa: 'Writing…',
+      nonDisponibile: 'I can’t answer right now. Write to me from the contact section and Salvatore will reply.',
+      limite: 'We’ve talked enough for now. To continue, write to Salvatore from the contact section.',
+      contatti: 'Go to contact',
+    },
 
     home: {
       fraseSr: 'Salvatore Lombardi, one point of contact for everything',

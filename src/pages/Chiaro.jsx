@@ -9,6 +9,7 @@ import { VideoChiaro } from './VideoChiaro.jsx'
 import { PreventivoChiaro } from './PreventivoChiaro.jsx'
 import { ContattiChiaro } from './ContattiChiaro.jsx'
 import { TornaSuChiaro } from '../ui/TornaSuChiaro.jsx'
+import { AssistenteChiaro } from '../ui/AssistenteChiaro.jsx'
 import { MenuChiaro } from './MenuChiaro.jsx'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { suonoPannelli, suonoScatto } from '../lib/suonoScatto.js'
@@ -68,7 +69,6 @@ function Cursore() {
       y = e.clientY
       el.classList.add('h-cursore-visibile')
       el.classList.toggle('h-cursore-su', !!e.target.closest?.('a, button, [data-cursore]'))
-      el.classList.toggle('h-cursore-chiaro', !!e.target.closest?.('.h-ct'))
     }
     const giro = () => {
       px += (x - px) * 0.18
@@ -84,7 +84,7 @@ function Cursore() {
     }
   }, [])
   return (
-    <div ref={ref} className="h-cursore" aria-hidden="true">
+    <div ref={ref} className="h-cursore h-cursore-chiaro" aria-hidden="true">
       <svg viewBox="0 0 100 100">
         <path d="M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5" />
       </svg>
@@ -842,6 +842,7 @@ function PaginaChiaro() {
 
       <ContattiChiaro />
       <TornaSuChiaro />
+      {fase === 'fatto' && import.meta.env.VITE_ASSISTENTE && <AssistenteChiaro />} {/* acceso solo dove VITE_ASSISTENTE è impostata: online, dopo aver attivato la funzione su Supabase */}
     </div>
   )
 }

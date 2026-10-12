@@ -1,0 +1,23 @@
+import { supabase } from './supabase'
+
+/* ============================================================================
+   ASSISTENTE AI — chiamata al server.
+   Online la richiesta va alla funzione `assistente` su Supabase (che tiene la
+   chiave di Gemini); in locale la serve Vite su /api/assistente (vite.config.js).
+   Restituisce { testo } oppure { errore }: il sito non si rompe mai, al massimo
+   l'assistente dice che non è disponibile.
+   ========================================================================== */
+export async function chiediAssistente(messaggi) {
+  try {
+    if (import.meta.env.DEV) {
+      const r = await fetch('/api/assistente', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ messaggi }) })
+      return await r.json()
+    }
+    if (!supabase) return { errore: 'non-disponibile' }
+    const { data, error } = await supabase.functions.invoke('assistente', { body: { messaggi } })
+    if (error || !data) return { errore: error?.context?.status === 429 ? 'limite' : 'non-disponibile' }
+    return data
+  } catch {
+    return { errore: 'non-disponibile' }
+  }
+}

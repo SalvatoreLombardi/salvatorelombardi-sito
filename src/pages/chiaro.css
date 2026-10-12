@@ -70,7 +70,7 @@
   left: -18px;
   width: 36px;
   height: 36px;
-  z-index: 60;
+  z-index: 300; /* sopra tutto: anche l'ingresso (200) e il menu (150) */
   pointer-events: none;
   opacity: 0;
   transition: width 0.25s, height 0.25s, margin 0.25s, opacity 0.3s;
@@ -94,7 +94,7 @@
   margin: -16px 0 0 -16px;
 }
 .h-cursore-su path { fill: rgb(11 12 14 / 0.08); }
-/* Sulla chiusura scura il cerchio diventa chiaro; sopra la riga che si riempie si inverte da solo */
+/* Il cerchio si inverte da solo sul colore sotto: scuro sul fondo chiaro, chiaro su cubo, titoli pieni, chat, ingresso e contatti */
 .h-cursore-chiaro { mix-blend-mode: difference; }
 .h-cursore-chiaro path { stroke: #e6e4dd; }
 .h-cursore-chiaro.h-cursore-su path { fill: rgb(230 228 221 / 0.1); }
@@ -1601,3 +1601,67 @@
     margin-top: calc(45vh - 2.95vw - 17px - 0.52 * min(72vh, 62vw));
   }
 }
+
+/* ============================================================================
+   Assistente AI: cerchio in basso a sinistra e piccola chat scura (come il menu)
+   ========================================================================== */
+.h-as-btn {
+  position: fixed;
+  left: clamp(14px, 2.4vw, 32px);
+  bottom: clamp(14px, 2.4vw, 32px);
+  z-index: 56;
+  width: 58px;
+  height: 58px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: #e6e4dd;
+  mix-blend-mode: difference; /* chiaro sul fondo scuro, scuro sul fondo chiaro */
+}
+.h-as-btn svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.h-as-btn:hover svg:first-child { transform: rotate(120deg) scale(1.06); }
+.h-as-btn:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; border-radius: 50%; }
+
+.h-as {
+  position: fixed;
+  left: clamp(14px, 2.4vw, 32px);
+  bottom: calc(clamp(14px, 2.4vw, 32px) + 70px);
+  z-index: 56;
+  width: min(380px, calc(100vw - 28px));
+  max-height: min(560px, calc(100svh - 130px));
+  display: flex;
+  flex-direction: column;
+  background: #0b0c0e;
+  color: #e6e4dd;
+  border: 1px solid rgba(230, 228, 221, 0.28);
+  border-radius: 8px;
+  font: 400 0.9rem/1.45 var(--f-testo);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.3s, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.4s;
+}
+.h-as-aperto { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.h-as-testata { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 12px; border-bottom: 1px solid rgba(230, 228, 221, 0.18); font: 500 0.78rem/1 var(--f-testo); letter-spacing: 0.14em; text-transform: uppercase; }
+.h-as-testata button { border: 0; background: none; color: inherit; font-size: 1.5rem; line-height: 1; cursor: pointer; padding: 0 4px; }
+.h-as-corpo { flex: 1 1 auto; min-height: 120px; overflow-y: auto; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; overscroll-behavior: contain; }
+.h-as-msg { margin: 0; max-width: 88%; white-space: pre-wrap; overflow-wrap: anywhere; }
+.h-as-bot { align-self: flex-start; }
+.h-as-io { align-self: flex-end; padding: 8px 12px; border: 1px solid rgba(230, 228, 221, 0.4); border-radius: 8px; }
+.h-as-attesa { opacity: 0.6; }
+.h-as-msg a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.h-as-sugg { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.h-as-sugg button { padding: 6px 12px; border: 1px solid rgba(230, 228, 221, 0.4); border-radius: 999px; background: none; color: inherit; font: inherit; font-size: 0.82rem; cursor: pointer; text-align: left; transition: background-color 0.3s, color 0.3s; }
+.h-as-sugg button:hover { background: #e6e4dd; color: #0b0c0e; }
+.h-as-form { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid rgba(230, 228, 221, 0.18); }
+.h-as-form input { flex: 1 1 auto; min-width: 0; padding: 9px 12px; border: 1px solid rgba(230, 228, 221, 0.3); border-radius: 999px; background: transparent; color: inherit; font: inherit; font-size: 16px; /* 16px: su iPhone sotto questa misura la pagina si ingrandisce da sola */ }
+.h-as-form input::placeholder { color: rgba(230, 228, 221, 0.5); }
+.h-as-form input:focus-visible { outline: 1px solid #e6e4dd; outline-offset: 2px; }
+.h-as-form button { width: 40px; flex: none; border: 1px solid rgba(230, 228, 221, 0.4); border-radius: 50%; background: none; color: inherit; font-size: 1.05rem; cursor: pointer; }
+.h-as-form button:disabled { opacity: 0.35; cursor: default; }
+.h-as-nota { margin: 0; padding: 0 16px 12px; font-size: 0.7rem; line-height: 1.4; opacity: 0.6; }
+.h-as-nota a { color: inherit; text-underline-offset: 2px; }
+/* Con "Chi sono" aperto a sinistra stanno i comandi del cubo: l'assistente si nasconde */
+body:has(.h-cubo-aperto) .h-as-btn, body:has(.h-cubo-aperto) .h-as { display: none; }
+@media (prefers-reduced-motion: reduce) { .h-as, .h-as-btn svg { transition: none; } }
