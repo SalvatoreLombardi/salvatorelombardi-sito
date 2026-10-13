@@ -6,7 +6,7 @@ import { vaiAllaSezione } from '../lib/scroll.js'
 
 /* ============================================================================
    ASSISTENTE AI — lato chiaro.
-   Un cerchio disegnato a mano in basso a sinistra apre una piccola chat: chi
+   Dal menu o dai contatti si apre una piccola chat: chi
    visita il sito può fare domande su servizi e preventivo, e così vede come
    funzionerebbe un assistente sul sito di un cliente. Risponde in italiano o
    in inglese. Se il server non risponde (anche a gratis finito) la chat lo dice
@@ -68,17 +68,6 @@ export function AssistenteChiaro() {
 
   return (
     <>
-      <button type="button" className="h-as-btn" onClick={() => setAperto((v) => !v)} aria-label={aperto ? a.chiudi : a.apri} aria-expanded={aperto} title={a.apri} data-cursore="">
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <path d="M50 4C76 3 97 24 96 51C95 77 75 97 49 96C23 95 3 76 4 49C5 25 24 5 52 5" />
-        </svg>
-        <svg viewBox="0 0 100 100" aria-hidden="true">
-          <path d="M30 36C30 31 34 29 39 29L62 29C67 29 70 32 70 37L70 54C70 59 67 62 62 62L48 62L36 72L38 62C33 62 30 59 30 54Z" />
-          <path d="M42 42L58 42" />
-          <path d="M42 50L53 50" />
-        </svg>
-      </button>
-
       <section className={`h-as ${aperto ? 'h-as-aperto' : ''}`} role="dialog" aria-label={a.titolo} inert={aperto ? undefined : true}>
         <header className="h-as-testata">
           <strong>{a.titolo}</strong>

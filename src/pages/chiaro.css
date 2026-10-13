@@ -607,6 +607,22 @@
   .h-ing-riempi { font-size: 15.75vw; white-space: normal; line-height: 0.95; }
 }
 
+/* Entrata dell'ingresso (parte quando il font è pronto): "Accendi" dall'alto, "il tuo progetto" dal basso,
+   interruttore con uno zoom in avanti; freccia da sinistra e gomitolo da destra (li muove il canvas).
+   Così il piccolo ritardo nel caricare l'interruttore non si nota. */
+@keyframes h-ing-da-su { from { opacity: 0; transform: translateY(-16vh); } }
+@keyframes h-ing-da-giu { from { opacity: 0; transform: translateY(16vh); } }
+@keyframes h-ing-zoom { from { opacity: 0; transform: scale(0.82); } }
+@keyframes h-ing-da-sx { from { opacity: 0; transform: translateX(-30vw); } }
+.h-ingresso-attesa:not(.h-ingresso-pronto) :is(.h-ing-riga, .h-ing-bottone, .h-clicca) { opacity: 0; }
+.h-ingresso-attesa.h-ingresso-pronto .h-ing-svuota { animation: h-ing-da-su 1s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.h-ingresso-attesa.h-ingresso-pronto .h-ing-riempi { animation: h-ing-da-giu 1s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.h-ingresso-attesa.h-ingresso-pronto .h-ing-bottone { animation: h-ing-zoom 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards; }
+.h-ingresso-attesa.h-ingresso-pronto .h-clicca { animation: h-ing-da-sx 1.1s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+@media (prefers-reduced-motion: reduce) {
+  .h-ingresso-attesa.h-ingresso-pronto :is(.h-ing-riga, .h-ing-bottone, .h-clicca) { animation: none; }
+}
+
 /* Sfondo dell'ingresso a effetto carta opaca: una grana fine e leggera.
    Nei pannelli la grana è parte dello sfondo (così dove i due pannelli si sovrappongono non si raddoppia
    e non si vede nessuna fascia); sopra l'interruttore e i testi c'è un velo di grana uguale. */
@@ -1129,6 +1145,40 @@
   transition: background 0.3s, color 0.3s;
 }
 .h-vd-carica:hover { background: transparent; color: var(--pietra); }
+.h-vd-espandi, .h-vd-chiudi {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(236, 233, 225, 0.5);
+  background: rgba(8, 8, 10, 0.55);
+  color: #ece9e1;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+.h-vd-espandi svg, .h-vd-chiudi svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.h-vd-espandi:hover, .h-vd-chiudi:hover { background: #ece9e1; color: #08080a; }
+.h-vd-grande {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: #0b0c0e;
+}
+/* stesso riquadro 9:16 della carta, ma alto quanto lo schermo */
+.h-vd-grande-box { width: min(100vw, calc(100svh * 9 / 16)); border: 0; }
+.h-vd-grande .h-vd-chiudi { position: fixed; top: max(14px, env(safe-area-inset-top)); right: 14px; }
+/* Schermo largo (computer): la X sta accanto al video, non persa in fondo all'angolo; il clic sullo scuro chiude */
+@media (min-aspect-ratio: 1/1) {
+  .h-vd-grande .h-vd-chiudi { right: auto; top: 18px; left: calc(50% + (100svh * 9 / 16) / 2 + 18px); width: 46px; height: 46px; }
+}
 .h-vd-titolo {
   margin: 14px 0 0;
   font: italic 500 1.35rem/1.12 var(--f-titoli);
@@ -1313,14 +1363,15 @@
 .h-ct-social a { color: var(--inchiostro); }
 .h-ct-fine {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 32px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
   margin-top: 14vh;
   font: 400 0.82rem/1.4 var(--f-testo);
   color: rgba(230, 228, 221, 0.55);
 }
-.h-ct-fine p { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.h-ct-fine p { margin: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; }
 .h-ct-fine a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.3s, border-color 0.3s; }
 .h-ct-fine a:hover { color: var(--inchiostro); border-color: currentColor; }
 @media (max-width: 760px) {
@@ -1603,33 +1654,15 @@
 }
 
 /* ============================================================================
-   Assistente AI: cerchio in basso a sinistra e piccola chat scura (come il menu)
+   Assistente AI: cerchio accanto al menu e piccola chat scura (come il menu)
    ========================================================================== */
-.h-as-btn {
+.h-as {
   position: fixed;
   left: clamp(14px, 2.4vw, 32px);
   bottom: clamp(14px, 2.4vw, 32px);
   z-index: 56;
-  width: 58px;
-  height: 58px;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  color: #e6e4dd;
-  mix-blend-mode: difference; /* chiaro sul fondo scuro, scuro sul fondo chiaro */
-}
-.h-as-btn svg { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; overflow: visible; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-.h-as-btn:hover svg:first-child { transform: rotate(120deg) scale(1.06); }
-.h-as-btn:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; border-radius: 50%; }
-
-.h-as {
-  position: fixed;
-  left: clamp(14px, 2.4vw, 32px);
-  bottom: calc(clamp(14px, 2.4vw, 32px) + 70px);
-  z-index: 56;
   width: min(380px, calc(100vw - 28px));
-  max-height: min(560px, calc(100svh - 130px));
+  max-height: min(560px, calc(100svh - 60px));
   display: flex;
   flex-direction: column;
   background: #0b0c0e;
@@ -1663,8 +1696,8 @@
 .h-as-nota { margin: 0; padding: 0 16px 12px; font-size: 0.7rem; line-height: 1.4; opacity: 0.6; }
 .h-as-nota a { color: inherit; text-underline-offset: 2px; }
 /* Con "Chi sono" aperto a sinistra stanno i comandi del cubo: l'assistente si nasconde */
-body:has(.h-cubo-aperto) .h-as-btn, body:has(.h-cubo-aperto) .h-as { display: none; }
-@media (prefers-reduced-motion: reduce) { .h-as, .h-as-btn svg { transition: none; } }
+body:has(.h-cubo-aperto) .h-as { display: none; }
+@media (prefers-reduced-motion: reduce) { .h-as { transition: none; } }
 
 /* Assistente nel menu e nei contatti */
 .h-menu-assistente {
@@ -1676,7 +1709,7 @@ body:has(.h-cubo-aperto) .h-as-btn, body:has(.h-cubo-aperto) .h-as { display: no
   border-bottom: 1px solid rgba(230, 228, 221, 0.5);
   background: none;
   color: #e6e4dd;
-  font: 500 0.82rem/1 var(--f-testo);
+  font: 500 1rem/1 var(--f-testo);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
@@ -1691,20 +1724,25 @@ body:has(.h-cubo-aperto) .h-as-btn, body:has(.h-cubo-aperto) .h-as { display: no
   border-bottom: 1px solid currentColor;
   background: none;
   color: var(--inchiostro);
-  font: 400 clamp(1rem, 1.2vw, 1.15rem)/1.6 var(--f-testo);
+  font: 400 clamp(1.2rem, 1.6vw, 1.5rem)/1.6 var(--f-testo);
   cursor: pointer;
 }
 
 /* Telefono: niente cerchio della chat sullo schermo (si apre dal menu o dai contatti); la freccia per tornare su è più piccola e discreta */
 @media (max-width: 760px) {
-  .h-as-btn { display: none; }
   .h-as { bottom: 14px; }
   .h-su { width: 40px; height: 40px; right: 12px; bottom: 12px; }
   .h-su svg { stroke-width: 1.2; }
 }
 
-.h-nuvoletta { width: 2.4em; height: 2.4em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; margin-right: 0.6em; overflow: visible; }
+.h-nuvoletta { width: 2.8em; height: 2.8em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; margin-right: 0.6em; overflow: visible; }
 .h-menu-assistente { display: flex; align-items: center; }
 .h-menu-assistente .h-nuvoletta { margin-right: 0.6em; vertical-align: baseline; }
 .h-ct-assistente button { display: inline-flex; align-items: center; }
 .h-ct-assistente .h-nuvoletta { vertical-align: baseline; }
+
+/* Telefono, menu: le lingue in alto a sinistra (alla stessa altezza della X), "Chiedi all'assistente AI" in basso a sinistra */
+@media (max-width: 760px) {
+  .h-menu-lingua { bottom: auto; top: calc(clamp(18px, 2.6vw, 36px) + 10px); }
+  .h-menu-assistente { right: auto; left: var(--gutter); }
+}

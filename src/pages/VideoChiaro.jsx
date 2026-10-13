@@ -1,7 +1,9 @@
 import { FrecciaMatita } from '../ui/FrecciaMatita.jsx'
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { animate, motion, useInView, useReducedMotion, useScroll, useTransform } from 'motion/react'
+import { spegniMusica } from '../lib/musica.js'
 import { NOTA_MUSICA, VIDEO } from '../components/portfolio/video.js'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { NOTA_MUSICA_EN, videoTradotto } from '../i18n/contenuti.js'
@@ -55,22 +57,75 @@ function Visualizzazioni({ valore }) {
   )
 }
 
+/** Il video di Instagram, ritagliato nel riquadro (stesso disegno nella carta e a tutta pagina). */
+function Embed({ video }) {
+  return (
+    <iframe
+      src={`https://www.instagram.com/p/${video.instagram}/embed/`}
+      title={video.titolo}
+      allowFullScreen
+      scrolling="no"
+      // Il video (9:16) sta dentro un'area 4:5 (alta 1,25 volte la larghezza, sotto un'intestazione di 54px): si allarga a 146%
+      // e si centra, così riempie la carta anche agli angoli (con 142% restava un filo bianco); intestazione e barra restano fuori
+      style={{ position: 'absolute', border: 0, width: '146cqw', left: '-23cqw', top: '-54px', height: 'calc(182.5cqw + 135px)' }}
+    />
+  )
+}
+
+/** Video a tutta pagina: sfondo scuro, X in alto a destra o Esc per chiudere. Parte da capo (è un nuovo video). */
+function VideoGrande({ video, chiudi }) {
+  const { t } = useLingua()
+  const bottone = useRef(null)
+  useEffect(() => {
+    const tasto = (e) => e.key === 'Escape' && chiudi()
+    // Cliccando nel video di Instagram la tastiera passa a lui e Esc non arriva più: appena succede si riporta qui
+    const suBlur = () =>
+      setTimeout(() => {
+        if (document.activeElement?.tagName === 'IFRAME') bottone.current?.focus()
+      }, 0)
+    window.addEventListener('blur', suBlur)
+    const overflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', tasto)
+    return () => {
+      document.body.style.overflow = overflow
+      window.removeEventListener('keydown', tasto)
+      window.removeEventListener('blur', suBlur)
+    }
+  }, [chiudi])
+  return createPortal(
+    <div className="h-vd-grande" role="dialog" aria-modal="true" aria-label={video.titolo} onClick={(e) => e.target === e.currentTarget && chiudi()}>
+      <div className="h-vd-grande-box h-vd-riquadro" style={{ containerType: 'inline-size' }}>
+        <Embed video={video} />
+      </div>
+      <button type="button" ref={bottone} className="h-vd-chiudi" onClick={chiudi} aria-label={t.video.chiudi}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5l14 14M19 5L5 19" />
+        </svg>
+      </button>
+    </div>,
+    document.body,
+  )
+}
+
 /** Riquadro 9:16: copertina nostra; l'embed di Instagram arriva solo dopo il clic. */
 function Riquadro({ video }) {
   const { t } = useLingua()
   const [caricato, setCaricato] = useState(false)
+  const [grande, setGrande] = useState(false)
   return (
     <div className="h-vd-riquadro" style={{ containerType: 'inline-size' }}>
       {caricato ? (
-        <iframe
-          src={`https://www.instagram.com/p/${video.instagram}/embed/`}
-          title={video.titolo}
-          allowFullScreen
-          scrolling="no"
-          // Il video (9:16) sta dentro un'area 4:5: si allarga a 142% e si centra, così riempie la carta;
-          // intestazione e barra di Instagram restano fuori dal riquadro
-          style={{ position: 'absolute', border: 0, width: '142.2cqw', left: '-21.1cqw', top: '-54px', height: 'calc(177.8cqw + 135px)' }}
-        />
+        <>
+          {/* mentre è a tutta pagina quello nella carta si toglie, così non suonano due video */}
+          {!grande && <Embed video={video} />}
+          <button type="button" className="h-vd-espandi" onClick={() => setGrande(true)} aria-label={t.video.ingrandisci}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" />
+            </svg>
+          </button>
+          {grande && <VideoGrande video={video} chiudi={() => setGrande(false)} />}
+        </>
       ) : (
         <>
           {video.anteprima && <img src={video.anteprima} alt="" loading="lazy" />}
@@ -79,7 +134,10 @@ function Riquadro({ video }) {
             <p className="h-vd-privacy">
               {t.video.ospitato} <Link to="/privacy">{t.video.dettagli}</Link>
             </p>
-            <button type="button" className="h-vd-carica" onClick={() => setCaricato(true)}>
+            <button type="button" className="h-vd-carica" onClick={() => {
+                spegniMusica() // il video ha il suo audio: la musica del sito si ferma
+                setCaricato(true)
+              }}>
               {t.video.carica}
             </button>
           </div>

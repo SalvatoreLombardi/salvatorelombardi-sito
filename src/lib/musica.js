@@ -106,6 +106,7 @@ export function accendiMusica() {
    uno nuovo (creato dentro il clic) parte sempre. Il brano resta già decodificato, quindi la ripartenza è subito. */
 export function spegniMusica() {
   acceso = false
+  window.dispatchEvent(new Event('musica-spenta')) // il bottone del suono si aggiorna
   if (!ctx) return
   sfuma(0, 0.4)
   const c = ctx

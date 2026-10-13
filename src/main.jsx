@@ -19,6 +19,9 @@ const Admin = lazy(() => import('./pages/Admin.jsx'))
 const Privacy = lazy(() => import('./pages/Privacy.jsx'))
 // Lato chiaro: ora è la home del sito (/#/)
 const Chiaro = lazy(() => import('./pages/Chiaro.jsx'))
+// L'interruttore dell'ingresso (con three.js, pesante) si scarica insieme alla pagina, non dopo:
+// così compare subito e non in ritardo. Solo se si apre la home.
+if (!/^#\/(admin|privacy)/.test(location.hash)) import('./ui/InterruttoreChiaro')
 
 // Il browser non deve rimettere la pagina dove era rimasta: ogni apertura parte dall'inizio
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual'

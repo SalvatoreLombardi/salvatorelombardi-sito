@@ -152,6 +152,13 @@ function Suono({ analisi, comando }) {
     analisi.current = acceso ? analizzatoreMusica() : analisi.current
   }, [acceso, analisi])
 
+  // Spenta da fuori (es. parte un video): il bottone segue
+  useEffect(() => {
+    const suSpenta = () => setAcceso(false)
+    window.addEventListener('musica-spenta', suSpenta)
+    return () => window.removeEventListener('musica-spenta', suSpenta)
+  }, [])
+
   // Scheda in secondo piano: il suono si ferma
   useEffect(() => {
     const suVisibilita = () => (document.hidden ? sospendiMusica() : riprendiMusica())
@@ -385,10 +392,12 @@ function CerchioMatita({ className }) {
 }
 
 /** Filo a matita dell'ingresso: a sinistra la linea che porta alla freccia; a destra un filo che arriva dal bordo e finisce in un gomitolo (un solo filo con tanti giri storti, il capo resta dentro). Il gomitolo non gira, ondeggia; da ogni bordo parte un'onda che corre lungo il filo e si spegne vicino al gomitolo e alla freccia. */
-function FiloMatita({ acceso }) {
+function FiloMatita({ acceso, pronto }) {
   const ref = useRef(null)
   const accesoRef = useRef(acceso)
   accesoRef.current = acceso
+  const prontoRef = useRef(pronto) // quando i font sono pronti parte l'entrata
+  prontoRef.current = pronto
   useEffect(() => {
     const canvas = ref.current
     const c = canvas.getContext('2d')
@@ -441,7 +450,10 @@ function FiloMatita({ acceso }) {
 
     const aSx = 1 // freccia e linea di sinistra restano visibili anche dopo il clic
     const t0 = performance.now()
+    let partenza = null // istante in cui parte l'entrata (freccia da sinistra, gomitolo da destra)
     const disegna = (t, finito) => {
+      if (prontoRef.current && partenza === null) partenza = t
+      const e = ridotto ? 1 : partenza === null ? 0 : 1 - Math.pow(1 - clamp((t - partenza) / 1.1, 0, 1), 4)
       const w = canvas.clientWidth
       const h = canvas.clientHeight
       if (canvas.width !== Math.round(w * dpr) || canvas.height !== Math.round(h * dpr)) {
@@ -464,7 +476,10 @@ function FiloMatita({ acceso }) {
 
       // ---- sinistra: linea quasi dritta con la freccia; l'onda parte dal bordo e si spegne vicino alla punta
       if (aSx > 0.01) {
-        disegnaFrecciaOnda(c, { xe: w / 2 - bw / 2 - gap - 2, Y, t, ridotto, alpha: aSx * 0.95, vw, fasi: f })
+        c.save()
+        c.translate(-(1 - e) * w * 0.3, 0)
+        disegnaFrecciaOnda(c, { xe: w / 2 - bw / 2 - gap - 2, Y, t, ridotto, alpha: aSx * 0.95 * e, vw, fasi: f })
+        c.restore()
       }
 
       // ---- destra: gomitolo che ondeggia + filo che arriva dal bordo
@@ -525,8 +540,11 @@ function FiloMatita({ acceso }) {
           tutto[i] = [sx / 7, sy / 7]
         }
       }
-      traccia(tutto.slice(0, J + 1), 1, 0.95 * vista)
-      traccia(tutto.slice(J).reverse(), 1, 0.95)
+      c.save()
+      c.translate((1 - e) * w * 0.3, 0)
+      traccia(tutto.slice(0, J + 1), 1, 0.95 * vista * e)
+      traccia(tutto.slice(J).reverse(), 1, 0.95 * e)
+      c.restore()
       c.globalAlpha = 1
     }
     if (ridotto) {
@@ -550,12 +568,25 @@ function Ingresso({ fase, suClic }) {
   const acceso = fase !== 'attesa'
   // Una volta sola, da soli: "Accendi" si svuota da sinistra a destra, "il tuo progetto" si riempie da destra a sinistra
   const [scambio, setScambio] = useState(false)
+  // L'entrata parte quando il font dei titoli è pronto: prima le lettere sembrano schiacciate e poi si allargano
+  const [pronto, setPronto] = useState(false)
   useEffect(() => {
+    let attivo = true
+    const via = () => attivo && setPronto(true)
+    const limite = setTimeout(via, 1200)
+    document.fonts?.load("600 1em 'Bodoni Moda Variable'").then(via, via)
+    return () => {
+      attivo = false
+      clearTimeout(limite)
+    }
+  }, [])
+  useEffect(() => {
+    if (!pronto) return
     const t = setTimeout(() => setScambio(true), 1400)
     return () => clearTimeout(t)
-  }, [])
+  }, [pronto])
   return (
-    <div className={`h-ingresso h-ingresso-${fase}`} data-lingua={lingua} role="dialog" aria-modal="true" aria-label={t.ingresso.etichetta}>
+    <div className={`h-ingresso h-ingresso-${fase}${pronto ? ' h-ingresso-pronto' : ''}`} data-lingua={lingua} role="dialog" aria-modal="true" aria-label={t.ingresso.etichetta}>
       <div className="h-pannello-v h-pannello-sx" />
       <div className="h-pannello-v h-pannello-dx" />
       <div className="h-ingresso-contenuto">
@@ -570,7 +601,7 @@ function Ingresso({ fase, suClic }) {
               <InterruttoreChiaro giu={acceso} alternativa={<Interruttore acceso={acceso} />} />
             </Suspense>
           </button>
-          <FiloMatita acceso={acceso} />
+          <FiloMatita acceso={acceso} pronto={pronto} />
           <div className="h-clicca" aria-hidden="true">
             <span>{t.ingresso.cliccaQui}</span>
           </div>
