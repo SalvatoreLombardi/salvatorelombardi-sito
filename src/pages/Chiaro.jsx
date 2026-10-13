@@ -19,7 +19,9 @@ import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
 const CuboChiaro = lazy(() => import('../ui/CuboChiaro'))
 const InterruttoreChiaro = lazy(() => import('../ui/InterruttoreChiaro'))
-const FumoChiaro = lazy(() => import('../ui/FumoChiaro.jsx')) // prova: fumo nero che segue il dito/mouse
+// Fumo nero che segue il dito/mouse: tolto dal sito il 13/10/2026 (non piaceva qui), il componente resta in `ui/FumoChiaro.jsx` per riusarlo.
+// Per riaccenderlo: togliere i commenti qui e il blocco `<FumoChiaro />` più sotto.
+// const FumoChiaro = lazy(() => import('../ui/FumoChiaro.jsx'))
 
 /* ============================================================================
    LATO CHIARO — la home (indirizzo: /#/chiaro)
@@ -876,11 +878,11 @@ function PaginaChiaro() {
       {ASSISTENTE_ATTIVO && <AssistenteChiaro />}
       <ContattiChiaro />
       <TornaSuChiaro />
-      {fase === 'fatto' && !ridotto && (
+      {/* {fase === 'fatto' && !ridotto && (
         <Suspense fallback={null}>
           <FumoChiaro />
         </Suspense>
-      )}
+      )} */}
     </div>
   )
 }
