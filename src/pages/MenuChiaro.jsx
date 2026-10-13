@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useLingua } from '../i18n/LinguaChiaro.jsx'
 import { useRichiesteNuove } from '../ui/AvvisoRichieste'
-import { ASSISTENTE_ATTIVO, apriAssistente } from '../lib/assistente.js'
-import { IconaNuvoletta } from '../ui/IconaNuvoletta.jsx'
+import { ASSISTENTE_ATTIVO } from '../lib/assistente.js'
 
 /* ============================================================================
    MENU — lato chiaro.
@@ -134,7 +133,7 @@ function LineaTempo({ aperto, elenco, vociRef, attivaRef }) {
 
 export function MenuChiaro({ aperto, chiudi, vai }) {
   const { t, lingua, setLingua } = useLingua()
-  const VOCI = t.menu.voci
+  const VOCI = t.menu.voci.filter((v) => v.id !== 'assistente' || ASSISTENTE_ATTIVO) // la voce c'è solo se l'assistente è acceso
   const chiudiRef = useRef(null)
   const elencoRef = useRef(null)
   const vociRef = useRef([])
@@ -207,21 +206,6 @@ export function MenuChiaro({ aperto, chiudi, vai }) {
           ))}
         </ol>
       </nav>
-
-      {ASSISTENTE_ATTIVO && (
-        <button
-          type="button"
-          className="h-menu-assistente"
-          onClick={() => {
-            chiudi()
-            setTimeout(apriAssistente, 450) // si apre quando il menu si è chiuso
-          }}
-          data-cursore=""
-        >
-          <IconaNuvoletta />
-          {t.menu.assistente}
-        </button>
-      )}
 
       <div className="h-menu-lingua" role="group" aria-label={t.menu.lingua}>
         {[

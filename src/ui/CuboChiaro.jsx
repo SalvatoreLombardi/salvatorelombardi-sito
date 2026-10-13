@@ -178,6 +178,11 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
 
     const dispose = []
     let annullato = false
+    // Facce che si scambiano mentre sono girate di spalle: Web → Social (sul lato destro), ritratto → logo (davanti)
+    let matWeb = null
+    let matSocial = null
+    let matRitratto = null
+    let matLogo = null
 
     // Ritratto sulla faccia davanti, parole sulle altre
     const caricaFacce = async () => {
@@ -230,6 +235,7 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
           metalness: 0.25,
         })
         dispose.push(tex, mat)
+        matRitratto = mat
         const ritratto = new THREE.Mesh(new THREE.PlaneGeometry(1.44, 1.44), mat)
         ritratto.position.set(0, 0, 0.752)
         home.add(ritratto)
@@ -242,14 +248,39 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
         { p: [-0.756, 0, 0], r: [0, -Math.PI / 2, 0] },
         { p: [0, 0.756, 0], r: [-Math.PI / 2, 0, 0] },
       ]
-      facce.forEach((parola, i) => {
+      // Giro completo: Web → ritratto → Video → Grafica → Social → logo. Quattro lati: Web (destra), ritratto (davanti),
+      // Video (sinistra), Grafica (dietro); l'ultima parte del giro riporta davanti il lato di Web (diventato Social)
+      // e poi quello del ritratto (diventato logo): i cambi avvengono quando quel lato è girato di spalle.
+      facce.slice(0, 3).forEach((parola, i) => {
         const tex = texturaParola(parola)
         const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false })
         dispose.push(tex, mat)
+        if (i === 0) matWeb = mat
         const piano = new THREE.Mesh(new THREE.PlaneGeometry(1.46, 1.46), mat)
         piano.position.set(...posizioni[i].p)
         piano.rotation.set(...posizioni[i].r)
         home.add(piano)
+      })
+      if (facce[3]) {
+        const tex = texturaParola(facce[3])
+        matSocial = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, toneMapped: false })
+        dispose.push(tex, matSocial)
+        const piano = new THREE.Mesh(new THREE.PlaneGeometry(1.46, 1.46), matSocial)
+        piano.position.set(posizioni[0].p[0] + 0.002, 0, 0)
+        piano.rotation.set(...posizioni[0].r)
+        home.add(piano)
+      }
+      // L'interruttore disegnato a matita dell'ingresso (identico, linee chiare su fondo trasparente) sul lato del ritratto
+      new THREE.TextureLoader().load('/interruttore-cubo.png', (tex) => {
+        if (annullato) return tex.dispose()
+        tex.colorSpace = THREE.SRGBColorSpace
+        tex.anisotropy = 8
+        matLogo = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0, toneMapped: false })
+        dispose.push(tex, matLogo)
+        const alto = 1.2
+        const logo = new THREE.Mesh(new THREE.PlaneGeometry(alto * (tex.image.width / tex.image.height), alto), matLogo)
+        logo.position.set(0, 0, 0.758)
+        home.add(logo)
       })
 
       // Testi del "Chi sono": una faccia per testo, davanti / destra / dietro / sinistra
@@ -318,7 +349,17 @@ export default function CuboChiaro({ progresso, apertoRef, facciaRef, testi = []
       // poi continua verso le altre facce. Senza movimento (riduci movimento) parte dal ritratto.
       const sm = THREE.MathUtils.smoothstep
       const aperto = !!apertoRef?.current
-      const angolo = ridotto ? 0 : -Math.PI / 2 + (Math.PI / 2) * sm(p, 0.02, 0.42) + (Math.PI / 2) * sm(p, 0.62, 1)
+      // Cinque scatti di un quarto di giro, con una pausa su ogni faccia: Web → ritratto → Video → Grafica → Social → logo (resta fermo sul logo fino alla fine)
+      const scatti = sm(p, 0.02, 0.14) + sm(p, 0.19, 0.31) + sm(p, 0.36, 0.48) + sm(p, 0.53, 0.65) + sm(p, 0.7, 0.82)
+      const angolo = ridotto ? 0 : -Math.PI / 2 + (Math.PI / 2) * scatti
+      if (!ridotto) {
+        const aSocial = sm(p, 0.32, 0.35) // il lato di Web è di spalle (Video davanti)
+        const aLogo = sm(p, 0.49, 0.52) // il lato del ritratto è di spalle (Grafica davanti)
+        if (matWeb) matWeb.opacity = 1 - aSocial
+        if (matSocial) matSocial.opacity = aSocial
+        if (matRitratto) matRitratto.opacity = 1 - aLogo
+        if (matLogo) matLogo.opacity = aLogo
+      }
       // Aperto "Chi sono": il cubo si raddrizza (quasi di fronte) così il testo sta dentro il suo riquadro
       const faccia = facciaRef?.current ?? 0
       let obiettivoY = -0.28 + angolo

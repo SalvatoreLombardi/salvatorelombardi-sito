@@ -698,7 +698,7 @@ function PaginaChiaro() {
   const xNome2 = useTransform([xLombardi, chiusura], ([a, b]) => `${a - b * 130}vw`)
   const opRighe = useTransform([opacitaRighe, chiusura], ([o, b]) => o * (1 - b))
   const xRighe = useTransform(chiusura, (b) => `${-b * 130}vw`)
-  const opFreccia = useTransform(p, [0.2, 0.28, 0.7, 0.78], [0, 1, 1, 0])
+  const opFreccia = useTransform(p, [0.1, 0.14, 0.19, 0.24], [0, 1, 1, 0]) // la freccia "Chi sono" c'è solo quando davanti c'è il ritratto
 
   useEffect(() => {
     const prima = document.body.style.backgroundColor
@@ -871,10 +871,10 @@ function PaginaChiaro() {
       <LavoriChiaro />
       <VideoChiaro />
       <PreventivoChiaro />
-
+      {/* Assistente AI: acceso solo dove VITE_ASSISTENTE è impostata (online, dopo aver attivato la funzione su Supabase) */}
+      {ASSISTENTE_ATTIVO && <AssistenteChiaro />}
       <ContattiChiaro />
       <TornaSuChiaro />
-      {fase === 'fatto' && ASSISTENTE_ATTIVO && <AssistenteChiaro />} {/* acceso solo dove VITE_ASSISTENTE è impostata: online, dopo aver attivato la funzione su Supabase */}
     </div>
   )
 }
