@@ -19,6 +19,7 @@ import { FrecciaMatita, disegnaFrecciaOnda } from '../ui/FrecciaMatita.jsx'
 
 const CuboChiaro = lazy(() => import('../ui/CuboChiaro'))
 const InterruttoreChiaro = lazy(() => import('../ui/InterruttoreChiaro'))
+const FumoChiaro = lazy(() => import('../ui/FumoChiaro.jsx')) // prova: fumo nero che segue il dito/mouse
 
 /* ============================================================================
    LATO CHIARO — la home (indirizzo: /#/chiaro)
@@ -875,6 +876,11 @@ function PaginaChiaro() {
       {ASSISTENTE_ATTIVO && <AssistenteChiaro />}
       <ContattiChiaro />
       <TornaSuChiaro />
+      {fase === 'fatto' && !ridotto && (
+        <Suspense fallback={null}>
+          <FumoChiaro />
+        </Suspense>
+      )}
     </div>
   )
 }

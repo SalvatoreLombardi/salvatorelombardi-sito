@@ -1795,3 +1795,6 @@
   .h-su svg { stroke-width: 1.2; }
   .h-menu-lingua { bottom: auto; top: calc(clamp(18px, 2.6vw, 36px) + 10px); }
 }
+
+/* Fumo che segue il dito/mouse: chiaro sul canvas, nero sulle sezioni chiare e chiaro su quelle scure (difference); sotto menu e ingresso */
+.h-fumo { position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100svh; z-index: 100; pointer-events: none; mix-blend-mode: difference; }
