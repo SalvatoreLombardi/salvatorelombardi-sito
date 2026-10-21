@@ -1756,17 +1756,17 @@
 @media (max-width: 900px) {
   .h-ai-pannello { grid-template-columns: minmax(0, 1fr); gap: 24px; }
 }
-/* Telefono: titolo + pannello riempiono lo schermo e si vedono per intero (la conversazione scorre dentro, il resto sta fermo) */
+/* Telefono: la card è bassa (senza gomitolo), così con la tastiera aperta resta tutta sopra la tastiera; la conversazione scorre dentro la sua area */
 @media (max-width: 760px) {
-  .h-ai { scroll-margin-top: -5rem; /* cancella lo scroll-padding della pagina: dal menu la sezione parte in cima allo schermo */ display: flex; flex-direction: column; height: 100svh; min-height: 520px; padding: 5svh var(--gutter) calc(2svh + 12px); box-sizing: border-box; }
+  .h-ai { scroll-margin-top: -5rem; /* cancella lo scroll-padding della pagina: dal menu la sezione parte in cima allo schermo */ display: flex; flex-direction: column; padding: 5svh var(--gutter) calc(3svh + 12px); box-sizing: border-box; }
   .h-ai-intesta { margin-bottom: 2.4svh; flex: none; }
-  .h-ai-pannello { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 14px; max-width: none; }
+  .h-ai-pannello { display: flex; flex-direction: column; gap: 10px; padding: 14px; max-width: none; }
   .h-ai-intro { display: none; }
   .h-ai-lato { flex: none; }
+  .h-ai-iniziata .h-ai-lato { display: none; } /* dopo la prima domanda i suggerimenti spariscono: la card si abbassa e sta sopra la tastiera */
   .h-ai-sugg button { padding: 9px 4px; font-size: 1.05rem; }
-  .h-ai-chat { flex: 1 1 0; min-height: 0; }
-  .h-ai-gomitolo { height: clamp(92px, 15svh, 124px); }
-  .h-ai-corpo { flex: 1 1 0; min-height: 0; height: auto; gap: 12px; }
+  .h-ai-chat { flex: none; }
+  .h-ai-corpo { height: clamp(150px, 26svh, 230px); gap: 12px; }
   .h-ai-bot { font-size: 0.98rem; line-height: 1.5; }
   .h-ai-io { font-size: 1.3rem; }
   .h-ai-form { margin-top: 8px; }

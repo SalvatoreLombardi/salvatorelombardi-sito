@@ -73,6 +73,15 @@ export function AssistenteChiaro() {
   const dentro = useInView(intesta, { once: true, margin: '0px 0px -30% 0px' })
   const corpo = useRef(null)
 
+  // Sul telefono il gomitolo non c'è: con la tastiera aperta servirebbe solo a rubare spazio ai messaggi
+  const [telefono, setTelefono] = useState(() => window.matchMedia('(max-width: 760px)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 760px)')
+    const aggiorna = () => setTelefono(mq.matches)
+    mq.addEventListener('change', aggiorna)
+    return () => mq.removeEventListener('change', aggiorna)
+  }, [])
+
   // Il filo segue la conversazione: scrive → pensa; arriva la risposta → si sbroglia e poi si riavvolge piano
   const [fase, setFase] = useState('quiete')
   useEffect(() => {
@@ -85,15 +94,20 @@ export function AssistenteChiaro() {
     setFase('quiete')
   }, [attesa, messaggi])
 
-  // Ogni nuovo messaggio scorre in fondo alla conversazione (non la pagina)
+  // Ogni nuovo messaggio scorre dentro la conversazione (non la pagina): una risposta si legge dal suo inizio, la domanda sta in fondo
   useEffect(() => {
-    corpo.current?.scrollTo({ top: corpo.current.scrollHeight, behavior: ridotto ? 'auto' : 'smooth' })
+    const c = corpo.current
+    if (!c) return
+    const ultimo = messaggi[messaggi.length - 1]
+    const msg = c.querySelectorAll('.h-ai-msg')
+    const top = ultimo?.ruolo === 'assistente' && msg.length ? c.scrollTop + msg[msg.length - 1].getBoundingClientRect().top - c.getBoundingClientRect().top : c.scrollHeight
+    c.scrollTo({ top, behavior: ridotto ? 'auto' : 'smooth' })
   }, [messaggi, attesa, ridotto])
 
   const entra = (i = 0) => (ridotto ? {} : { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, margin: '0px 0px -10% 0px' }, transition: { duration: 0.9, ease: EASE, delay: i * 0.1 } })
 
   return (
-    <section className="h-ai" id="assistente" aria-labelledby="h-ai-titolo">
+    <section className={`h-ai${messaggi.length ? ' h-ai-iniziata' : ''}`} id="assistente" aria-labelledby="h-ai-titolo">
       <h2 id="h-ai-titolo" ref={intesta} className="h-sv-intesta h-ai-intesta">
         <span className={`h-sv-riga h-sv-svuota ${dentro ? 'h-sv-scambiato' : ''}`}>
           <span className="h-sv-contorno">{a.titolo1}</span>
@@ -121,7 +135,7 @@ export function AssistenteChiaro() {
         </div>
 
         <div className="h-ai-chat">
-          <GomitoloAssistente fase={fase} />
+          {!telefono && <GomitoloAssistente fase={fase} />}
           <div className="h-ai-corpo" ref={corpo} aria-live="polite">
             <p className="h-ai-msg h-ai-bot">{a.benvenuto}</p>
             <AnimatePresence initial={false}>

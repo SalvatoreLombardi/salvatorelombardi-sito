@@ -32,6 +32,7 @@ const InterruttoreChiaro = lazy(() => import('../ui/InterruttoreChiaro'))
 
 const EASE = [0.16, 1, 0.3, 1]
 const CHIAVE_SALTA_INGRESSO = 'salta-ingresso'
+const CHIAVE_INGRESSO_FATTO = 'ingresso-fatto' // si imposta al clic sull'interruttore e resta per tutta la visita (anche ricaricando)
 
 /** Vero quando l'ingresso (interruttore e pannelli) si è aperto: solo allora i titoli della home entrano. */
 const PortaAperta = createContext(true)
@@ -629,12 +630,12 @@ function PaginaChiaro() {
   const apertoRef = useRef(false)
   const facciaRef = useRef(0)
 
-  // Ingresso: compare a ogni apertura della pagina (anche ricaricando). Chi riduce il movimento lo salta.
+  // Ingresso: compare alla prima apertura della visita. Chi riduce il movimento lo salta.
   const senzaMovimento = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  // Se si torna dalla Privacy (o da un'altra pagina del sito) l'ingresso non si ripete; a ogni caricamento nuovo sì
+  // Una volta fatto l'ingresso non si ripete: né ricaricando né tornando dalla Privacy (o da un'altra pagina del sito); in una nuova visita (scheda nuova) sì
   const [tornaDaAltraPagina] = useState(() => {
     try {
-      return sessionStorage.getItem(CHIAVE_SALTA_INGRESSO) === '1'
+      return sessionStorage.getItem(CHIAVE_SALTA_INGRESSO) === '1' || sessionStorage.getItem(CHIAVE_INGRESSO_FATTO) === '1'
     } catch {
       return false
     }
@@ -663,6 +664,11 @@ function PaginaChiaro() {
   // Si entra solo cliccando l'interruttore: quel clic fa partire la musica (il browser lo permette)
   const entra = (modo) => {
     if (fase !== 'attesa') return
+    try {
+      sessionStorage.setItem(CHIAVE_INGRESSO_FATTO, '1')
+    } catch {
+      /* niente da fare */
+    }
     setFase('acceso') // la leva scatta e i testi si scambiano
     setTimeout(() => {
       setFase('apre') // i pannelli si aprono
