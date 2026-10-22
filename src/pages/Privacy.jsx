@@ -12,7 +12,7 @@ import { EMAIL, TELEFONO_LEGGIBILE } from '../components/contatti/dati'
    Riferimento: documenti/competenze-privacy-gdpr.md
    ========================================================================== */
 
-const ULTIMO_AGGIORNAMENTO = '12 ottobre 2026'
+const ULTIMO_AGGIORNAMENTO = '21 ottobre 2026'
 
 function Sezione({ titolo, children }) {
   return (
@@ -125,7 +125,8 @@ export default function Privacy() {
           <Elenco
             voci={[
               'Supabase: archivio delle richieste di preventivo. Il database si trova nell\'Unione Europea (Irlanda, regione AWS eu-west-1). Supabase è una società con sede negli Stati Uniti e ha un accordo di trattamento dati con clausole contrattuali standard della Commissione europea.',
-              'Google (Gemini API): genera le risposte dell\'assistente automatico, solo se usi la chat. Società con sede negli Stati Uniti. Secondo i termini d\'uso della Gemini API, per chi si trova nello Spazio economico europeo i contenuti inviati non vengono usati per migliorare i prodotti di Google. Le domande passano da una funzione del mio account Supabase, che non le conserva.',
+              'Anthropic (Claude): genera le risposte dell\'assistente automatico, solo se usi la chat. Società con sede negli Stati Uniti. Secondo i termini commerciali di Anthropic, i contenuti inviati tramite API non vengono usati per addestrare i suoi modelli e possono essere conservati per un periodo limitato. Le domande passano da una funzione del mio account Supabase, che non le conserva.',
+              'Google (Gemini API): solo come riserva, se il servizio di Anthropic non risponde, genera lui la risposta dell\'assistente. Società con sede negli Stati Uniti. Secondo i termini d\'uso della Gemini API, per chi si trova nello Spazio economico europeo i contenuti inviati non vengono usati per migliorare i prodotti di Google.',
               'GitHub (GitHub Pages): ospita il sito. Società con sede negli Stati Uniti.',
               'Cloudflare: gestisce il nome di dominio. Società con sede negli Stati Uniti.',
             ]}

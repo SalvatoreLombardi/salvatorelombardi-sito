@@ -1,7 +1,10 @@
-// Edge Function: l'assistente AI del sito. Riceve la conversazione, la manda a Gemini (piano gratuito)
-// e restituisce la risposta. La chiave resta qui, mai nel sito.
-// Segreto richiesto: GEMINI_API_KEY. Facoltativo: GEMINI_MODEL (il modello da provare per primo).
-// In locale la usa anche Vite (vedi vite.config.js), con la chiave in .env.local.
+// Edge Function: l'assistente AI del sito. Riceve la conversazione, la manda a Claude (se c'è la chiave)
+// e, se Claude non risponde, a Gemini (piano gratuito). Restituisce la risposta. Le chiavi restano qui, mai nel sito.
+// Segreti: ANTHROPIC_API_KEY (Claude, facoltativo: senza, si usa solo Gemini) e GEMINI_API_KEY (riserva).
+// Facoltativi: ANTHROPIC_MODEL (cambia il modello di Claude), GEMINI_MODEL (il modello Gemini da provare per primo).
+// In locale la usa anche Vite (vedi vite.config.js), con le chiavi in .env.local.
+
+const MODELLO_CLAUDE = 'claude-haiku-5-5' // piccolo e veloce: per risposte brevi basta e costa pochissimo
 
 // Ogni modello ha una sua quota gratuita al giorno (i "lite" ne hanno di più): si provano in fila,
 // quando uno ha finito si passa al successivo. I nomi cambiano nel tempo: se uno sparisce basta toglierlo.
@@ -50,6 +53,43 @@ const leggiEnv = (nome: string): string | undefined =>
   // @ts-ignore: Deno nel cloud, process in locale (Vite)
   globalThis.Deno?.env?.get(nome) ?? globalThis.process?.env?.[nome]
 
+/** Risposta di Claude (API Anthropic). Restituisce null se qualcosa non va: allora si passa a Gemini. */
+async function rispondiClaude(chiave: string, messaggi: Messaggio[]): Promise<string | null> {
+  // L'API vuole che la conversazione cominci con una domanda del visitatore
+  const storia = [...messaggi]
+  while (storia.length && storia[0].ruolo !== 'utente') storia.shift()
+  if (!storia.length) return null
+  try {
+    const risposta = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': chiave, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: leggiEnv('ANTHROPIC_MODEL') ?? MODELLO_CLAUDE,
+        max_tokens: 600,
+        system: ISTRUZIONI,
+        output_config: { effort: 'low' }, // risposte brevi: non serve pensare a lungo
+        messages: storia.map((m) => ({ role: m.ruolo === 'utente' ? 'user' : 'assistant', content: m.testo })),
+      }),
+    })
+    if (!risposta.ok) {
+      console.error('Claude', risposta.status)
+      return null
+    }
+    const dati = await risposta.json()
+    if (dati?.stop_reason === 'refusal') return null
+    const testo = (dati?.content ?? [])
+      .filter((b: { type?: string }) => b.type === 'text')
+      .map((b: { text?: string }) => b.text ?? '')
+      .join('')
+      .replace(/[*_`#]/g, '')
+      .trim()
+    return testo || null
+  } catch (e) {
+    console.error('Claude', e instanceof Error ? e.message : 'errore')
+    return null
+  }
+}
+
 export async function gestisci(req: Request): Promise<Response> {
   const intestazioni = { ...cors(req.headers.get('origin')), 'Content-Type': 'application/json' }
   const rispondi = (corpo: unknown, stato = 200) => new Response(JSON.stringify(corpo), { status: stato, headers: intestazioni })
@@ -74,7 +114,14 @@ export async function gestisci(req: Request): Promise<Response> {
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'sconosciuto'
   if (troppoUso(ip)) return rispondi({ errore: 'limite' }, 429)
 
-  // Senza chiave, o se Google non risponde (anche a gratis finito), il sito mostra il suo messaggio di cortesia
+  // Prima Claude (se c'è la chiave); se non risponde si passa a Gemini. Senza nessuna delle due, o se nessuno risponde,
+  // il sito mostra il suo messaggio di cortesia
+  const chiaveClaude = leggiEnv('ANTHROPIC_API_KEY')
+  if (chiaveClaude) {
+    const testoClaude = await rispondiClaude(chiaveClaude, messaggi)
+    if (testoClaude) return rispondi({ testo: testoClaude })
+  }
+
   const chiave = leggiEnv('GEMINI_API_KEY')
   if (!chiave) return rispondi({ errore: 'non-disponibile' })
 
